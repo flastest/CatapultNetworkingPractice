@@ -39,3 +39,11 @@ class Character:
     
     def losePoints(self, num):
         self.gamePoints -= num
+
+    def setAvatar(self, image):
+        self.image = image
+
+    def getAvatar(self):
+        return self.image
+
+        
