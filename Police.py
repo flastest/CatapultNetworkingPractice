@@ -1,13 +1,8 @@
 class Police(Character):
-
-
-    self.className = 'Police'
-    self.goal = 'catch thief'
-    self.abilityDefinition = 'interrogate'
+    
+    self.className = 'Police Officer'
+    self.goal = 'Discover and arrest all criminals in the area'
+    self.abilityDefinition = 'Interrogate other players to find out which are criminals'
     self.minigameName = 'Interrogation Station'
-    self.abilSuccess = 'You successfully gain copious amounts of information'
-    self.abilLoss = 'You fail to gain significant information'
-    self.gamePoint = 0
-    self.playerNumber = -1
-
-
+    self.abilSuccess = 'You successfully gain information about the target'
+    self.abilLoss = 'You fail to gain any relevant information'
