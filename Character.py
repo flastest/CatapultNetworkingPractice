@@ -1,5 +1,5 @@
 class Character:
-    """An outline or super-class for each character's individualized class/role""""
+    #"""An outline or super-class for each character's individualized class/role""""
 
     self.className = 'the role of the character'
     self.goal = 'what each character should be trying to do'
