@@ -1,4 +1,6 @@
-class Librarian(Character):
+import Character
+
+class Librarian(Characte.Character):
 
     self.className = 'Librarian'
     self.goal = 'Seek and organize books while seeking a quiet place to read'

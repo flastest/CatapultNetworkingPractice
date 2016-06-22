@@ -1,4 +1,6 @@
-class McAgeeCustomerSupport(Character):
+import Character
+
+class McAgeeCustomerSupport(Character.Character):
 
 
     self.className = 'AntiVirus Customer Support'

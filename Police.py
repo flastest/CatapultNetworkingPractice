@@ -1,4 +1,6 @@
-class Police(Character):
+import Character
+
+class Police(Character.Character):
     
     self.className = 'Police Officer'
     self.goal = 'Discover and arrest all criminals in the area'

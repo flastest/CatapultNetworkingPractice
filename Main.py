@@ -7,5 +7,6 @@ class Main(object):
     #titleScreen opener will go here
     print('test')
     test = Burglar(88)
-    print(test)
+    print("Class =",test)
+    print("minigame loss results in:",test.getMinigameLossText())
 
