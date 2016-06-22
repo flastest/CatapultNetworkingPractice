@@ -11,39 +11,39 @@ class Character:
     playerNumber = -1
 
     def __init__(self, playerNum):
-        playerNumber = playerNum
+        self.playerNumber = playerNum
 
     def __str__(self):
-        return className
+        return self.className
 
     def getGoal(self):
-        return goal
+        return self.goal
     
     def getAbilityDefinition(self):
-        return abilityDefinition
+        return self.abilityDefinition
     
     def getAbilityName(self):
-        return minigameName
+        return self.minigameName
     
     def getMinigameWinText(self):
-        return abilSuccess
+        return self.abilSuccess
     
     def getMinigameLossText(self):
-        return abilLoss
+        return self.abilLoss
     
     def getPlayerNumber(self):
-        return playerNumber
+        return self.playerNumber
     
     def getPoints(self, num):
-        gamePoints += num
+        self.gamePoints += num
     
     def losePoints(self, num):
-        gamePoints -= num
+        self.gamePoints -= num
 
-    def setAvatar(self, image):
-        image = image
+    def setAvatar(self, avatar):
+        self.image = avatar
 
     def getAvatar(self):
-        return image
+        return self.image
 
         
