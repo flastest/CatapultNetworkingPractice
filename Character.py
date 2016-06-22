@@ -1,49 +1,49 @@
 class Character:
     #"""An outline or super-class for each character's individualized class/role""""
 
-    self.className = 'the role of the character'
-    self.goal = 'what each character should be trying to do'
-    self.abilityDefinition = 'what the ability of the character does'
-    self.minigameName = 'the name of the ability and minigame'
-    self.abilSuccess = 'what is said when the ability minigame is won'
-    self.abilLoss = 'what is said when the ability minigame is won'
-    self.gamePoints = 0
-    self.playerNumber = -1
+    className = 'the role of the character'
+    goal = 'what each character should be trying to do'
+    abilityDefinition = 'what the ability of the character does'
+    minigameName = 'the name of the ability and minigame'
+    abilSuccess = 'what is said when the ability minigame is won'
+    abilLoss = 'what is said when the ability minigame is won'
+    gamePoints = 0
+    playerNumber = -1
 
     def __init__(self, playerNum):
-        self.playerNumber = playerNum
+        playerNumber = playerNum
 
     def __str__(self):
-        return self.className
+        return className
 
     def getGoal(self):
-        return self.goal
+        return goal
     
     def getAbilityDefinition(self):
-        return self.abilityDefinition
+        return abilityDefinition
     
     def getAbilityName(self):
-        return self.minigameName
+        return minigameName
     
     def getMinigameWinText(self):
-        return self.abilSuccess
+        return abilSuccess
     
     def getMinigameLossText(self):
-        return self.abilLoss
+        return abilLoss
     
     def getPlayerNumber(self):
-        return self.playerNumber
+        return playerNumber
     
     def getPoints(self, num):
-        self.gamePoints += num
+        gamePoints += num
     
     def losePoints(self, num):
-        self.gamePoints -= num
+        gamePoints -= num
 
     def setAvatar(self, image):
-        self.image = image
+        image = image
 
     def getAvatar(self):
-        return self.image
+        return image
 
         
