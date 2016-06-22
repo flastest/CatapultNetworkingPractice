@@ -9,3 +9,5 @@ class Burglar(Character.Character):
     abilSuccess = 'You successfully pick the lock.'
     abilLoss = 'You fail to pick the lock.'
 
+    image = 'Robber.png'
+

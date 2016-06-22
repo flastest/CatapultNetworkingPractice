@@ -1,3 +1,5 @@
+from images import *
+
 class Character:
     #"""An outline or super-class for each character's individualized class/role""""
 
@@ -45,5 +47,9 @@ class Character:
 
     def getAvatar(self):
         return self.image
+
+    def drawCharacter(self,posX,posY,win):
+        image = images(self.image)
+        image.display(posX,posY,win)
 
         

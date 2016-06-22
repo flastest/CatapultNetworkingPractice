@@ -7,3 +7,5 @@ class Chef(Character.Character):
     minigameName = 'Find Food'
     abilSuccess = 'You successfully preserved the ingredients.'
     abilLoss = 'You fail to obtain new ingredients.'
+
+    image = 'Chef.png'
