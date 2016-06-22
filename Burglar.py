@@ -1,3 +1,5 @@
+import Character
+
 class Burglar(Character):
 
     self.className = 'Burglar'
