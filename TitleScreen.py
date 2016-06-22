@@ -7,6 +7,4 @@ class TitleScreen:
         window = pygame.display.set_mode([x,y])
         x=1500
         y=1500
-        
-
-        
+    
