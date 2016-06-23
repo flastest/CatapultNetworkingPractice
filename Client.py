@@ -7,7 +7,7 @@ class Client():
     serverIP = ''
     generalSCPort = 50966
     generalCSPort = 50967
-    gameStarted = False
+    gameStarted = False 
     isRecieving = True # while true, all threads will try to recieve from all players
     recvThread = []
     recvBoo = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -61,7 +61,7 @@ class Client():
         recvThread[1].start()
         recvThread[2].start()
     
-    def recieving(self, dataStorage, sock, pack, isStr, buf_size = 1024):
+    def recieving(self, dataStorage, sock, pack, isStr, buf_size = 1024): #Three instances of this thread should always be running, to allow bools, ints, and strs to be recieved from the host at all times.
         while self.isRecieving:
             playerNum = -1
             x = time.clock() + .01

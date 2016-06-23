@@ -1,6 +1,6 @@
 import socket, time, struct, threading
 
-class Server:
+class Server: # player number will always be output to players classes as 2 less than the actual value that should be shown, ie host will be -1, this is done so that the data may be stored and accessed from the server more easily.
     
     intPack = '!I' # port+3playernum+1, strings are port+3playernum+2
     boolPack = '!?' # port+3playernum
@@ -32,10 +32,10 @@ class Server:
     
     def startGame(self): # Begins the game and informs all other players
         self.gameStarted = True
-        for i in range(len(playerIPNum)):
-            sendStrToPlayer('start', i)
+        for i in range(len(self.playerIPNum)):
+            self.sendStrToPlayer('start', i)
 
-    def backupBroadcast(self, port = generalSCPort):
+    def backupBroadcast(self, port = generalSCPort): # only run this if on a massive wifi system, with more than 200 computers on it, if broadcast doesnt work
         count = 0
         privateNetworkPartialIP = ''
         for i in range(len(self.myIP)):
@@ -50,7 +50,7 @@ class Server:
                         s.sendto(str.encode(myIP), ((privateNetworkPartialIP + str(x) + '.' + str(y)), port))
         s.close()
 
-    def broadcast(self, port = generalSCPort):
+    def broadcast(self, port = generalSCPort): # 
         collectionThread = threading.Thread(target = self.gatherPlayers)
         collectionThread.start()
         
@@ -67,20 +67,26 @@ class Server:
         s.sendto(str.encode(data), addr)
         s.close()
 
-    def gatherPlayers(self, port = generalCSPort, buf_size = 1024):
-        count = 0
+    def gatherPlayers(self, port = generalCSPort, buf_size = 1024):  # runs during setup, gathers and organizes the other players ip addresses into global list playerIPNum, and sends the players their player number - 2
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.bind(('', port))
         while not self.gameStarted:
+            count = len(self.playerIPNum)
+            shouldAdd = True
             data, sender_addr = s.recvfrom(buf_size)
-            playerIPNum.append(sender_addr[0])
-        for i in range(count+1):
-            rcvdBools.append(False)
-            rcvdInts.append(-1)
-            rcvdStrs.append('')
+            for x in range(len(self.playerIPNum)):
+                if sender_addr == self.playerIPNum[i]:
+                    shouldAdd = False
+            if shouldAdd:
+                self.playerIPNum.append(sender_addr) # adds players IP num
+                self.sendIntToPlayer(count, count) # sends the player their player number
+        for i in range(len(self.playerIPNum)):
+            self.rcvdBools.append(False)
+            self.rcvdInts.append(-1)
+            self.rcvdStrs.append('')
         self.initThreads()
 
-    def initThreads(self):
+    def initThreads(self): # initializes the threads that are constantly recieving data from the other players, uses the recieving function.
         self.recvBoo.bind(('', self.rBp))
         self.recvInt.bind(('', self.rIp))
         self.recvStr.bind(('', self.rSp))
@@ -97,16 +103,16 @@ class Server:
         recvThread[1].start()
         recvThread[2].start()
 
-    def sendBoolToPlayer(self, data, playerNum):
+    def sendBoolToPlayer(self, data, playerNum): # data = boolean being sent
         self.sendBoo.sendTo(struct.pack(self.boolPack, data), (self.playerIPNum[playerNum], self.sBp))
     
-    def sendIntToPlayer(self, data, playerNum):
+    def sendIntToPlayer(self, data, playerNum): # data = int being sent
         self.sendInt.sendTo(struct.pack(self.intPack, data), (self.playerIPNum[playerNum], self.sIp))
 
-    def sendStrToPlayer(self, data, playerNum):
+    def sendStrToPlayer(self, data, playerNum): # data = str being sent
         self.sendStr.sendTo(str.encode(data), (self.playerIPNum[playerNum], self.sSp))
 
-    def recieving(self, dataStorage, sock, pack, isStr, buf_size = 1024):
+    def recieving(self, dataStorage, sock, pack, isStr, buf_size = 1024): # actively recieves from all players, determines which player sent the data and stores it in the player's number location in the global list corresponding to the data type
         while self.isRecieving:
             playerNum = -1
             x = time.clock() + .01
