@@ -19,8 +19,10 @@ class Burglar(Character.Character):
         
         pygame.init()
         window = pygame.display.set_mode([1200,800])
-        pygame.display.set_caption('Picking lock...')
+        pygame.display.set_caption('Picking lock . . .')
+
         ended = False
+        canOpen = False
         while not minigameWon and not minigameLost:
             events = pygame.event.get()
             for event in events:
@@ -30,8 +32,25 @@ class Burglar(Character.Character):
                 if event.type == KEYDOWN:
                     if event.key == K_LSHIFT:
                         self.isUprCase = False
-            window.fill((0,0,0))
+                    if event.key == K_LEFT:
+                        pass
+                    if event.key == K_RIGHT:
+                        pass
+                    if event.key == K_UP:
+                        pass
+                    if event.key == K_DOWN:
+                        pass
+            window.fill((170,170,170))
+            pygame.display.Rect()
             pygame.display.update()
+            for i in range(5):
+                count = 0
+                if pin[i] == pos[i]:
+                    count += 1
+                if count == 5:
+                    canOpen = True
+            if time.clock() > startTime + self.timeLimit:
+                minigameLost = True
             if ended:
                 pygame.display.quit()
                 break
