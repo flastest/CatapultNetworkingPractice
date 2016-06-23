@@ -7,10 +7,10 @@ class AntivirusProgrammer(Character.Character):
 
     className = 'an AntiVirus Programmer'
     goal = 'fight off the terrors of the internet with your programming skills.'
-    abilityDefinition = 'Successfully type "Hello, World" with a mixed-up keyboard'
+    abilityDefinition = 'successfully type "Hello, World" with a mixed-up keyboard.'
     minigameName = '"HelloWorld"'
-    abilSuccess = 'You successfully provided minimal assistance to your helpless customer'
-    abilLoss = 'You fail to defeat the notorious hacker'
+    abilSuccess = 'You successfully provided minimal assistance to your helpless customer.'
+    abilLoss = 'You fail to defeat the notorious hacker.'
     gamePoints = 0
     playerNumber = -1
 
@@ -22,7 +22,7 @@ class AntivirusProgrammer(Character.Character):
         spot += 1
         return word, spot
 
-    def minigame(self):
+    def minigame(self, window, t):
         letters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
         random.shuffle(letters)
         random.shuffle(letters)
@@ -38,19 +38,25 @@ class AntivirusProgrammer(Character.Character):
 
         pygame.init()
         window = pygame.display.set_mode([400,200])
+        pygame.display.set_caption('cmd')
         shouldAppear = True
-        pathName = os.path.abspath('McAgeeCustomerSupport.py')
-        pathName = pathName[:len(pathName)-24] + '-Catapult-Networking-Practice\\times.ttf'
+        pathName = os.path.abspath('AntivirusProgrammer.py')
+        pathName = pathName[:len(pathName)-22] + '-Catapult-Networking-Practice\\times.ttf'
         x = time.clock()+.2
+        ended = False
         while not minigameWon and not minigameLost:
             events = pygame.event.get()
             for event in events:
                 if event.type == QUIT:
-                    window.close()
+                    ended = True
+                    break
                 if event.type == KEYUP:
                     if event.key == K_LSHIFT or event.key == K_RSHIFT:
                         self.isUprCase = False
                 if event.type == KEYDOWN:
+                    if event.key == K_QUOTE:
+                        if self.isUprCase:
+                            response, letterPosition = self.insert(letterPosition, response, '"')
                     if event.key == K_SPACE:
                         response, letterPosition = self.insert(letterPosition, response, ' ')
                     if event.key == K_COMMA:
@@ -132,7 +138,61 @@ class AntivirusProgrammer(Character.Character):
                 shouldAppear = not shouldAppear
                 x = time.clock() +.5
             pygame.display.update()
-            if response == 'Hello, World':
+            if response == 'Hello, World' or response == '"Hello, World"':
+                self.getPoints(1)
                 minigameWon = True
             if time.clock() > startTime + timeLimit:
                 minigameLost = True
+            if ended:
+                pygame.display.quit()
+                break
+        if minigameWon or minigameLost:
+            self.showEndScreen(window, minigameWon, t)
+
+    def showRules(self, t = 5):
+        pygame.init()
+        for i in range(t):
+            window = pygame.display.set_mode([400,200])
+            pygame.display.set_caption("")
+            window.fill((0,0,0))
+            pathName = os.path.abspath('AntivirusProgrammer.py')
+            pathName = pathName[:len(pathName)-22] + '-Catapult-Networking-Practice\\times.ttf'
+            font = pygame.font.Font(pathName, 20)
+            goal = 'Your objective is to ' + self.getAbilityDefinition()
+            text1 = font.render(goal[:int((len(goal)+1)/2)-2], 1, (255,255,255))
+            text2 = font.render(goal[int((len(goal)+1)/2)-1:], 1, (255,255,255))
+            countdown = font.render('Minigame starting in:     ' + str(t-i) , 1, (255,255,255))
+            window.blit(text1, (8,8))
+            window.blit(text2, (8, 32))
+            window.blit(countdown, (8, 100))
+            pygame.display.update()
+            time.sleep(1)
+        self.minigame(window, t)
+
+    def showEndScreen(self, window, hasWon, t):
+        if hasWon:
+            words = self.getMinigameWinText()
+            c = int((len(words)+1)/2)+8
+            d = 100
+        else:
+            words = self.getMinigameLossText()
+            c = 60
+            d = 70
+        for i in range(t):
+            window = pygame.display.set_mode([400,200])
+            pygame.display.set_caption("")
+            window.fill((0,0,0))
+            pathName = os.path.abspath('AntivirusProgrammer.py')
+            pathName = pathName[:len(pathName)-22] + '-Catapult-Networking-Practice\\times.ttf'
+            font = pygame.font.Font(pathName, 20)
+            text1 = font.render(words[:c], 1, (255,255,255))
+            text2 = font.render(words[c+1:], 1, (255,255,255))
+            countdown = font.render('Returning to the main game in:     ' + str(t-i) , 1, (255,255,255))
+            window.blit(text1, (8,8))
+            window.blit(text2, (8, 32))
+            window.blit(countdown, (8, d))
+            pygame.display.update()
+            time.sleep(1)
+
+#a = AntivirusProgrammer(1)   #Un-comment these to try out the minigame, complete with rules and ending screen.
+#a.showRules()

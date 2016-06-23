@@ -1,4 +1,5 @@
 import Character
+import pygame, clock, random
 
 class Burglar(Character.Character):
 
@@ -8,6 +9,9 @@ class Burglar(Character.Character):
     minigameName = 'Lockpick'
     abilSuccess = 'You successfully pick the lock.'
     abilLoss = 'You fail to pick the lock.'
-
     image = 'Robber.png'
 
+    def minigame(self):
+        minigameWon = False
+        minigameLost = False
+        startTime = time.clock()
