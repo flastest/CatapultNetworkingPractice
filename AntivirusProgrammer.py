@@ -13,6 +13,7 @@ class AntivirusProgrammer(Character.Character):
     abilLoss = 'You fail to defeat the notorious hacker.'
     gamePoints = 0
     playerNumber = -1
+    timeLimit = 100 # time limit for the minigame, feel free to change as needed.
 
     isUprCase = False # used in minigame function, do not use
     def insert(self, spot, word, letter): # used in mingame function, do not use
@@ -141,7 +142,7 @@ class AntivirusProgrammer(Character.Character):
             if response == 'Hello, World' or response == '"Hello, World"':
                 self.getPoints(1)
                 minigameWon = True
-            if time.clock() > startTime + timeLimit:
+            if time.clock() > startTime + self.timeLimit:
                 minigameLost = True
             if ended:
                 pygame.display.quit()
