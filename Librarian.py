@@ -31,6 +31,12 @@ class Librarian(Character.Character):
             def draw(self):
                 self.book = Rect((self.x, 200),(self.x+75, 400))
                 pygame.draw.rect(window, [self.red,self.blue,self.green], self. book, 0)
+                self.title = font.render(self.text, True, BLACK)
+                self.title = pygame.transform.rotate(title,90)
+                screen.blit(title, [self.x + 37, 300])
+
+            def addText(self, txt):
+                self.text = txt
 
         # sets number of books
         numBooks = 16
@@ -45,7 +51,10 @@ class Librarian(Character.Character):
             blue = random.randint(0,255)
             i = Book(bookloc)
             i.setColor(red,blue,green)
+            bookList.append(i)
+            i.draw()
             bookloc += 75
+
 
 
 
