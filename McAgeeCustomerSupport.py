@@ -1,6 +1,5 @@
 import Character
-import pygame
-import random
+import pygame, random, time
 
 class McAgeeCustomerSupport(Character.Character):
 
@@ -14,9 +13,10 @@ class McAgeeCustomerSupport(Character.Character):
     self.gamePoints = 0
     self.playerNumber = -1
 
-    def minigame(self, window):
+    def minigame(self):
         response = ''
         isUprCase = False
+
         minigameWon = False
         minigameLost = False
         while not minigameWon and not minigameLost:
