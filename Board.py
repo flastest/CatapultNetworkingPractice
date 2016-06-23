@@ -17,7 +17,7 @@ yCoord2 = (400,10)
 size = (400, 300)
 screen = pygame.display.set_mode(size)
 pygame.display.set_caption('WELCOME TO THE GAME')
-<<<<<<< HEAD
+
 
 screen.fill(BLACK)
 for x in range(lines):
