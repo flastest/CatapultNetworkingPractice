@@ -15,8 +15,12 @@ class Librarian(Character.Character):
 
     def minigame(self,window):
         
+        # draws shelf from left end of screen to right end of screen
+        shelf = Rect((0,600),(1200,20))
+        pygame.draw.rect(window, [100,60,40], shelf,0)
         
         class Book:
+
             width = 75
 
             # gives book starting x pos on the shelf
@@ -29,11 +33,10 @@ class Librarian(Character.Character):
                 self.green = g
                 self.blue = b
 
+            # draws book 
             def draw(self):
-                # drawing book
-
-                self.book = Rect((self.x, 200),(self.x+self.width, 400))
-                pygame.draw.rect(window, [self.red,self.blue,self.green], self. book, 0)
+                self.book = Rect((self.x, 200),(self.width, 400))
+                pygame.draw.rect(window, [self.red,self.blue,self.green], self.book, 0)
                 
                 # the dog shit known as pygame.font
                 font = pygame.font.Font(None, 26)
@@ -45,8 +48,8 @@ class Librarian(Character.Character):
             def addText(self, txt):
                 self.text = txt
 
-            def setPos(self,deltaX):
-                self.x += deltaX
+            def setPos(self,newX):
+                self.x = newX
 
             def getPos(self):
                 return self.x
@@ -64,16 +67,10 @@ class Librarian(Character.Character):
                 return self.text
         
         
-        # draws shelf from left end of screen to right end of screen
-        shelf = Rect((0,600),(1200,20))
-        pygame.draw.rect(window, [100,60,40], shelf,0)
 
         # sets number of books to sixteen because it's a minor and sam westerman should know that
         numBooks = 16
-        print(numBooks)
 
-        
-        
         # list of shitty titles to use
         titleList = ["Github? More like Bukkake","Erotic Sonic Fanfiction", "Comprehensive Guide to Windows 95", "Why Steve Jobs Really Died", "Illuminati Confirmed","Pain in the Ass: Bridge for Beginners","The Middle-Age Testament","Clean Your Hair Out of The Group Shower",
                 "Starbucks and the Making of an Empire","Porch Monkey","Human Trafficking for the Elderly","History of Sarah Palin","Breyer Horse Figurine Catalog","How to Make a Meme-Based Lubricant","Celebrating 75 Years","The Significance of 966"]
@@ -85,20 +82,22 @@ class Librarian(Character.Character):
         # Other names:
         #   A Wrinkle in Spine、けっけっけっ、二千歳、ぺぺ
 
-        # creates books for the minigame
-
-        # creates list of random books and random (sex) position
-        bookloc = 0
+        # creates books for the minigame by
+        # creating list of random books and random (sex) position
+        bookloc = 0 # location of book to be placed
         bookList = []
 
-        for b in range(numBooks):
+        # CTRL-K then CTRL-U to uncomment 
+        # CTRL-K the CTRLY-C to comment
+
+        for b in range(numBooks): 
             red = random.randint(50,255)
             green = random.randint(50,255)
             blue = random.randint(50,255)
 
-            print(b)
             i = Book(bookloc)
-            i.setColor(red,blue,green)
+            i.setColor(red,blue,green) # sets random color to book
+
             # does a different set of books times each time minigame is played
             if self.minigameCount == 0:
                 i.addText(titleList[b])
@@ -108,6 +107,7 @@ class Librarian(Character.Character):
                 i.addText(titleList3[b])
             if self.minigameCount == 3:
                 i.addText(titleList4[b])    
+            
             bookList.append(i)
             i.draw()
             bookloc += 75
@@ -129,7 +129,9 @@ class Librarian(Character.Character):
             
         def switchBooks(book1,book2):
             firstX = book1.getPos()
+            print("switch this!!",firstX)
             secondX = book2.getPos()
+            print("and this!!",secondX)
             book1.setPos(secondX)
             book2.setPos(firstX)
             book1.draw()
@@ -137,7 +139,7 @@ class Librarian(Character.Character):
 
         
         #print("幽門はミーム")
-        pygame.display.update()
+            pygame.display.update()
 
         # user input stuff goes here
         numClicks = 0
@@ -145,24 +147,41 @@ class Librarian(Character.Character):
             # takes all events
             events = pygame.event.get()
             for event in events:
-                # if user clicks a book, the computer remembers which book was clicked
-                if event.type == MOUSEBUTTONDOWN and numClicks == 0:
-                    mouse = event.pos
-                    self.click1 = getClickedBook(mouse)
-                    print(self.click1.toString())
-                    numClicks = 1
+                # displays coord of mouse
+                if event.type == MOUSEMOTION:
+                    clear = Rect((0,0),(200,40))
+                    pygame.draw.rect(window, [0,0,0], clear,0)
+                    pygame.display.update()
+
+                    font = pygame.font.Font(None, 26)
+                    title = font.render(str(event.pos), 1, (255,255,255))
+
+                    screen.blit(title, [0,20])
+
                 # checks for second click 
                 if event.type == MOUSEBUTTONDOWN and numClicks == 1:
                     mouse = event.pos
+                    print(mouse)
                     self.click2 = getClickedBook(mouse)
                     print(self.click2.toString())
+                    print("second click is at",mouse)
                     numClicks = 0
                     switchBooks(self.click1,self.click2)
+                        
+                
+                # if user clicks a book, the computer remembers which book was clicked
+                if event.type == MOUSEBUTTONDOWN and numClicks == 0:
+                    mouse = event.pos
+                    print(mouse)
+                    self.click1 = getClickedBook(mouse)
+                    print(self.click1.toString())
+                    numClicks = 1
+                    
 
                 # ends game if user quits
                 if event.type == QUIT:
                     return 
-            pygame.display.update()    
+                pygame.display.update()    
 
 
 
