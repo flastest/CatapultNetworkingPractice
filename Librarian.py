@@ -10,21 +10,28 @@ class Librarian(Character.Character):
     className = 'Librarian'
     goal = 'Seek and organize books while seeking a quiet place to read'
     abilityDefinition = 'Sort the books in this room by color from red to pink'
-    minigameName = 'Sort books'
+    minigameName = 'Sort Books'
     abilSuccess = 'You successfully sort the books'
     abilLoss = 'You fail to sort the books'
 
     minigameCount = 0
 
     def minigame(self,window):
-        
+        pygame.display.set_caption(self.minigameName)
+
         # draws shelf from left end of screen to right end of screen
         shelf = Rect((0,600),(1200,20))
         pygame.draw.rect(window, [100,60,40], shelf,0)
+
+        # draws instructions
         font = pygame.font.Font(None, 26)
         guide = font.render(self.abilityDefinition, 1, (255,255,255))
         screen.blit(guide,[0,150])
         
+        # initializes timer
+        startTime = time.clock()
+
+
         class Book:
 
             width = 75
@@ -131,14 +138,14 @@ class Librarian(Character.Character):
 
         # now for the actual playing part of the minigame
 
-        # getClickedBook takes a position and returns the clicked book
-        def getClickedBook(pos):
-            self.clickX = pos[0]
-            self.clickY = pos[1]
-            if self.clickY < 600 and self.clickY > 200:
-                for x in range(16):
-                    if (x + 1) * bookList[x].getBookWidth() > self.clickX:
-                        return bookList[x]
+        # # getClickedBook takes a position and returns the clicked book
+        # def getClickedBook(pos):
+        #     self.clickX = pos[0]
+        #     self.clickY = pos[1]
+        #     if self.clickY < 600 and self.clickY > 200:
+        #         for x in range(16):
+        #             if (x + 1) * bookList[x].getBookWidth() > self.clickX:
+        #                 return bookList[x]
 
         # returns bookList idx of clicked book
         def getBookIdx(pos):
@@ -164,15 +171,15 @@ class Librarian(Character.Character):
             book1.draw()
             book2.draw()
 
-        def switchBooks(book1,book2):
-            firstX = book1.getPos()
-            print("switch this!!",firstX)
-            secondX = book2.getPos()
-            print("and this!!",secondX)
-            book1.setPos(secondX)
-            book2.setPos(firstX)
-            book1.draw()
-            book2.draw()
+        # def switchBooks(book1,book2):
+        #     firstX = book1.getPos()
+        #     print("switch this!!",firstX)
+        #     secondX = book2.getPos()
+        #     print("and this!!",secondX)
+        #     book1.setPos(secondX)
+        #     book2.setPos(firstX)
+        #     book1.draw()
+        #     book2.draw()
 
         
         #print("幽門はミーム")
@@ -182,7 +189,7 @@ class Librarian(Character.Character):
         def inOrder():
             counter = 0
             for x in range(16):
-                print("comparing",shuffledColors[x],"and",colorList[x])
+                # print("comparing",shuffledColors[x],"and",colorList[x])   # debugging
                 if bookList[x].getColor() == colorList[x]:
                     counter += 1
                     print(counter)
@@ -195,41 +202,47 @@ class Librarian(Character.Character):
         numClicks = 0
         unordered = True
         while unordered:
-            
-            # takes all inputted events
+            # initializes font and other reusable text things
+            clear = Rect((0,0),(1200,150))
+            font = pygame.font.Font(None, 26)
+            # draws the timer
+            remainingTime = round(40 - (time.clock()-startTime)) # Starting time for timer goes here (30 or something)
+            pygame.draw.rect(window,[0,0,0],clear,0)
+            currentTime = font.render(str(remainingTime),1,(255,255,255))
+            screen.blit(currentTime,[1165,8])
+
+            # checks if time hasn't yet run out
+            if remainingTime <= 0:
+                print(self.abilLoss)
+                return
+
+
+            # takes all inputted events and figures out what to do with them
             events = pygame.event.get()
             for event in events:
                 
                 # displays coord of mouse
                 if event.type == MOUSEMOTION:
-                    clear = Rect((0,0),(200,40))
-                    pygame.draw.rect(window, [0,0,0], clear,0)
-                    pygame.display.update()
-
-                    font = pygame.font.Font(None, 26)
+            
                     title = font.render(str(event.pos), 1, (255,255,255))
-
                     screen.blit(title, [0,20])
- 
-
+                
                 # checks for second click 
                 if event.type == MOUSEBUTTONDOWN and numClicks == 1:
                     mouse = event.pos
-                    
-                    
-                    #print(self.click2.toString())
-                    #print("second click is at",mouse)
-                    numClicks = 2
-                    self.click2 = getBookIdx(mouse) # getClickedBook(mouse)
-                    switchIdx(self.click2,self.click1)
+                    # checks to make sure a book is clicked
+                    if mouse[1] > 200 and mouse[1] < 600:
+                        numClicks = 2
+                        self.click2 = getBookIdx(mouse) 
+                        switchIdx(self.click2,self.click1)
                                        
                 # if user clicks a book, the computer remembers which book was clicked
                 if event.type == MOUSEBUTTONDOWN and numClicks == 0:
                     mouse = event.pos
-                    #print("fist click is at",mouse)
-                    self.click1 = getBookIdx(mouse) # getClickedBook(mouse)
-                    #print(self.click1.toString())
-                    numClicks = 1
+                    # checks to make sure a book is clicked
+                    if mouse[1] > 200 and mouse[1] < 600:
+                        self.click1 = getBookIdx(mouse) 
+                        numClicks = 1
                 
                 # checks for third click to reset 
                 if event.type == MOUSEBUTTONDOWN and numClicks == 2:
@@ -242,7 +255,7 @@ class Librarian(Character.Character):
                 
                 if inOrder():
                     unordered = False
-                    print("lactic acid bacteria")
+                    print(self.abilSuccess)
                     break
 
                 # ends game if user quits
@@ -257,7 +270,7 @@ class Librarian(Character.Character):
         
 
 screen = pygame.display.set_mode([1200,800])
-pygame.display.set_caption("乳酸菌と解剖と肝臓")
+
 kek = Librarian(966)
 kek.minigame(screen)
 # time.sleep(1)
