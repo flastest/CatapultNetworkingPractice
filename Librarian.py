@@ -56,7 +56,7 @@ class Librarian(Character.Character):
 
             def isClicked(self,x,y):
                 if self.x + 75 > x and self.x < x:
-                    if 200 < y and 400 > y:
+                    if 200 < y and 600 > y:
                         return True
                 return False
             
@@ -74,7 +74,7 @@ class Librarian(Character.Character):
         # list of shitty titles to use
         titleList = ["Github? More like Bukkake","Erotic Sonic Fanfiction", "Comprehensive Guide to Windows 95", "Why Steve Jobs Really Died", "Illuminati Confirmed","Pain in the Ass: Bridge for Beginners","The Middle-Age Testament","Clean Your Hair Out of The Group Shower",
                 "Starbucks and the Making of an Empire","Porch Monkey","Human Trafficking for the Elderly","History of Sarah Palin","Breyer Horse Figurine Catalog","How to Make a Meme-Based Lubricant","Celebrating 75 Years","The Significance of 966"]
-        titleList2 = ["DSM IV-TR","Delete system32","Cosmopolitan","A Comprehensive Guide to the Rorschach","How to Make a Solar Hooker from Scratch","Julius Caesar Salad","Pokemon Emerald","Lord of the Fries","To Kill a Meme-ing Bird","Of Mice and Memes","Catch-966","Anon in an Anonymous Land",            "Bae-o-wulf","Alice's Adventures in Reddit","Prunes and Prejudice","The Mediocre Gatsby"]
+        titleList2 = ["DSM IV-TR","Deleting System32","Cosmopolitan","A Comprehensive Guide to the Rorschach","How to Make a Solar Hooker from Scratch","Julius Caesar Salad","Pokemon Emerald","Lord of the Fries","To Kill a Meme-ing Bird","Of Mice and Memes","Catch-966","Anon in an Anonymous Land",            "Bae-o-wulf","Alice's Adventures in Reddit","Prunes and Prejudice","The Mediocre Gatsby"]
         titleList3 = ["Another Young Adult Vampire Romance Novel","War and Pepe","The Fault in our Apple Devices","The Adventures of Blackberry Phone","Lolita","The Lion King","Nineteen-Eighty-Three-Point-Nine-Six-Six","Gone with the Meme","Pomegranates of Wrath","The CATAPULTry Tales",
                 "Billy Joel's Greatest Hits'","The Merchant of Chinatown","Much Ado about Cookies","Less Miserables","Old Man and The Book that Dragged on Forever","Hoarder of the Things"]
         titleList4 = ["Charlotte the Pleb","One Flew Over The Cuckoo's Nest","Twenty Thousand Leagues into the Internet","The Strange Case of Dr. Jekyll and Mr. Mime","A Clockwork Pepe","Call of the Meme","Through the Computer Monitor","All Quiet on the Viral Front",
@@ -113,7 +113,7 @@ class Librarian(Character.Character):
             bookloc += 75
 
         # adds counter to minigame so same books aren't used again
-        self.minigameCount += 1    
+        self.minigameCount += 1 
 
 
         # now for the actual playing part of the minigame
@@ -122,11 +122,35 @@ class Librarian(Character.Character):
         def getClickedBook(pos):
             self.clickX = pos[0]
             self.clickY = pos[1]
-            if self.clickY < 400 and self.clickY > 200:
+            if self.clickY < 600 and self.clickY > 200:
                 for x in range(16):
                     if (x + 1) * bookList[x].getBookWidth() > self.clickX:
                         return bookList[x]
-            
+
+        # returns bookList idx of clicked book
+        def getBookIdx(pos):
+            self.clickX = pos[0]
+            self.clickY = pos[1]
+            if self.clickY < 600 and self.clickY > 200:
+                for x in range(16):
+                    if (x + 1) * bookList[x].getBookWidth() > self.clickX:
+                        return x
+        
+        # uses bookList indexes to switch books
+        def switchIdx(idx1,idx2):
+            book1 = bookList[idx1]
+            book2 = bookList[idx2]
+            pos1 = book1.getPos()
+            pos2 = book2.getPos()
+            # change positions of books
+            book1.setPos(pos2)
+            book2.setPos(pos1)
+            # change list positions
+            bookList[idx2] = book1
+            bookList[idx1] = book2
+            book1.draw()
+            book2.draw()
+
         def switchBooks(book1,book2):
             firstX = book1.getPos()
             print("switch this!!",firstX)
@@ -157,26 +181,35 @@ class Librarian(Character.Character):
                     title = font.render(str(event.pos), 1, (255,255,255))
 
                     screen.blit(title, [0,20])
+ 
 
                 # checks for second click 
                 if event.type == MOUSEBUTTONDOWN and numClicks == 1:
                     mouse = event.pos
-                    print(mouse)
-                    self.click2 = getClickedBook(mouse)
-                    print(self.click2.toString())
-                    print("second click is at",mouse)
-                    numClicks = 0
-                    switchBooks(self.click1,self.click2)
-                        
-                
+                    
+                    
+                    #print(self.click2.toString())
+                    #print("second click is at",mouse)
+                    numClicks = 2
+                    self.click2 = getBookIdx(mouse) # getClickedBook(mouse)
+                    switchIdx(self.click2,self.click1)
+                                       
                 # if user clicks a book, the computer remembers which book was clicked
                 if event.type == MOUSEBUTTONDOWN and numClicks == 0:
                     mouse = event.pos
-                    print(mouse)
-                    self.click1 = getClickedBook(mouse)
-                    print(self.click1.toString())
+                    #print("fist click is at",mouse)
+                    self.click1 = getBookIdx(mouse) # getClickedBook(mouse)
+                    #print(self.click1.toString())
                     numClicks = 1
+                
+                # checks for third click to reset 
+                if event.type == MOUSEBUTTONDOWN and numClicks == 2:
+                    self.click1 = 0
+                    self.click2 = 0
                     
+                    mouse = event.pos
+                    #print("third click is at",mouse)
+                    numClicks = 0
 
                 # ends game if user quits
                 if event.type == QUIT:
@@ -192,6 +225,8 @@ class Librarian(Character.Character):
 screen = pygame.display.set_mode([1200,800])
 pygame.display.set_caption("乳酸菌と解剖と肝臓")
 kek = Librarian(966)
+kek.minigame(screen)
+time.sleep(1)
 kek.minigame(screen)
 
 
