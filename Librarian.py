@@ -2,11 +2,14 @@ import Character, random, pygame,time
 from pygame.locals import *
 pygame.font.init()
 
+# LIFE HACKS:
+# CTRL-K then CTRL-U to uncomment 
+# CTRL-K the CTRLY-C to comment
 class Librarian(Character.Character):
 
     className = 'Librarian'
     goal = 'Seek and organize books while seeking a quiet place to read'
-    abilityDefinition = 'Sort the books in this room'
+    abilityDefinition = 'Sort the books in this room by color from red to pink'
     minigameName = 'Sort books'
     abilSuccess = 'You successfully sort the books'
     abilLoss = 'You fail to sort the books'
@@ -18,6 +21,9 @@ class Librarian(Character.Character):
         # draws shelf from left end of screen to right end of screen
         shelf = Rect((0,600),(1200,20))
         pygame.draw.rect(window, [100,60,40], shelf,0)
+        font = pygame.font.Font(None, 26)
+        guide = font.render(self.abilityDefinition, 1, (255,255,255))
+        screen.blit(guide,[0,150])
         
         class Book:
 
@@ -28,15 +34,15 @@ class Librarian(Character.Character):
                 self.x = xPos
 
             
-            def setColor(self,r,g,b):
-                self.red = r
-                self.green = g
-                self.blue = b
+            def setColor(self,list):
+                self.red = list[0]
+                self.green = list[1]
+                self.blue = list[2]
 
             # draws book 
             def draw(self):
                 self.book = Rect((self.x, 200),(self.width, 400))
-                pygame.draw.rect(window, [self.red,self.blue,self.green], self.book, 0)
+                pygame.draw.rect(window, [self.red,self.green,self.blue], self.book, 0)
                 
                 # the dog shit known as pygame.font
                 font = pygame.font.Font(None, 26)
@@ -65,6 +71,9 @@ class Librarian(Character.Character):
 
             def toString(self):
                 return self.text
+            
+            def getColor(self):
+                return (self.red,self.green,self.blue)
         
         
 
@@ -82,21 +91,25 @@ class Librarian(Character.Character):
         # Other names:
         #   A Wrinkle in Spine、けっけっけっ、二千歳、ぺぺ
 
-        # creates books for the minigame by
-        # creating list of random books and random (sex) position
+        # this below is the key for the game, it's shuffled every minigame to produce a random scenario
+        colorList = [(170,0,0),(225,15,0),(232,94,16),(255,132,29),(255,200,15),(255,248,33),(191,255,33),(110,255,33),(16,205,6),(70,226,180),(41,177,193),(24,135,180),(45,65,209),(113,80,217),(143,56,225)      ,(182,50,205)]
+        
+        # creates books for the minigame by initializing all the book objects and 
+        # assigning them random colors from shuffledColors
         bookloc = 0 # location of book to be placed
         bookList = []
-
-        # CTRL-K then CTRL-U to uncomment 
-        # CTRL-K the CTRLY-C to comment
+        shuffledColors = colorList.copy()
+        random.shuffle(shuffledColors)
+        
+        # this is for debugging, just rigging colors lol
+        # shuffledColors = [(182,50,205),(225,15,0),(232,94,16),(255,132,29),(255,200,15),(255,248,33),(191,255,33),(110,255,33),(16,205,6),(70,226,180),(41,177,193),(24,135,180),(45,65,209),(113,80,217),(143,56,225),(170,0,0)]
 
         for b in range(numBooks): 
-            red = random.randint(50,255)
-            green = random.randint(50,255)
-            blue = random.randint(50,255)
+            print(shuffledColors[b])
+            colorr = shuffledColors[b]
 
             i = Book(bookloc)
-            i.setColor(red,blue,green) # sets random color to book
+            i.setColor(colorr) # sets random color to book
 
             # does a different set of books times each time minigame is played
             if self.minigameCount == 0:
@@ -165,12 +178,28 @@ class Librarian(Character.Character):
         #print("幽門はミーム")
             pygame.display.update()
 
+        # checks if books are in color order
+        def inOrder():
+            counter = 0
+            for x in range(16):
+                print("comparing",shuffledColors[x],"and",colorList[x])
+                if bookList[x].getColor() == colorList[x]:
+                    counter += 1
+                    print(counter)
+            if counter == 16:
+                return True
+            return False
+
+
         # user input stuff goes here
         numClicks = 0
-        while True:
-            # takes all events
+        unordered = True
+        while unordered:
+            
+            # takes all inputted events
             events = pygame.event.get()
             for event in events:
+                
                 # displays coord of mouse
                 if event.type == MOUSEMOTION:
                     clear = Rect((0,0),(200,40))
@@ -210,13 +239,18 @@ class Librarian(Character.Character):
                     mouse = event.pos
                     #print("third click is at",mouse)
                     numClicks = 0
+                
+                if inOrder():
+                    unordered = False
+                    print("lactic acid bacteria")
+                    break
 
                 # ends game if user quits
                 if event.type == QUIT:
                     return 
                 pygame.display.update()    
 
-
+                
 
        
 
@@ -226,7 +260,7 @@ screen = pygame.display.set_mode([1200,800])
 pygame.display.set_caption("乳酸菌と解剖と肝臓")
 kek = Librarian(966)
 kek.minigame(screen)
-time.sleep(1)
-kek.minigame(screen)
+# time.sleep(1)
+# kek.minigame(screen)
 
 
