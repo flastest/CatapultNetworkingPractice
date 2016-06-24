@@ -8,7 +8,7 @@ class AntivirusProgrammer(Character.Character):
     className = 'an AntiVirus Programmer'
     goal = 'fight off the terrors of the internet with your programming skills.'
     abilityDefinition = 'successfully type "Hello, World" with a mixed-up keyboard.'
-    minigameName = '"HelloWorld"'
+    minigameName = '"leoHl, oWdlr"'
     abilSuccess = 'You successfully provided minimal assistance to your helpless customer.'
     abilLoss = 'You fail to defeat the notorious hacker.'
     gamePoints = 0
