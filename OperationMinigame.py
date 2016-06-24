@@ -48,7 +48,7 @@ while running:
             if P[0] <= 430+150 and P[0] >= 430 and P[1] <= 390+150 and P[1] >= 390:
                 if P[0] <= 340+170 and P[0] >= 340 and P[1] <= 390+170 and P[1] >= 390:
                     pass
-                elif P[0] <= 300+300 and P[0] >= 300 and P[1] <= 450+300 and P[1] >= 450:
+                elif P[0] <= 300+300 and P[0] >= 300 and P[1] <= 490+300 and P[1] >= 490:
                     pass
                 else:
                     if heart_remove == True:
@@ -57,7 +57,7 @@ while running:
                         lung_remove = False
             #removes liver
             if P[0] <= 340+170 and P[0] >= 340 and P[1] <= 390+170 and P[1] >= 390:
-                if P[0] <= 300+300 and P[0] >= 300 and P[1] <= 450+300 and P[1] >= 450:
+                if P[0] <= 300+300 and P[0] >= 300 and P[1] <= 490+300 and P[1] >= 490:
                     pass
                 else:
                     if stomach_remove == True:
@@ -66,7 +66,7 @@ while running:
                         lung_remove = False
                         heart_remove = False
             #removes largeIntestine
-            if P[0] <= 300+300 and P[0] >= 300 and P[1] <= 450+300 and P[1] >= 450:
+            if P[0] <= 300+300 and P[0] >= 300 and P[1] <= 490+300 and P[1] >= 490:
                 if liver_remove == True:
                     largeIntestine_remove = True
                 else:
@@ -100,7 +100,7 @@ while running:
         elif x == stomach and stomach_remove == False:
             screen.blit(stomach,(430,390))
         elif x == largeIntestine and largeIntestine_remove == False:
-            screen.blit(largeIntestine,(300,450))
+            screen.blit(largeIntestine,(300,490))
         elif x == brain and brain_remove == False:
             screen.blit(brain, (400, 0))
     if You_Win == True:
