@@ -42,7 +42,7 @@ class AntivirusProgrammer(Character.Character):
         pygame.display.set_caption('cmd')
         shouldAppear = True
         pathName = os.path.abspath('AntivirusProgrammer.py')
-        pathName = pathName[:len(pathName)-22] + 'CatapultNetworkingPractice\\times.ttf'
+        pathName = pathName[:len(pathName)-22] + 'times.ttf'
         x = time.clock()+.2
         ended = False
         while not minigameWon and not minigameLost:
