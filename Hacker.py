@@ -15,7 +15,7 @@ class Hacker(Character.Character):
     playerNumber = -1
     timeLimit = 50 # time limit for the minigame, feel free to change as needed.
 
-    def minigame(self, t):
+    def minigame(self, window, t):
         minigameWon = False
         minigameLost = False
         startTime = time.clock()
@@ -50,7 +50,7 @@ class Hacker(Character.Character):
         nextTime = False
         for i in range(16):
             lines.append([0,0,0,0,255,0,0])
-        hp = 20
+        hp = 24
         tP = 0
         ended = False
         lIsPressed = False
@@ -92,7 +92,7 @@ class Hacker(Character.Character):
                 if lIsPressed:
                     player[0] -= 5
             if fwDMove < time.clock():
-                fwDMove = time.clock() + 10
+                fwDMove = time.clock() + 8
                 xVal = 8
                 yVal = 6
                 minVal = 3
@@ -139,24 +139,28 @@ class Hacker(Character.Character):
                         lines[i][5] = random.randint(0,100)
                         lines[i][6] = random.randint(0,30)
                     nextTime = not nextTime
-            if fwTime < time.clock():
-                x = .6
-                if time.clock() > startTime + 40:
+            if fwTime < time.clock(): #spawn rate of fireballs
+                x = .5
+                if time.clock() > startTime + 20:
+                    x = .4
+                if time.clock() > startTime + 35:
                     x = .3
                 fwTime = time.clock()+x
                 spawnY = wall[1]+(fwH/2) + 5
-                attDX = (player[0]-wall[0])//72
-                attDY = (player[1]-spawnY)//72
+                attDX = (player[0]-wall[0])//random.randint(64,72)
+                attDY = (player[1]-spawnY)//random.randint(64,72)
                 fwAtt.append([wall[0], spawnY, int(attDX), int(attDY)])
             if player[0] <= 5:
                 player[0] = 5
             if player[0] >= 1195:
                 player[0] = 1195
             window.fill(black)
-            if fwAttTime < time.clock():
-                x = .05
-                if time.clock() > 40:
+            if fwAttTime < time.clock():#move speed of fireballs
+                x = .04
+                if time.clock() > startTime + 20:
                     x = .03
+                if time.clock() > startTime + 35:
+                    x = .02
                 fwAttTime = time.clock() + x
                 for i in range(len(fwAtt)):
                     if fwAtt[i][1] > 800:
@@ -185,7 +189,7 @@ class Hacker(Character.Character):
                 pygame.draw.circle(window, rd, (int(fwAtt[i][0]), int(fwAtt[i][1])), 3)
                 pygame.draw.line(window, rd, (fwAtt[i][0],fwAtt[i][1]), (fwAtt[i][0]-2*fwAtt[i][2], fwAtt[i][1]-3*fwAtt[i][3]), 3)
             pygame.draw.rect(window, rd, (0,0,1200,60))
-            pygame.draw.rect(window, green, (0,0, hp*60,60))
+            pygame.draw.rect(window, green, (0,0, hp*(1200/24),60))
             pygame.draw.polygon(window,white,((player[0],player[1]-15),(player[0]-10, player[1]+10), (player[0]+10,player[1]+10)),0)
             pygame.draw.rect(window, (255, fwGval, fwBval), (wall[0]-fwW/2, wall[1]-fwH/2, fwW, fwH))
             for i in range(len(lines)):
@@ -204,6 +208,40 @@ class Hacker(Character.Character):
                 pygame.display.quit()
                 break
         if minigameWon or minigameLost:
-            pass#self.showEndScreen(window, minigameWon, t)
-a = Hacker(1)
-a.minigame(5)
+            self.showEndScreen(window, minigameWon, t)
+
+    def showRules(self, t = 5):
+        pygame.init()
+        for i in range(t):
+            window = pygame.display.set_mode([1200,800])
+            pygame.display.set_caption("")
+            window.fill([0,0,0])
+            font = pygame.font.Font(None, 36)
+            goal = 'Your objective is to ' + self.getAbilityDefinition()
+            text1 = font.render(goal, 1, (255,255,255))
+            countdown = font.render('Minigame starting in:     ' + str(t-i) , 1, (255,255,255))
+            window.blit(text1, (8,8))
+            window.blit(countdown, (8, 100))
+            pygame.display.update()
+            time.sleep(1)
+        self.minigame(window, t)
+
+    def showEndScreen(self, window, hasWon, t):
+        if hasWon:
+            words = self.getMinigameWinText()
+            self.getPoints(1)
+        else:
+            words = self.getMinigameLossText()
+        for i in range(t):
+            window = pygame.display.set_mode([1200,800])
+            pygame.display.set_caption("")
+            window.fill((0,0,0))
+            font = pygame.font.Font(None, 36)
+            text = font.render(words, 1, (255,255,255))
+            countdown = font.render('Returning to the main game in:     ' + str(t-i) , 1, (255,255,255))
+            window.blit(text, (8,8))
+            window.blit(countdown, (8, 100))
+            pygame.display.update()
+            time.sleep(1)
+#a = Hacker(1)
+#a.showRules()
