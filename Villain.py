@@ -17,7 +17,7 @@ class Villain(Character.Character):
         startTime = time.clock()
         
         pygame.init()
-        pygame.display.set_caption('')
+        pygame.display.set_caption('Breaking things. . .')
         white = [255,255,255]
         gray = [100,100,100]
         red = [120,30,30]
