@@ -88,13 +88,13 @@ class Librarian(Character.Character):
         numBooks = 16
 
         # list of shitty titles to use
-        titleList = ["Github? More like Bukkake","Erotic Sonic Fanfiction", "Comprehensive Guide to Windows 95", "Why Steve Jobs Really Died", "Illuminati Confirmed","Pain in the Ass: Bridge for Beginners","The Middle-Age Testament","Clean Your Hair Out of The Group Shower",
-                "Starbucks and the Making of an Empire","Porch Monkey","Human Trafficking for the Elderly","History of Sarah Palin","Breyer Horse Figurine Catalog","How to Make a Meme-Based Lubricant","Celebrating 75 Years","The Significance of 966"]
-        titleList2 = ["DSM IV-TR","Deleting System32","Cosmopolitan","A Comprehensive Guide to the Rorschach","How to Make a Solar Hooker from Scratch","Julius Caesar Salad","Pokemon Emerald","Lord of the Fries","To Kill a Meme-ing Bird","Of Mice and Memes","Catch-966","Anon in an Anonymous Land",            "Bae-o-wulf","Alice's Adventures in Reddit","Prunes and Prejudice","The Mediocre Gatsby"]
-        titleList3 = ["Another Young Adult Vampire Romance Novel","War and Pepe","The Fault in our Apple Devices","The Adventures of Blackberry Phone","Lolita","The Lion King","Nineteen-Eighty-Three-Point-Nine-Six-Six","Gone with the Meme","Pomegranates of Wrath","The CATAPULTry Tales",
+        titleList = ["The Horrors of Github","A Brief History of Fanfiction", "Comprehensive Guide to Windows 95", "Why Steve Jobs Really Died", "Illuminati Confirmed","Bridge for Beginners, Abridged","The Middle-Age Testament","How to Clean Your Bathroom",
+                "Starbucks and the Making of an Empire","Porch Monkey","Using the Internet for the Elderly","History of Sarah Palin","Breyer Horse Figurine Catalog","How to Meme","Celebrating 75 Years","The Significance of 966"]
+        titleList2 = ["DSM IV-TR","Deleting System32","Cosmopolitan","A Comprehensive Guide to the Rorschach","Error 404, Book not found","Julius Caesar Salad","Pokemon Emerald","Lord of the Fries","To Kill a Meme-ing Bird","Of Mice and Memes","Catch-42","Anon in an Anonymous Land",                         "Bae-o-wulf","Alice's Adventures in Reddit","Prunes and Prejudice","The Mediocre Gatsby"]
+        titleList3 = ["Another Young Adult Vampire Romance Novel","War and Pepe","The Fault in our Apple Devices","The Adventures of Blackberry Phone","A Complete History of the Catapult","The Lion King","1983.5","Gone with the Meme","Pomegranates of Wrath","The CATAPULTry Tales",
                 "Billy Joel's Greatest Hits'","The Merchant of Chinatown","Much Ado about Cookies","Less Miserables","Old Man and The Book that Dragged on Forever","Hoarder of the Things"]
-        titleList4 = ["Charlotte the Pleb","One Flew Over The Cuckoo's Nest","Twenty Thousand Leagues into the Internet","The Strange Case of Dr. Jekyll and Mr. Mime","A Clockwork Pepe","Call of the Meme","Through the Computer Monitor","All Quiet on the Viral Front",
-                "The Lion, The Witch and the Unpacked Suitcase","Love in the Time of Zika","The Prelude/Angry Young Man","Journey to the Center of Walmart","A Midsummer's Night Meme","Uncle Tom's Beach Resort","If I Forget Thee, Jerusalem","Just Start Mushing it Slowly but Erotically"]
+        titleList4 = ["Charlotte's Pleb","One Flew Over The Catamonkey's Nest","Twenty Thousand Leagues into the Internet","The Strange Case of Dr. Jekyll and Mr. Mime","A Clockwork Pepe","Call of the Meme","Through the Computer Monitor","All Quiet on the Viral Front",
+                "The Lion, The Witch and the Unpacked Suitcase","Love in the Time of Zika","The Prelude/Angry Young Man","Journey to the Center of Walmart","Much Ado About Memes","Uncle Tom's Beach Resort","If I Forget Thee, Jerusalem","Just Do It, A Biography of Shia LeBeouf"]
         # Other names:
         #   A Wrinkle in Spine、けっけっけっ、二千歳、ぺぺ
 
@@ -112,7 +112,7 @@ class Librarian(Character.Character):
         # shuffledColors = [(182,50,205),(225,15,0),(232,94,16),(255,132,29),(255,200,15),(255,248,33),(191,255,33),(110,255,33),(16,205,6),(70,226,180),(41,177,193),(24,135,180),(45,65,209),(113,80,217),(143,56,225),(170,0,0)]
 
         for b in range(numBooks): 
-            print(shuffledColors[b])
+            # print(shuffledColors[b])
             colorr = shuffledColors[b]
 
             i = Book(bookloc)
@@ -192,7 +192,6 @@ class Librarian(Character.Character):
                 # print("comparing",shuffledColors[x],"and",colorList[x])   # debugging
                 if bookList[x].getColor() == colorList[x]:
                     counter += 1
-                    print(counter)
             if counter == 16:
                 return True
             return False
@@ -213,7 +212,6 @@ class Librarian(Character.Character):
 
             # checks if time hasn't yet run out
             if remainingTime <= 0:
-                print(self.abilLoss)
                 return
 
 
@@ -223,9 +221,9 @@ class Librarian(Character.Character):
                 
                 # displays coord of mouse
                 if event.type == MOUSEMOTION:
-            
-                    title = font.render(str(event.pos), 1, (255,255,255))
-                    screen.blit(title, [0,20])
+                    pass
+                   # title = font.render(str(event.pos), 1, (255,255,255))
+                   # screen.blit(title, [0,20])
                 
                 # checks for second click 
                 if event.type == MOUSEBUTTONDOWN and numClicks == 1:
@@ -255,7 +253,6 @@ class Librarian(Character.Character):
                 
                 if inOrder():
                     unordered = False
-                    print(self.abilSuccess)
                     break
 
                 # ends game if user quits

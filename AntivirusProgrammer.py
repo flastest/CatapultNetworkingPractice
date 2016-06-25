@@ -42,7 +42,7 @@ class AntivirusProgrammer(Character.Character):
         pygame.display.set_caption('cmd')
         shouldAppear = True
         pathName = os.path.abspath('AntivirusProgrammer.py')
-        pathName = pathName[:len(pathName)-22] + '-Catapult-Networking-Practice\\times.ttf'
+        pathName = pathName[:len(pathName)-22] + 'CatapultNetworkingPractice\\times.ttf'
         x = time.clock()+.2
         ended = False
         while not minigameWon and not minigameLost:
@@ -157,7 +157,7 @@ class AntivirusProgrammer(Character.Character):
             pygame.display.set_caption("")
             window.fill((0,0,0))
             pathName = os.path.abspath('AntivirusProgrammer.py')
-            pathName = pathName[:len(pathName)-22] + '-Catapult-Networking-Practice\\times.ttf'
+            pathName = pathName[:len(pathName)-22] + 'CatapultNetworkingPractice\\times.ttf'
             font = pygame.font.Font(pathName, 20)
             goal = 'Your objective is to ' + self.getAbilityDefinition()
             text1 = font.render(goal[:int((len(goal)+1)/2)-2], 1, (255,255,255))
@@ -184,7 +184,7 @@ class AntivirusProgrammer(Character.Character):
             pygame.display.set_caption("")
             window.fill((0,0,0))
             pathName = os.path.abspath('AntivirusProgrammer.py')
-            pathName = pathName[:len(pathName)-22] + '-Catapult-Networking-Practice\\times.ttf'
+            pathName = pathName[:len(pathName)-22] + 'CatapultNetworkingPractice\\times.ttf'
             font = pygame.font.Font(pathName, 20)
             text1 = font.render(words[:c], 1, (255,255,255))
             text2 = font.render(words[c+1:], 1, (255,255,255))
@@ -195,5 +195,5 @@ class AntivirusProgrammer(Character.Character):
             pygame.display.update()
             time.sleep(1)
 
-#a = AntivirusProgrammer(1)   #Un-comment these to try out the minigame, complete with rules and ending screen.
-#a.showRules()
+a = AntivirusProgrammer(1)   #Un-comment these to try out the minigame, complete with rules and ending screen.
+a.showRules()
