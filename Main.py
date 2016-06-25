@@ -5,9 +5,24 @@
 import pygame 
 from pygame.locals import *
 from Burglar import *
+from TitleScreen import *
 
 class Main(object):
+    game_screen = pygame.display.set_mode([1200,800])
+    pygame.display.set_caption("Cookie Scam")
     #titleScreen opener will go here
+    title = TitleScreen()
+    title.display(game_screen)
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     print('test')
     test = Burglar(88)
     
@@ -16,9 +31,9 @@ class Main(object):
 
     print("image name is:",test.getAvatar())    
 
-    screen = pygame.display.set_mode([1200,800])
-    pygame.display.set_caption("My Window")
-    test.drawCharacter(100,100,screen)
+    test.drawCharacter(100,100,game_screen)
+    
+    
     while True:
         events = pygame.event.get()
         for event in events:
