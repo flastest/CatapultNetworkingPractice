@@ -1,6 +1,7 @@
 import pygame, time
 from pygame.locals import *
 
+pygame.init()
 screen = pygame.display.set_mode([1200,800])
 background = pygame.image.load('Background for Operation game.png')
 youWin = pygame.image.load('You Win.png')
@@ -85,11 +86,20 @@ while running:
                     heart_remove = False
                     stomach_remove = False
                     liver_remove = False
-
-
+    
+    newfont = pygame.font.Font(None, 300)
+    loseText = newfont.render("You Lose",0,(255,0,0))
+    time = 10000 - pygame.time.get_ticks()
     screen.fill((0,0,0))
     screen.blit(background, (0,0))
-
+    if time <= 0 and You_Win == False:
+        screen.blit(loseText, (100,100))
+        pygame.display.update()
+        pygame.time.wait(2000)
+        running = False
+    font =  pygame.font.Font(None, 50)
+    text = font.render("Timer: "+str(time//1000),0,(0,0,0))
+    screen.blit(text,(0,0))
     for x in Bodylist:
         if x == lungs and lung_remove == False:
             screen.blit(lungs,(300,200))
@@ -109,3 +119,4 @@ while running:
         pygame.time.wait(2000)
         running  = False
     pygame.display.update()
+pygame.quit()
