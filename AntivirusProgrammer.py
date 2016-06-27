@@ -1,5 +1,5 @@
 import Character
-import pygame, random, time, os
+import pygame, random, time
 from pygame.locals import *
 
 class AntivirusProgrammer(Character.Character):
@@ -44,8 +44,7 @@ class AntivirusProgrammer(Character.Character):
         window = pygame.display.set_mode([400,200])
         pygame.display.set_caption('cmd')
         shouldAppear = True
-        pathName = os.path.abspath('AntivirusProgrammer.py')
-        pathName = pathName[:len(pathName)-22] + 'times.ttf'
+        pathName = 'times.ttf'
         x = time.clock()+.2
         ended = False
         while not minigameWon and not minigameLost:
@@ -159,8 +158,6 @@ class AntivirusProgrammer(Character.Character):
             window = pygame.display.set_mode([400,200])
             pygame.display.set_caption("")
             window.fill((0,0,0))
-            pathName = os.path.abspath('AntivirusProgrammer.py')
-            pathName = pathName[:len(pathName)-22] + 'CatapultNetworkingPractice\\times.ttf'
             font = pygame.font.Font(pathName, 20)
             goal = 'Your objective is to ' + self.getAbilityDefinition()
             text1 = font.render(goal[:int((len(goal)+1)/2)-2], 1, (255,255,255))
@@ -186,8 +183,6 @@ class AntivirusProgrammer(Character.Character):
             window = pygame.display.set_mode([400,200])
             pygame.display.set_caption("")
             window.fill((0,0,0))
-            pathName = os.path.abspath('AntivirusProgrammer.py')
-            pathName = pathName[:len(pathName)-22] + 'CatapultNetworkingPractice\\times.ttf'
             font = pygame.font.Font(pathName, 20)
             text1 = font.render(words[:c], 1, (255,255,255))
             text2 = font.render(words[c+1:], 1, (255,255,255))

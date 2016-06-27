@@ -3,9 +3,9 @@ from pygame.locals import *
 
 class TitleScreen:
 
-    titleScreenImage = 'CatapultNetworkingPractice\\TitleScreen2.png'
-    startPageImage = 'CatapultNetworkingPractice\\StartPage.png'
-    connectionPageImage = 'CatapultNetworkingPractice\\ConnectingPage.png'
+    titleScreenImage = 'TitleScreen2.png'
+    startPageImage = 'StartPage.png'
+    connectionPageImage = 'ConnectingPage.png'
         
     def displayTitleScreen(self,window):
         pygame.init()
