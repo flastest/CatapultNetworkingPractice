@@ -13,11 +13,12 @@ from Burglar import *
 from Hacker import *
 from Doctor import *
 from Librarian import *
-from Police import *
+#from Police import *
 from Villain import *
 
 class Main:
     numberOfClasses = 7    # CHANGE THIS AND classPicker() AS WE ADD MORE CHARACHTER CLASSES
+    TIME_THAT_WE_SHOULD_HAVE_THEM_READ_THEIR_CHARACTER_INFO_FOR = 10
     atTitleScreen = True
     isLoading = False
     closed = False
@@ -110,7 +111,7 @@ class Main:
         bUp = True
         x = time.clock()+.01
         while isLoading:
-            while x < time.clock()
+            while x < time.clock():
                 x = time.clock()+.01
                 if rUp:
                     r += random.randint(0,1)
@@ -198,6 +199,7 @@ class Main:
     myClass = classPicker(myClassNum, myNum)
     
     a = CharacterScreen(game_screen,myClass) # Shows character role and info regarding it
+    time.sleep(TIME_THAT_WE_SHOULD_HAVE_THEM_READ_THEIR_CHARACTER_INFO_FOR)
 
     #What next, board? gameplay?
 
