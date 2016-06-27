@@ -126,7 +126,11 @@ class Librarian(Character.Character):
             if self.minigameCount == 2:
                 i.addText(titleList3[b])
             if self.minigameCount == 3:
-                i.addText(titleList4[b])    
+                i.addText(titleList4[b])
+            else:
+                i.addText(titleList[b])
+                self.minigameCount = 0
+
             
             bookList.append(i)
             i.draw()
