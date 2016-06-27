@@ -12,6 +12,7 @@ class Police(Character.Character):
     abilLoss = 'You fail to gain any relevant information'
 
     image = "Officer.png"
+    victimImg = "victim.png"
 
     # number of times minigame has been played
     times_played = 0 
@@ -22,7 +23,24 @@ class Police(Character.Character):
         # equipped with many responses, the police needs to approach with 
         # an open mind and open heart to win the trust of the victim
 
-        font = pygame.font.Font(None,26)
+        # initializes font and draws victim
+        font = pygame.font.Font(None,30)
+        # bigger font for names
+        nameFont = pygame.font.Font(None,40)
+        
+        # oh crap english is so cool victim + image = victimage 
+        victimage = pygame.image.load(self.victimImg)
+        window.blit(victimage,(420,80))
+        pygame.display.flip()
+
+        # sets up text box
+        white_border = Rect(((0,500),(1200,800)))
+        pygame.draw.rect(window,[255,255,255],white_border,0)
+        pygame.display.update()
+
+        # initializes timer
+        startTime = time.clock()
+        
         
         # so there's a defensinve victim an d an onpoen victim and the officer don'tknow whoich one he'ss's getting 
         # this is the soft victim so harsh questioness won't work but soft ones will
@@ -41,12 +59,11 @@ class Police(Character.Character):
 
             # returns bad_response and good_response
             def negative(self):
-                return bad_response[random.randint(0,5)]
+                return self.bad_response[random.randint(0,4)]
 
             def affirmative(self):
-                return good_response[random.randint(0,5)]
-
-            
+                return self.good_response[random.randint(0,4)]
+                
             # returns false because this victim is defensive
             def isSoft(self):
                 return 1
@@ -65,9 +82,9 @@ class Police(Character.Character):
 
              # returns bad_response or good_response
             def negative(self):
-                return bad_response[random.randint(0,5)]
+                return self.bad_response[random.randint(0,4)]
             def affirmative(self):
-                return good_response[random.randint(0,5)]
+                return self.good_response[random.randint(0,4)]
             
             # returns true that this victim is open
             def isSoft(self):
@@ -92,26 +109,36 @@ class Police(Character.Character):
 
         # based on times_played, this function sets the potential questions to 
         # different question lists
-        def set_questions(times_played):
-            if times_played == 0:
-                soft_questions = softlist1.copy()
-                hard_questions = hardlist1.copy()
-            if times_played == 1:
-                soft_questions = softlist2.copy()
-                hard_questions = hardlist2.copy()
-            if times_played == 2:
-                soft_questions = softlist3.copy()
-                hard_questions = hardlist3.copy()
-            if times_played == 3:
-                soft_questions = softlist4.copy()
-                hard_questions = hardlist4.copy()
-            else:
-                soft_questions = softlist1.copy()
-                hard_questions = hardlist1.copy()
-                times_played = 0
+        # def set_questions(times_played):
+        if self.times_played == 0:
+            soft_questions = softlist1.copy()
+            hard_questions = hardlist1.copy()
+        if self.times_played == 1:
+            soft_questions = softlist2.copy()
+            hard_questions = hardlist2.copy()
+        if self.times_played == 2:
+            soft_questions = softlist3.copy()
+            hard_questions = hardlist3.copy()
+        if self.times_played == 3:
+            soft_questions = softlist4.copy()
+            hard_questions = hardlist4.copy()
+        else:
+            soft_questions = softlist1.copy()
+            hard_questions = hardlist1.copy()
+            self.times_played = 0
 
-            self.times_played += 1
+        self.times_played += 1
 
+        # updates the name in the corner
+        def drawTitle():
+            title_white = Rect((0,420),(300,80))
+            title_black = Rect((10,430),(280,70))
+            pygame.draw.rect(window,[255,255,255],title_white,0)
+            pygame.draw.rect(window,[0,0,0],title_black,0)
+
+        def clearTitle():
+            title_black = Rect((10,430),(280,70))
+            pygame.draw.rect(window,[0,0,0],title_black,0)
 
 
         # displays questions, takes no input but uses:
@@ -122,21 +149,26 @@ class Police(Character.Character):
         def displayQuestions():
             softQ = font.render(soft_questions[listidx],1,(255,255,255))
             hardQ = font.render(hard_questions[listidx],1,(255,255,255))
-            screen.blit(softQ,[600,100])
-            screen.blit(hardQ,[700,100])
+            screen.blit(softQ,[100,600])
+            screen.blit(hardQ,[100,700])
 
-        # clears bottom half of screen
+        # clears bottom half of screen (aka the text box)
         def clear():
-            black = Rect((0,500),(1200,800))
+            black = Rect((10,510),(1180,780))
             pygame.draw.rect(window,[0,0,0],black,0)
+
+        # clears top left corner of screen (actually entire top)
+        def clearCoords():
+            corner_black = Rect((0,0),(1200,100))
+            pygame.draw.rect(window,[0,0,0],corner_black,0)
 
 
         # chooses whether to have open or reserved victim
-        def set_victim():
-            if random.randint(0,1) == 1:
-                victim = soft_victim()
-            else:
-                victim = hard_victim()
+        if random.randint(0,1) == 1:
+            victim = soft_victim()
+        else:
+            victim = hard_victim()
+        #set_questions(self.times_played)
 
         # gets position of mouse click and returns 1 for soft question and 0 for hard 
         # (which question it is shouldn't matter at this point)
@@ -152,13 +184,53 @@ class Police(Character.Character):
         # takes response from get_questions and returns victim response
         def ask_question(QAsked):
             if victim.isSoft() == QAsked:
-                return victim.affirmative()
-            return victim.negative()
+                print(victim.affirmative())
+            print(victim.negative())
 
+        # this function takes a name and displays it in the title box
+        def drawName(name):
+            clearTitle()
+            text_to_draw = nameFont.render(name,1,(255,255,255))
+            screen.blit(text_to_draw,[30,455])
 
+        # this boolean is to determine whether to draw the victim or officers name
+        # in title box, probably need a function to draw dialogue and name
+
+        # counter for successful clicks i need for title and narrator..
+
+        # starts off with narrator giving directions
+        drawTitle()
+        clear()
+        drawName("Narrator") 
+        instructions = "You have captured a victim! Now is your chance to interrogate them."
+        instructions2 = "The victim will only respond to certain questions. Assess the nature "
+        instructions3 = "of the victim and ask questions they will answer."
+        
+        first_instructions = font.render(instructions,1,(255,255,255))
+        second_instructions = font.render(instructions2,1,(255,255,255))
+        third_instructions = font.render(instructions3,1,(255,255,255))
+        screen.blit(first_instructions,[100,570])
+        screen.blit(second_instructions,[100,630])
+        screen.blit(third_instructions,[100,660])
+
+        pygame.display.update()
+        time.sleep(5)
+
+        # after 5 seconds, continues to game
         # takes user input and does the actual game
         while True:
+            clear()
+            clearCoords()
+
+            # draws timer
+            remainingTime = round(40 - (time.clock()-startTime))
+            currentTime = font.render(str(remainingTime),1,(255,255,255))
+            screen.blit(currentTime,[1165,8])
+
+
+            drawTitle()
             events = pygame.event.get()
+            displayQuestions()
             for event in events:
 
                 if event.type == MOUSEMOTION: # just for debugging, this displays coords of mouse
@@ -169,7 +241,11 @@ class Police(Character.Character):
                     mouse = event.pos
                     position = get_question(mouse)
                     print(ask_question(position))
-
+                if event.type == QUIT:
+                    return 
+            
+                pygame.display.update() 
+            
 
 screen = pygame.display.set_mode([1200,800])
 test = Police(966)
