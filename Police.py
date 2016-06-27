@@ -193,10 +193,8 @@ class Police(Character.Character):
             text_to_draw = nameFont.render(name,1,(255,255,255))
             screen.blit(text_to_draw,[30,455])
 
-        # this boolean is to determine whether to draw the victim or officers name
-        # in title box, probably need a function to draw dialogue and name
-
-        # counter for successful clicks i need for title and narrator..
+        # counter for successful clicks...
+        turn_counter = 0
 
         # starts off with narrator giving directions
         drawTitle()
@@ -205,21 +203,22 @@ class Police(Character.Character):
         instructions = "You have captured a victim! Now is your chance to interrogate them."
         instructions2 = "The victim will only respond to certain questions. Assess the nature "
         instructions3 = "of the victim and ask questions they will answer."
+        inst3 = "Click to Play!!!!2!!"
         
         first_instructions = font.render(instructions,1,(255,255,255))
         second_instructions = font.render(instructions2,1,(255,255,255))
         third_instructions = font.render(instructions3,1,(255,255,255))
+        play = font.render(inst3,1,(255,255,255))
         screen.blit(first_instructions,[100,570])
         screen.blit(second_instructions,[100,630])
         screen.blit(third_instructions,[100,660])
+        screen.blit(play,[100, 720])
 
         pygame.display.update()
-        time.sleep(5)
-
-        # after 5 seconds, continues to game
+        
         # takes user input and does the actual game
         while True:
-            clear()
+            
             clearCoords()
 
             # draws timer
@@ -228,9 +227,9 @@ class Police(Character.Character):
             screen.blit(currentTime,[1165,8])
 
 
-            drawTitle()
+            
             events = pygame.event.get()
-            displayQuestions()
+            
             for event in events:
 
                 if event.type == MOUSEMOTION: # just for debugging, this displays coords of mouse
@@ -239,8 +238,16 @@ class Police(Character.Character):
                 
                 if event.type == MOUSEBUTTONDOWN:
                     mouse = event.pos
-                    position = get_question(mouse)
-                    print(ask_question(position))
+                    clickedQ = get_question(mouse)  # returns 1 for soft question, 0 for hard Q
+                                                    # or 2 for neither
+                    # only does things if an option is pressed
+                    if clickedQ != 2:
+                        clear()
+                        clearTitle()
+                        displayQuestions()
+                        print(ask_question(clickedQ))
+                        turn_counter += 1
+                        
                 if event.type == QUIT:
                     return 
             
