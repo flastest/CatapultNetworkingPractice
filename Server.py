@@ -50,6 +50,9 @@ class Server:
                         s.sendto(str.encode(myIP), ((privateNetworkPartialIP + str(x) + '.' + str(y)), port))
         s.close()
 
+    def getPlayerCount(self):
+        return len(playerIPNum)+1
+
     def broadcast(self, port = generalSCPort):
         collectionThread = threading.Thread(target = self.gatherPlayers)
         collectionThread.start()
@@ -71,7 +74,7 @@ class Server:
         count = 0
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.bind(('', port))
-        while not self.gameStarted:
+        while not self.gameStarted and len(self.playerIPNum) < 15:
             data, sender_addr = s.recvfrom(buf_size)
             playerIPNum.append(sender_addr[0])
         for i in range(count+1):
@@ -90,9 +93,9 @@ class Server:
         self.recvInt.setblocking(0)
         self.recvStr.settimeout(.1)
         self.recvStr.setblocking(0)
-        recvThread.append(threading.Thread(target = recieving, args = (self.rcvdBools[count], self.recvBoo, self.boolPack, False)))
-        recvThread.append(threading.Thread(target = recieving, args = (self.rcvdInts[count], self.recvInt, self.intPack, False)))
-        recvThread.append(threading.Thread(target = recieving, args = (self.rcvdStrs[count], self.recvStr, '', True)))
+        recvThread.append(threading.Thread(target = recieving, args = ('b', self.recvBoo, self.boolPack)))
+        recvThread.append(threading.Thread(target = recieving, args = ('i', self.recvInt, self.intPack)))
+        recvThread.append(threading.Thread(target = recieving, args = ('s', self.recvStr, '')))
         recvThread[0].start()
         recvThread[1].start()
         recvThread[2].start()
@@ -106,7 +109,7 @@ class Server:
     def sendStrToPlayer(self, data, playerNum):
         self.sendStr.sendTo(str.encode(data), (self.playerIPNum[playerNum], self.sSp))
 
-    def recieving(self, dataStorage, sock, pack, isStr, buf_size = 1024):
+    def recieving(self, dataType, sock, pack, buf_size = 1024):
         while self.isRecieving:
             playerNum = -1
             x = time.clock() + .01
@@ -115,7 +118,18 @@ class Server:
                 for i in range(len(self.playerIPNum)):
                     if sender_addr == self.playerIPNum[i]:
                         playerNum = i
-                if not isStr:
-                    self.dataStorage[playerNum] = struct.unpack(pack, data)[0]
+                if dataType == 'b':
+                    self.rcvdBools[playerNum] = struct.unpack(pack, data)[0]
+                elif dataType == 'i':
+                    self.rcvdInts[playerNum] = struct.unpack(pack,data)[0]
                 else:
-                    self.dataStorage[playerNum] = data.decode()
+                    self.rcvdStrs[playerNum] = data.decode()
+                    if self.rcvdStrs[playerNum] == 'quit':
+                        del self.playerIPNum[playerNum]
+                        del self.rcvdBools[playerNum]
+                        del self.rcvdInts[playerNum]
+                        del self.rcvdStrs[playerNum]
+                        break
+    def endGame(self):
+        for i in range(len(self.playerIPNum)):
+            self.sendStrToPlayer('quit', i)

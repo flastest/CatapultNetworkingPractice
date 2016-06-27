@@ -28,7 +28,6 @@ class Client():
 
     def __init__(self):
         self.connectWithServer()
-        waitForStart()
 
     def connectWithServer(self, port = generalSCPort, buf_size = 1024):
         # Receive the data
@@ -54,26 +53,26 @@ class Client():
         self.recvInt.setblocking(0)
         self.recvStr.settimeout(.1)
         self.recvStr.setblocking(0)
-        recvThread.append(threading.Thread(target = recieving, args = (self.rcvdBool, self.recvBoo, self.boolPack, False)))
-        recvThread.append(threading.Thread(target = recieving, args = (self.rcvdInt, self.recvInt, self.intPack, False)))
-        recvThread.append(threading.Thread(target = recieving, args = (self.rcvdStr, self.recvStr, '', True)))
+        recvThread.append(threading.Thread(target = recieving, args = ('b', self.recvBoo, self.boolPack)))
+        recvThread.append(threading.Thread(target = recieving, args = ('i', self.recvInt, self.intPack)))
+        recvThread.append(threading.Thread(target = recieving, args = ('s', self.recvStr, '')))
         recvThread[0].start()
         recvThread[1].start()
         recvThread[2].start()
     
-    def recieving(self, dataStorage, sock, pack, isStr, buf_size = 1024):
+    def recieving(self, dataType, sock, pack, buf_size = 1024):
         while self.isRecieving:
-            playerNum = -1
             x = time.clock() + .01
             while time.clock() < x:
                 data, sender_addr = sock.recvfrom(buf_size)
-                for i in range(len(self.playerIPNum)):
-                    if sender_addr == self.playerIPNum[i]:
-                        playerNum = i
-                if not isStr:
-                    self.dataStorage[playerNum] = struct.unpack(pack, data)[0]
+                if dataType == 'b':
+                    self.rcvdBool = struct.unpack(pack, data)[0]
+                elif dataType == 'i':
+                    self.rcvdInt = struct.unpack(pack,data)[0]
                 else:
-                    self.dataStorage[playerNum] = data.decode()
+                    self.rcvdStr = data.decode()
+                    if self.rcvdStr == 'quit':
+                        sys.exit
     
     def sendBoolToServer(self, data):
         self.sendBoo.sendTo(struct.pack(self.boolPack, data), (self.serverIP, self.sBp))
