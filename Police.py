@@ -13,7 +13,7 @@ class Police(Character.Character):
 
 
     # the minigame involves interrogating different classes...this will involve sprites #kill my    def minigame(window):
-
+    def minigame(self,window):
         # this is the poor person the police interrogates for the minigame
         # equipped with many responses, the police needs to approach with 
         # an open mind and open heart to win the trust of the victim
