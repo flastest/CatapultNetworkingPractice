@@ -15,7 +15,7 @@ class Character:
     def __init__(self, playerNum):
         self.playerNumber = playerNum
 
-    def __str__(self):
+    def getName(self):
         return self.className
 
     def getGoal(self):

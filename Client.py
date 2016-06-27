@@ -53,9 +53,9 @@ class Client():
         self.recvInt.setblocking(0)
         self.recvStr.settimeout(.1)
         self.recvStr.setblocking(0)
-        recvThread.append(threading.Thread(target = recieving, args = ('b', self.recvBoo, self.boolPack)))
-        recvThread.append(threading.Thread(target = recieving, args = ('i', self.recvInt, self.intPack)))
-        recvThread.append(threading.Thread(target = recieving, args = ('s', self.recvStr, '')))
+        recvThread.append(threading.Thread(target = recieving, args = ('b', self.recvBoo, self.boolPack), daemon = True))
+        recvThread.append(threading.Thread(target = recieving, args = ('i', self.recvInt, self.intPack), daemon = True))
+        recvThread.append(threading.Thread(target = recieving, args = ('s', self.recvStr, ''), daemon = True))
         recvThread[0].start()
         recvThread[1].start()
         recvThread[2].start()
@@ -74,11 +74,20 @@ class Client():
                     if self.rcvdStr == 'quit':
                         sys.exit
     
+    def getInt(self):
+        return self.rcvdInt
+
+    def getBool(self):
+        return self.rcvdBool
+
+    def getStr(self):
+        return self.rcvdStr
+    
     def sendBoolToServer(self, data):
-        self.sendBoo.sendTo(struct.pack(self.boolPack, data), (self.serverIP, self.sBp))
+        self.sendBoo.sendto(struct.pack(self.boolPack, data), (self.serverIP, self.sBp))
     
     def sendIntToServer(self, data):
-        self.sendInt.sendTo(struct.pack(self.intPack, data), (self.serverIP, self.sIp))
+        self.sendInt.sendto(struct.pack(self.intPack, data), (self.serverIP, self.sIp))
 
     def sendStrToServer(self, data):
-        self.sendStr.sendTo(str.encode(data), (self.serverIP, self.sSp))
+        self.sendStr.sendto(str.encode(data), (self.serverIP, self.sSp))

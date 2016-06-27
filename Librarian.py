@@ -13,8 +13,12 @@ class Librarian(Character.Character):
     minigameName = 'Sort Books'
     abilSuccess = 'You successfully sort the books'
     abilLoss = 'You fail to sort the books'
+    image = 'Librarian.png'
 
     minigameCount = 0
+
+    def display(self,window,coordinates):
+        window.blit(pygame.image.load(self.image),(coordinates[0],coordinates[1]))
 
     def minigame(self,window):
         pygame.display.set_caption(self.minigameName)
@@ -270,10 +274,10 @@ class Librarian(Character.Character):
 
         
 
-screen = pygame.display.set_mode([1200,800])
+#screen = pygame.display.set_mode([1200,800])
 
-kek = Librarian(966)
-kek.minigame(screen)
+#kek = Librarian(966)
+#kek.minigame(screen)
 # time.sleep(1)
 # kek.minigame(screen)
 

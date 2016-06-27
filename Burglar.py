@@ -13,6 +13,9 @@ class Burglar(Character.Character):
     image = 'Robber.png'
     timeLimit = 100 # minigame time limit, feel free to change as needed
 
+    def display(self,window,coordinates):
+        window.blit(pygame.image.load(self.image),(coordinates[0],coordinates[1]))
+
     def minigame(self, window, t):
         minigameWon = False
         minigameLost = False
@@ -80,7 +83,7 @@ class Burglar(Character.Character):
                         dIsPressed = True
                     tP = time.clock()
             if tP < time.clock():
-                tP = time.clock()+.07
+                tP = time.clock()+.06
                 if uIsPressed:
                     pickY -= 5
                 elif dIsPressed:

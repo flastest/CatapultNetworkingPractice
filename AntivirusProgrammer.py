@@ -8,13 +8,16 @@ class AntivirusProgrammer(Character.Character):
     className = 'an AntiVirus Programmer'
     goal = 'fight off the terrors of the internet with your programming skills.'
     abilityDefinition = 'successfully type "Hello, World" with a mixed-up keyboard.'
-    minigameName = '"leoHl, oWdlr"'
+    minigameName = '"Hello, World?"'
     abilSuccess = 'You successfully provided minimal assistance to your helpless customer.'
     abilLoss = 'You fail to defeat the notorious hacker.'
     gamePoints = 0
     playerNumber = -1
     timeLimit = 100 # time limit for the minigame, feel free to change as needed.
-
+    
+    def display(self,window,coordinates):
+        window.blit(pygame.image.load(self.image),(coordinates[0],coordinates[1]))
+        
     isUprCase = False # used in minigame function, do not use
     def insert(self, spot, word, letter): # used in mingame function, do not use
         if self.isUprCase:
@@ -195,5 +198,5 @@ class AntivirusProgrammer(Character.Character):
             pygame.display.update()
             time.sleep(1)
 
-a = AntivirusProgrammer(1)   #Un-comment these to try out the minigame, complete with rules and ending screen.
-a.showRules()
+#a = AntivirusProgrammer(1)   #Un-comment these to try out the minigame, complete with rules and ending screen.
+#a.showRules()
