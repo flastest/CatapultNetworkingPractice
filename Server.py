@@ -35,8 +35,9 @@ class Server:
     
     def startGame(self): # Begins the game and informs all other players
         self.gameStarted = True
-        for i in range(len(playerIPNum)):
-            sendStrToPlayer('start', i)
+        if len(playerIPNum) > 0:
+            for i in range(len(playerIPNum)):
+                sendStrToPlayer('start', i)
 
     def backupBroadcast(self, port = generalSCPort):
         count = 0

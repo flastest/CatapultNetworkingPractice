@@ -2,7 +2,7 @@
 # dimensions of the game will be 1200x800
 
 
-import pygame, random, threading 
+import pygame, random, threading, sys
 from pygame.locals import *
 from TitleScreen import *
 from Server import *
