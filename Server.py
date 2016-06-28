@@ -76,6 +76,7 @@ class Server:
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.bind(('', port))
         while not self.gameStarted and self.numPlayers < 15:
+            self.broadcast()
             data, sender_addr = s.recvfrom(buf_size)
             playerIPNum.append(sender_addr[0])
             self.numPlayers+=1
