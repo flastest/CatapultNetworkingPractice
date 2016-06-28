@@ -30,7 +30,7 @@ class Police(Character.Character):
         
         # oh crap english is so cool victim + image = victimage 
         victimage = pygame.image.load(self.victimImg)
-        window.blit(victimage,(420,80))
+        window.blit(victimage,(320,40))
         pygame.display.flip()
 
         # sets up text box
@@ -55,7 +55,7 @@ class Police(Character.Character):
             def __init__(self):
                 # how much the victim trusts the police, if this reaches
                 # a certain value, the police wins the minigame
-                trust_level = 0
+                self.trust_level = 0
 
             # returns bad_response and good_response
             def negative(self):
@@ -67,6 +67,13 @@ class Police(Character.Character):
             # returns false because this victim is defensive
             def isSoft(self):
                 return 1
+            
+            # This is like the officer's score
+            def addTrust():
+                self.trust_level += 1
+
+            def getTrust():
+                return self.trust_level
         
         # this victim will respond to the hard questions but not the soft ones
         class hard_victim:
@@ -78,7 +85,7 @@ class Police(Character.Character):
             def __init__(self):
                 # how much the victim trusts the police, if this reaches
                 # a certain value, the police wins the minigame
-                trust_level = 0
+                self.trust_level = 0
 
              # returns bad_response or good_response
             def negative(self):
@@ -89,6 +96,12 @@ class Police(Character.Character):
             # returns true that this victim is open
             def isSoft(self):
                 return 0
+            
+            # This is like the officer's score
+            def addTrust():
+                self.trust_level += 1
+            def getTrust():
+                return self.trust_level
             
 
 
@@ -174,9 +187,9 @@ class Police(Character.Character):
         # (which question it is shouldn't matter at this point)
         def get_question(pos):
             # checks y position 
-            if pos[1] < 613 and pos[1] > 587:
+            if pos[1] < 650 and pos[1] > 550:
                 return 1 # aka "soft"
-            if pos[1] < 713 and pos[1] > 687:
+            if pos[1] < 750 and pos[1] > 650:
                 return 0 # aka "hard"
             else:
                 return 2 # fucking nothing m8
@@ -184,8 +197,15 @@ class Police(Character.Character):
         # takes response from get_questions and returns victim response
         def ask_question(QAsked):
             if victim.isSoft() == QAsked:
-                print(victim.affirmative())
-            print(victim.negative())
+                displayResponse(victim.affirmative())
+            else:
+                displayResponse(victim.negative())
+
+        # takes response of victim from prior function and displays it
+        def displayResponse(response):
+            response_to_display = font.render(response,1,(255,255,255))
+            screen.blit(response_to_display,[100,650])
+
 
         # this function takes a name and displays it in the title box
         def drawName(name):
@@ -237,16 +257,54 @@ class Police(Character.Character):
                     screen.blit(title, [0,20])
                 
                 if event.type == MOUSEBUTTONDOWN:
+                    clear()
+                    clearTitle()
                     mouse = event.pos
                     clickedQ = get_question(mouse)  # returns 1 for soft question, 0 for hard Q
                                                     # or 2 for neither
-                    # only does things if an option is pressed
-                    if clickedQ != 2:
+                    if listidx > 5:
+                        if victim.getTrust() > 4:
+                            print(self.abilSuccess) # <<<   <<<
+                            return                  # end cases
+                        else:                       # <<<   <<<
+                            print(self.abilLoss)
+                            return
+                    # single case for the narrator, anywhere can be clicked to continue
+                    if turn_counter == 0:
+                        displayQuestions()
+                        turn_counter += 1
+                        
+
+                    # police only gets to ask question once per 2 clicks
+                    if turn_counter % 2 == 0:
                         clear()
                         clearTitle()
                         displayQuestions()
-                        print(ask_question(clickedQ))
-                        turn_counter += 1
+                        print("question")
+                        listidx += 1
+                        print(turn_counter)
+
+                        # only does things if an option is pressed
+                        if clickedQ != 2:
+                            
+                            # now victim responds and click anywhere to continue
+                            clear()
+                            clearTitle()
+                            print("answer")
+                            ask_question(clickedQ)
+                        else:
+                            listidx -= 1
+                    # if the click is on the response panel, a click will not trigger question
+                    elif turn_counter % 2 != 0:
+                        pass
+                        print("click to proceed")
+                    turn_counter += 1
+                    
+                        
+                        
+
+                        
+                    
                         
                 if event.type == QUIT:
                     return 
