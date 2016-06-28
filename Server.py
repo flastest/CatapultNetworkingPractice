@@ -68,41 +68,44 @@ class Server:
 
         data=self.myIP
 
-        s.bind(('', port))
+        #s.bind(('', port))
         while not self.gameStarted:
             s.sendto(str.encode(data), addr)
         s.close()
 
-    def gatherPlayers(self, port = generalSCPort, buf_size = 1024):
+    def gatherPlayers(self, port = generalCSPort, buf_size = 1024):
         count = 0
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.bind(('', port))
         while not self.gameStarted and self.numPlayers < 15:
-            data, sender_addr = s.recvfrom(buf_size)
-            playerIPNum.append(sender_addr[0])
-            self.numPlayers+=1
-        for i in range(len(playerIPNum)):
-            rcvdBools.append(False)
-            rcvdInts.append(-1)
-            rcvdStrs.append('')
+            try:
+                data, sender_addr = s.recvfrom(buf_size)
+                self.playerIPNum.append(sender_addr[0])
+                self.numPlayers+=1
+            except socket.error:
+                pass
+        for i in range(len(self.playerIPNum)):
+            self.rcvdBools.append(False)
+            self.rcvdInts.append(-1)
+            self.rcvdStrs.append('')
         self.initThreads()
 
     def initThreads(self):
         self.recvBoo.bind(('', self.rBp))
         self.recvInt.bind(('', self.rIp))
         self.recvStr.bind(('', self.rSp))
-        self.recvBoo.settimeout(.1)
-        self.recvBoo.setblocking(0)
-        self.recvInt.settimeout(.1)
-        self.recvInt.setblocking(0)
-        self.recvStr.settimeout(.1)
-        self.recvStr.setblocking(0)
-        recvThread.append(threading.Thread(target = recieving, args = ('b', self.recvBoo, self.boolPack), daemon = True))
-        recvThread.append(threading.Thread(target = recieving, args = ('i', self.recvInt, self.intPack), daemon = True))
-        recvThread.append(threading.Thread(target = recieving, args = ('s', self.recvStr, ''), daemon = True))
-        recvThread[0].start()
-        recvThread[1].start()
-        recvThread[2].start()
+        self.recvBoo.settimeout(.01)
+        self.recvBoo.setblocking(False)
+        self.recvInt.settimeout(.01)
+        self.recvInt.setblocking(False)
+        self.recvStr.settimeout(.01)
+        self.recvStr.setblocking(False)
+        self.recvThread.append(threading.Thread(target = self.recieving, args = ('b', self.recvBoo, self.boolPack), daemon = True))
+        self.recvThread.append(threading.Thread(target = self.recieving, args = ('i', self.recvInt, self.intPack), daemon = True))
+        self.recvThread.append(threading.Thread(target = self.recieving, args = ('s', self.recvStr, ''), daemon = True))
+        self.recvThread[0].start()
+        self.recvThread[1].start()
+        self.recvThread[2].start()
 
     def sendBoolToPlayer(self, data, playerNum):
         self.sendBoo.sendto(struct.pack(self.boolPack, data), (self.playerIPNum[playerNum], self.sBp))
@@ -118,7 +121,8 @@ class Server:
             playerNum = -1
             x = time.clock() + .01
             while time.clock() < x:
-                data, sender_addr = sock.recvfrom(buf_size)
+                try:
+                    data, sender_addr = sock.recvfrom(buf_size)
                 for i in range(len(self.playerIPNum)):
                     if sender_addr == self.playerIPNum[i]:
                         playerNum = i
@@ -134,12 +138,10 @@ class Server:
                         del self.rcvdInts[playerNum]
                         del self.rcvdStrs[playerNum]
                         break
+                except socket.error:
+                    pass
     def endGame(self):
         for i in range(len(self.playerIPNum)):
             self.sendStrToPlayer('quit', i)
     def broadcastThread(self):
-        x = time.clock()+.01
-        while not self.gameStarted:
-            if x < time.clock():
-                x = time.clock()+.01
-                broadcast()
+        self.broadcast()

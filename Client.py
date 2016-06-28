@@ -33,8 +33,15 @@ class Client():
         # Receive the data
         print('attempting to recieve')
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.setblocking(True)
         s.bind(('', port))
-        data, sender_addr = s.recvfrom(buf_size)
+        x = True
+        while x:
+            try:
+                data, sender_addr = s.recvfrom(buf_size)
+                x = False
+            except socket.error:
+                pass
         print('recieved')
         self.serverIP = sender_addr
         s.close()
@@ -66,7 +73,8 @@ class Client():
         while self.isRecieving:
             x = time.clock() + .01
             while time.clock() < x:
-                data, sender_addr = sock.recvfrom(buf_size)
+                try:
+                    data, sender_addr = sock.recvfrom(buf_size)
                 if dataType == 'b':
                     self.rcvdBool = struct.unpack(pack, data)[0]
                 elif dataType == 'i':
@@ -75,6 +83,8 @@ class Client():
                     self.rcvdStr = data.decode()
                     if self.rcvdStr == 'quit':
                         sys.exit
+                except socket.error:
+                    pass
     
     def getInt(self):
         return self.rcvdInt

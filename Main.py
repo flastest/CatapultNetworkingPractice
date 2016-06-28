@@ -148,13 +148,13 @@ class Main:
                 leave(game_screen)
             if event.type == MOUSEBUTTONDOWN:
                 click = event.pos
+                if isWithin(click,950,633,686,633,320):#Exit
+                    leave(game_screen)
                 if isHost:
                     if connectionType.getPlayerCount() >= minPlayerCount and isWithin(click,950,167,686,167,320):#Start Game
                         isConnecting = False
                     if isWithin(click,950,400,686,400,320): #Alternate Broadcasting type
                         connectionType.backupBroadCast()
-                if isWithin(click,950,633,686,633,320):#Exit
-                    leave(game_screen)
         mainScreens.displayConnectionPage(game_screen)
         if not isHost: #draw screen
             if connectionType.getStr() == 'start':  # All client programs start game
@@ -167,7 +167,7 @@ class Main:
             if connectionType.getPlayerCount() < minPlayerCount:
                 pygame.draw.rect(game_screen,blue,(630,60,370,210))
             if connectionType.getPlayerCount() > 1:
-                for i in range(connectionType.getPlayerCount()):
+                for i in range(connectionType.getPlayerCount()-1):
                     connectionType.sendIntToPlayer(connectionType.getPlayerCount(),i)
                     pygame.draw.rect(game_screen,green,(64,131+50*i,319,34))
         pygame.display.update()
