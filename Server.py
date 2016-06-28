@@ -30,8 +30,9 @@ class Server:
 
     def __init__(self): # Begins normal broadcast of ip address to other possible players upon initialization
         collectionThread = threading.Thread(target = self.gatherPlayers, daemon = True)
-        self.broadcast()
+        broadcastingThread = threading.Thread(target = self.broadcastThread, daemon = True)
         collectionThread.start()
+        broadcastingThread.start()
     
     def startGame(self): # Begins the game and informs all other players
         self.gameStarted = True
@@ -76,7 +77,6 @@ class Server:
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.bind(('', port))
         while not self.gameStarted and self.numPlayers < 15:
-            self.broadcast()
             data, sender_addr = s.recvfrom(buf_size)
             playerIPNum.append(sender_addr[0])
             self.numPlayers+=1
@@ -136,3 +136,6 @@ class Server:
     def endGame(self):
         for i in range(len(self.playerIPNum)):
             self.sendStrToPlayer('quit', i)
+    def broadcastThread(self):
+        while not self.gameStarted:
+            broadcast()
