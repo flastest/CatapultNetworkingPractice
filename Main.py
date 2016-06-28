@@ -7,6 +7,7 @@ from pygame.locals import *
 from TitleScreen import *
 from Server import *
 from Client import *
+from Board import *
 
 from AntivirusProgrammer import*
 from Burglar import *
@@ -201,6 +202,37 @@ class Main:
     a = CharacterScreen(game_screen,myClass) # Shows character role and info regarding it
     time.sleep(TIME_THAT_WE_SHOULD_HAVE_THEM_READ_THEIR_CHARACTER_INFO_FOR)
 
-    #What next, board? gameplay?
+    #What next, board? gameplay?  --Board, decided :)
+
+    b = Board(game_screen)
+    b.setBoard()
+    pic = myClass.getAvatar()
+    while b.hasNotWon:
+        b.turnStart(6)
+        while b.isTurn:
+            events = pygame.event.get()
+            for event in events:
+                if event.type == QUIT:
+                    leave()
+                if event.type == KEYDOWN:
+                    if event.key == K_LEFT:
+                        b.left()
+                    if event.key == K_RIGHT:
+                        b.right()
+                    if event.key == K_DOWN:
+                        b.down()
+                    if event.key == K_UP:
+                        b.up()
+                    if event.key == K_ESCAPE:
+                        b.restartPath()
+                    if event.key == K_RETURN:
+                        b.goThere(pic)
+            b.setBoard()
+            b.showCharacter(pic,b.initPos)
+            b.displayUnconfirmedPath()
+            if (b.goalCoordinates[0],b.goalCoordinates[1]) == (b.initPos[0],b.initPos[1]):
+                b.moveGoal()
+            b.displayGoal()
+            pygame.display.update()
 
     print('done!!!')
