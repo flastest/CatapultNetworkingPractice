@@ -69,7 +69,8 @@ class Server:
         data=self.myIP
 
         s.bind(('', port))
-        s.sendto(str.encode(data), addr)
+        while not self.gameStarted:
+            s.sendto(str.encode(data), addr)
         s.close()
 
     def gatherPlayers(self, port = generalSCPort, buf_size = 1024):
@@ -137,5 +138,8 @@ class Server:
         for i in range(len(self.playerIPNum)):
             self.sendStrToPlayer('quit', i)
     def broadcastThread(self):
+        x = time.clock()+.01
         while not self.gameStarted:
-            broadcast()
+            if x < time.clock():
+                x = time.clock()+.01
+                broadcast()
