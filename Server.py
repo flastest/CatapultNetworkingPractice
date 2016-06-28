@@ -67,11 +67,11 @@ class Server:
 
         data=self.myIP
 
-        #s.bind(('', port))
+        s.bind(('', port))
         s.sendto(str.encode(data), addr)
         s.close()
 
-    def gatherPlayers(self, port = generalCSPort, buf_size = 1024):
+    def gatherPlayers(self, port = generalSCPort, buf_size = 1024):
         count = 0
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.bind(('', port))

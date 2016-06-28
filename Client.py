@@ -31,9 +31,11 @@ class Client():
 
     def connectWithServer(self, port = generalSCPort, buf_size = 1024):
         # Receive the data
+        print('attempting to recieve')
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.bind(('', port))
         data, sender_addr = s.recvfrom(buf_size)
+        print('recieved')
         self.serverIP = sender_addr
         s.close()
 

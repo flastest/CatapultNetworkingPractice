@@ -78,6 +78,14 @@ class Main:
     mainScreens.displayStartPage(game_screen)
     pygame.display.update()
     isHost = False
+    
+    def leave(window):
+        if not isHost:
+            connectionType.sendStrToServer('quit')
+        else:
+            connectionType.endGame()
+        quit(window)
+    
     while atStartPage:   # Host/Join Game screen event Loop here
         events = pygame.event.get()
         for event in events:
@@ -97,13 +105,6 @@ class Main:
 
     isConnecting = True
     minPlayerCount = 1
-
-    def leave(window):
-        if not isHost:
-            connectionType.sendStrToServer('quit')
-        else:
-            connectionType.endGame()
-        quit(window)
 
     def loadingScreen(window):
         isLoading = True
