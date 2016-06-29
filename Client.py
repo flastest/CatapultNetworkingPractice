@@ -31,7 +31,6 @@ class Client():
 
     def connectWithServer(self, port = generalSCPort, buf_size = 1024):
         # Receive the data
-        print('attempting to recieve')
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.setblocking(True)
         s.bind(('', port))
@@ -42,7 +41,6 @@ class Client():
                 x = False
             except socket.error:
                 pass
-        print('recieved')
         self.serverIP = sender_addr
         s.close()
 
@@ -79,10 +77,10 @@ class Client():
                     self.rcvdInt = struct.unpack(pack,data)[0]
                 else:
                     self.rcvdStr = data.decode()
-                    if self.rcvdStr == 'quit':
-                        sys.exit
             except socket.error:
                 pass
+            if self.rcvdStr == 'quit':
+                sys.exit
     
     def getInt(self):
         return self.rcvdInt

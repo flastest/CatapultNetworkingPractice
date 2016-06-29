@@ -129,6 +129,7 @@ class Main:
             if connectionType.getInt() > 1:
                 for i in range(connectionType.getInt()):
                     pygame.draw.rect(game_screen,green,(64,131+50*i,319,34))
+            connectionType.waitForStart()
         if isHost: #draw screen
             if connectionType.getPlayerCount() < minPlayerCount:
                 pygame.draw.rect(game_screen,blue,(630,60,370,210))
