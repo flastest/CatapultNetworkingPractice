@@ -100,8 +100,7 @@ class Main:
                     atStartPage = False
                 if isWithin(click,904,337,744,337,240):#Join Game
                     connectionType = Client()
-                    if connectionType.isConnected:
-                        atStartPage = False
+                    atStartPage = False
                 if isWithin(click,821,668,371,668,484):#Exit
                     quit(game_screen)
 

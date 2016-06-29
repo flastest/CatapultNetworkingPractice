@@ -81,7 +81,6 @@ class Server:
             x = time.clock() + .0001
             while x > time.clock():
                 s.sendto(str.encode(data), addr)
-        #s.close()
 
     def gatherPlayers(self, port = generalCSPort, buf_size = 1024):
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -166,7 +165,7 @@ class Server:
                             del self.rcvdStrs[playerNum]
                             break
                 except socket.error:
-                    pass
+                    print(socket.error)
     def endGame(self):
         for i in range(len(self.playerIPNum)):
             self.sendStrToPlayer('quit', i)
