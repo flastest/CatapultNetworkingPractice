@@ -7,3 +7,4 @@ class Doctor(Character.Character):
     minigameName = 'Operation' # or Culture Virus
     abilSuccess = 'You successfully perform the operation.' # or 'You successfully culture the bacteria'
     abilLoss = 'The procedure fails.' # 'You fail to learn anything new.'
+    image = 'doctor.png'

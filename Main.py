@@ -199,5 +199,3 @@ class Main:
                 b.moveGoal()
             b.displayGoal()
             pygame.display.update()
-
-    print('done!!!')
