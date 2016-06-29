@@ -136,13 +136,13 @@ class Server:
         while self.isRecieving:
             x = time.clock() + .0001
             playerNum = -1
-            if self.shouldSendB and dataType = 'b':
+            if self.shouldSendB and dataType == 'b':
                 self.sendBoo.sendto(struct.pack(self.boolPack, self.sendB), (self.playerIPNum[self.target], self.sBp))
                 self.shouldSendB = False
-            if self.shouldSendI and dataType = 'i':
+            if self.shouldSendI and dataType == 'i':
                 self.sendInt.sendto(struct.pack(self.intPack, self.sendI), (self.playerIPNum[self.target], self.sIp))
                 self.shouldSendI = False
-            if self.shouldSendS and dataType = 's':
+            if self.shouldSendS and dataType == 's':
                 self.sendStr.sendto(str.encode(self.sendS), (self.playerIPNum[self.target], self.sSp))
                 self.shouldSendS=False
             while x > time.clock():

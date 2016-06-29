@@ -78,13 +78,13 @@ class Client():
     def recieving(self, dataType, sock, pack, buf_size = 1024):
         while self.isRecieving:
             x = time.clock() + .0001
-            if self.shouldSendB and dataType = 'b':
+            if self.shouldSendB and dataType == 'b':
                 self.sendBoo.sendto(struct.pack(self.boolPack, self.sendB), (self.serverIP, self.sBp))
                 self.shouldSendB = False
-            if self.shouldSendI and dataType = 'i':
+            if self.shouldSendI and dataType == 'i':
                 self.sendInt.sendto(struct.pack(self.intPack, self.sendI), (self.serverIP, self.sIp))
                 self.shouldSendI = False
-            if self.shouldSendS and dataType = 's':
+            if self.shouldSendS and dataType == 's':
                 self.sendStr.sendto(str.encode(self.sendS), (self.serverIP, self.sSp))
                 self.shouldSendS=False
             while x > time.clock():
