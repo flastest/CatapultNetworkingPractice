@@ -124,8 +124,8 @@ class Main:
                         connectionType.backupBroadcast()
         mainScreens.displayConnectionPage(game_screen)
         if not isHost: #draw screen
+            connectionType.waitForStart()
             if connectionType.getStr() == 'start':  # All client programs start game
-                connectionType.waitForStart()
                 isConnecting = False
             pygame.draw.rect(game_screen, blue, (630,60,370,450))
             if connectionType.getInt() > 1:
@@ -140,6 +140,7 @@ class Main:
                     pygame.draw.rect(game_screen,green,(64,131+50*i,319,34))
         pygame.display.update()
     #done
+    time.sleep(1)
     if isHost: #Notifys players to start game and adds variable for the total number of players
         connectionType.startGame()
         numPlayers = connectionType.getPlayerCount()
