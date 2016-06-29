@@ -198,6 +198,7 @@ class Police(Character.Character):
         def ask_question(QAsked):
             if victim.isSoft() == QAsked:
                 displayResponse(victim.affirmative())
+                victim.addTrust()
             else:
                 displayResponse(victim.negative())
 
@@ -238,7 +239,7 @@ class Police(Character.Character):
         
         # a boolean to determine whether it's the police's turn
         # to not click anywhere to continue
-        pojito = False
+        pojito = 0 # 0 means click anywhere, 2 means click in box is needed
 
         # takes user input and does the actual game
         while True:
@@ -276,7 +277,7 @@ class Police(Character.Character):
                 # single case for the narrator, anywhere can be clicked to continue
                 if event.type == MOUSEBUTTONDOWN and turn_counter == 0:
                     turn_counter += 1
-                    pojito = True # now police's turn to click in certain area
+                    #pojito = True # now police's turn to click in certain area
 
                 
                 
@@ -290,14 +291,19 @@ class Police(Character.Character):
                     clearTitle()
                     drawName("Victim")
                     print("answer")
+                    mouse = event.pos
+                    clickedQ = get_question(mouse)  # returns 1 for soft question, 0 for hard Q
+                                                    # or 2 for neither
                     ask_question(clickedQ)
-                    pojito = True
+                    
                         
                     # if the click is on the response panel, a click will not trigger question
                     
                     print("click to proceed")
                     turn_counter += 1
                     pygame.display.update() 
+                    
+
                 # trying new approach...this means it's the officer's turn to select a question
                 if event.type == MOUSEBUTTONDOWN and pojito and event.pos[1] > 550 and event.pos[1] < 750: #and turn_counter % 2 != 0:
                     clear()
@@ -305,18 +311,13 @@ class Police(Character.Character):
                     drawName("Officer")
                     displayQuestions()
                     mouse = event.pos
-                    clickedQ = get_question(mouse)  # returns 1 for soft question, 0 for hard Q
-                                                    # or 2 for neither
-
-                    pojito = False
+                    
                     listidx += 1
                     print("ask")
                     pygame.display.update() 
                     
                         
-                        
-
-                        
+                                       
                     
                         
                 if event.type == QUIT:
