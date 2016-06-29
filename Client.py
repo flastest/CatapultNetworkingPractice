@@ -75,14 +75,14 @@ class Client():
             while time.clock() < x:
                 try:
                     data, sender_addr = sock.recvfrom(buf_size)
-                if dataType == 'b':
-                    self.rcvdBool = struct.unpack(pack, data)[0]
-                elif dataType == 'i':
-                    self.rcvdInt = struct.unpack(pack,data)[0]
-                else:
-                    self.rcvdStr = data.decode()
-                    if self.rcvdStr == 'quit':
-                        sys.exit
+                    if dataType == 'b':
+                        self.rcvdBool = struct.unpack(pack, data)[0]
+                    elif dataType == 'i':
+                        self.rcvdInt = struct.unpack(pack,data)[0]
+                    else:
+                        self.rcvdStr = data.decode()
+                        if self.rcvdStr == 'quit':
+                            sys.exit
                 except socket.error:
                     pass
     

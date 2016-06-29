@@ -123,21 +123,21 @@ class Server:
             while time.clock() < x:
                 try:
                     data, sender_addr = sock.recvfrom(buf_size)
-                for i in range(len(self.playerIPNum)):
-                    if sender_addr == self.playerIPNum[i]:
-                        playerNum = i
-                if dataType == 'b':
-                    self.rcvdBools[playerNum] = struct.unpack(pack, data)[0]
-                elif dataType == 'i':
-                    self.rcvdInts[playerNum] = struct.unpack(pack,data)[0]
-                else:
-                    self.rcvdStrs[playerNum] = data.decode()
-                    if self.rcvdStrs[playerNum] == 'quit':
-                        del self.playerIPNum[playerNum]
-                        del self.rcvdBools[playerNum]
-                        del self.rcvdInts[playerNum]
-                        del self.rcvdStrs[playerNum]
-                        break
+                    for i in range(len(self.playerIPNum)):
+                        if sender_addr == self.playerIPNum[i]:
+                            playerNum = i
+                    if dataType == 'b':
+                        self.rcvdBools[playerNum] = struct.unpack(pack, data)[0]
+                    elif dataType == 'i':
+                        self.rcvdInts[playerNum] = struct.unpack(pack,data)[0]
+                    else:
+                        self.rcvdStrs[playerNum] = data.decode()
+                        if self.rcvdStrs[playerNum] == 'quit':
+                            del self.playerIPNum[playerNum]
+                            del self.rcvdBools[playerNum]
+                            del self.rcvdInts[playerNum]
+                            del self.rcvdStrs[playerNum]
+                            break
                 except socket.error:
                     pass
     def endGame(self):
