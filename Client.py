@@ -33,9 +33,9 @@ class Client():
     def connectWithServer(self, port = generalSCPort, buf_size = 1024):
         # Receive the data
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.bind(('', port))
         s.setblocking(0)
         s.settimeout(.1)
-        s.bind(('', port))
         x = True
         while x:
             y = time.clock()+.001

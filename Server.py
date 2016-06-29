@@ -45,15 +45,15 @@ class Server:
         count = 0
         privateNetworkPartialIP = ''
         for i in range(len(self.myIP)):
-                if self.myIP[i] == '.':
-                        count += 1
-                if count == 2:
-                        privateNetworkPartialIP = self.myIP[:i+1]
-                        count += 1
+            if self.myIP[i] == '.':
+                count += 1
+            if count == 2:
+                privateNetworkPartialIP = self.myIP[:i+1]
+                count += 1
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         for x in range(256):
             for y in range(256):
-                        s.sendto(str.encode(myIP), ((privateNetworkPartialIP + str(x) + '.' + str(y)), port))
+                s.sendto(str.encode(self.myIP), ((privateNetworkPartialIP + str(x) + '.' + str(y)), port))
         s.close()
 
     def getPlayerCount(self):
@@ -69,12 +69,12 @@ class Server:
 
         data = self.myIP
 
-        #s.bind(('', port))
+        s.bind(('', port))
         while not self.gameStarted:
             x = time.clock() + .0001
             while x > time.clock():
                 s.sendto(str.encode(data), addr)
-        s.close()
+        #s.close()
 
     def gatherPlayers(self, port = generalCSPort, buf_size = 1024):
         count = 0
