@@ -294,11 +294,7 @@ class Police(Character.Character):
                     clearTitle()
                     mouse = event.pos
                     clickedQ = get_question(mouse)  # returns 1 for soft question, 0 for hard Q
-                                                    # or 2 for neither
-                   
-                    
-                    
-                        
+                                                    # or 2 for neither             
 
                     # police only gets to ask question once per 2 clicks
                     if turn_counter % 2 == 0:
