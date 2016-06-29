@@ -22,6 +22,7 @@ class Client():
     sIp = 50001
     sendStr = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sSp = 50002
+    isConnected = False
     shouldSendB = False
     shouldSendI = False
     shouldSendS = False
@@ -42,16 +43,17 @@ class Client():
         s.bind(('', port))
         s.setblocking(0)
         s.settimeout(.1)
-        x = True
-        while x:
+        while not self.isConnected:
             y = time.clock()+.001
             while y < time.clock():
                 try:
                     data, sender_addr = s.recvfrom(buf_size)
-                    x = False
+                    self.isConnected = True
                 except socket.error:
                     pass
         self.serverIP = sender_addr
+        while self.rcvdInt == -1:
+            s.sendto(str.encode(''),(self.serverIP, self.generalCSPort))
         s.close()
 
     def waitForStart(self):
