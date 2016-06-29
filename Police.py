@@ -246,7 +246,10 @@ class Police(Character.Character):
             currentTime = font.render(str(remainingTime),1,(255,255,255))
             screen.blit(currentTime,[1165,8])
 
-            if remainingTime < 0:
+            # checks if time hasn't yet run out
+            if remainingTime <= 0:
+                print(self.abilLoss)
+                return
                 
             
             events = pygame.event.get()
