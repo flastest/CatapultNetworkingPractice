@@ -69,7 +69,7 @@ class Server:
 
         data = self.myIP
 
-        s.bind(('', port))
+        #s.bind(('', port))
         while not self.gameStarted:
             x = time.clock() + .0001
             while x > time.clock():

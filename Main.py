@@ -120,13 +120,13 @@ class Main:
                     if connectionType.getPlayerCount() >= minPlayerCount and isWithin(click,950,167,686,167,320):#Start Game
                         isConnecting = False
                     if isWithin(click,950,400,686,400,320): #Alternate Broadcasting type
-                        connectionType.backupBroadCast()
+                        connectionType.backupBroadcast()
         mainScreens.displayConnectionPage(game_screen)
         if not isHost: #draw screen
-            connectionType.waitForStart()
             if connectionType.getStr() == 'start':  # All client programs start game
                 isConnecting = False
             pygame.draw.rect(game_screen, blue, (630,60,370,450))
+            connectionType.waitForStart()
             if connectionType.getInt() > 1:
                 for i in range(connectionType.getInt()):
                     pygame.draw.rect(game_screen,green,(64,131+50*i,319,34))

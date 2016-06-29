@@ -27,7 +27,8 @@ class Client():
     rcvdStr = ''
 
     def __init__(self):
-        self.connectWithServer()
+        join = threading.Thread(target = self.connectWithServer, daemon = True)
+        join.start()
 
     def connectWithServer(self, port = generalSCPort, buf_size = 1024):
         # Receive the data
