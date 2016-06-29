@@ -45,7 +45,7 @@ class Client():
         s.close()
 
     def waitForStart(self):
-        initThreads()
+        self.initThreads()
         while not self.gameStarted:
             if self.rcvdStr == 'start':
                 self.gameStarted = True
