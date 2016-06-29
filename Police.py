@@ -69,10 +69,10 @@ class Police(Character.Character):
                 return 1
             
             # This is like the officer's score
-            def addTrust():
+            def addTrust(self):
                 self.trust_level += 1
 
-            def getTrust():
+            def getTrust(self):
                 return self.trust_level
         
         # this victim will respond to the hard questions but not the soft ones
@@ -98,9 +98,9 @@ class Police(Character.Character):
                 return 0
             
             # This is like the officer's score
-            def addTrust():
+            def addTrust(self):
                 self.trust_level += 1
-            def getTrust():
+            def getTrust(self):
                 return self.trust_level
             
 
@@ -236,8 +236,8 @@ class Police(Character.Character):
 
         pygame.display.update()
         
-        # a boolean to determine whether it's okay for a click 
-        # anywhere to proceed to next screen
+        # a boolean to determine whether it's the police's turn
+        # to not click anywhere to continue
         pojito = False
 
         # takes user input and does the actual game
@@ -258,7 +258,7 @@ class Police(Character.Character):
             
             events = pygame.event.get()
             
-            for event in events:
+            for event in events: ## IN THE CASE OF POJITO AND A CLICK BEING COMMITTED, NOTHING SHOULD HAPPEN!!
 
                 if event.type == MOUSEMOTION: # just for debugging, this displays coords of mouse
                     title = font.render(str(event.pos), 1, (255,255,255))
@@ -275,12 +275,31 @@ class Police(Character.Character):
                 
                 # single case for the narrator, anywhere can be clicked to continue
                 if event.type == MOUSEBUTTONDOWN and turn_counter == 0:
-                    
-                    
                     turn_counter += 1
+                    pojito = True # now police's turn to click in certain area
 
+                
+                
+                
+                if event.type == MOUSEBUTTONDOWN and not pojito: # this should be the victim's turn
+                    print(turn_counter)
+
+                    
+                    # now victim responds and click anywhere to continue
+                    clear()
+                    clearTitle()
+                    drawName("Victim")
+                    print("answer")
+                    ask_question(clickedQ)
+                    pojito = True
+                        
+                    # if the click is on the response panel, a click will not trigger question
+                    
+                    print("click to proceed")
+                    turn_counter += 1
+                    pygame.display.update() 
                 # trying new approach...this means it's the officer's turn to select a question
-                if event.type == MOUSEBUTTONDOWN and turn_counter % 2 != 0:
+                if event.type == MOUSEBUTTONDOWN and pojito and event.pos[1] > 550 and event.pos[1] < 750: #and turn_counter % 2 != 0:
                     clear()
                     clearTitle()
                     drawName("Officer")
@@ -289,42 +308,10 @@ class Police(Character.Character):
                     clickedQ = get_question(mouse)  # returns 1 for soft question, 0 for hard Q
                                                     # or 2 for neither
 
-
-                
-                
-                
-                if event.type == MOUSEBUTTONDOWN:
-                    clear()
-                    clearTitle()
-                    mouse = event.pos
-                    clickedQ = get_question(mouse)  # returns 1 for soft question, 0 for hard Q
-                                                    # or 2 for neither             
-
-                    # police only gets to ask question once per 2 clicks
-                    if turn_counter % 2 == 0:
-                        clear()
-                        clearTitle()
-                        drawName("Police")
-                        displayQuestions()
-                        print("question")
-                        listidx += 1
-                        print(turn_counter)
-
-                        # only does things if an option is pressed
-                        if clickedQ != 2:
-                            # now victim responds and click anywhere to continue
-                            clear()
-                            clearTitle()
-                            drawName("Victim")
-                            print("answer")
-                            ask_question(clickedQ)
-                        else:
-                            listidx -= 1
-                    # if the click is on the response panel, a click will not trigger question
-                    elif turn_counter % 2 != 0:
-                        pass
-                        print("click to proceed")
-                    turn_counter += 1
+                    pojito = False
+                    listidx += 1
+                    print("ask")
+                    pygame.display.update() 
                     
                         
                         
