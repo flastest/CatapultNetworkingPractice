@@ -10,6 +10,7 @@ class Villain(Character.Character):
     abilSuccess = 'You successfully sabotage the player.'
     abilLoss = 'You fail to sabotage the player.'
     timeLimit = 50 # minigame time limit, feel free to change as needed
+    image = 'Villain.png'
     
     def display(self,window,coordinates):
         window.blit(pygame.image.load(self.image),(coordinates[0],coordinates[1]))
