@@ -1,4 +1,4 @@
-import socket, time, struct, threading
+import socket, time, struct, threading,sys
 
 class Server():
     
@@ -36,10 +36,8 @@ class Server():
     rcvdStrs = []
 
     def __init__(self): # Begins normal broadcast of ip address to other possible players upon initialization
-        collectionThread = threading.Thread(target = self.gatherPlayers, daemon = True)
-        broadcastingThread = threading.Thread(target = self.broadcastThread, daemon = True)
+        collectionThread = threading.Thread(target = self.gatherPlayers,daemon = True)
         collectionThread.start()
-        broadcastingThread.start()
     
     def startGame(self): # Begins the game and informs all other players
         self.gameStarted = True
@@ -64,37 +62,36 @@ class Server():
         s.close()
 
     def getPlayerCount(self):
-        return self.numPlayers
+        return self.numPlayers    
 
-    def broadcast(self,):
+    def gatherPlayers(self, port = generalCSPort, buf_size = 1024):
         broadcastaddr = socket.inet_ntoa(socket.inet_aton(self.myIP)[:3] + b'\xff' )
-        addr=(broadcastaddr, self.generalSCPort)
+        addr=('137.112.104.246', self.generalSCPort)
 
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)   #broadcast
+        so = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        so.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        so.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)   #broadcast
 
         data = self.myIP
 
-        while not self.gameStarted:
-            x = time.clock() + .0001
-            while x > time.clock():
-                s.sendto(str.encode(data), addr)
-        print('sent values, game started!!!!')
-
-    def gatherPlayers(self, port = generalCSPort, buf_size = 1024):
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.setblocking(0)
         s.settimeout(.1)
         s.bind(('', port))
-        while self.numPlayers < 15 and not self.gameStarted:
-            try:
-                data, sender_addr = s.recvfrom(buf_size)
-                self.playerIPNum.append(sender_addr)
-                self.numPlayers+=1
-                print('got one!')
-            except socket.error:
-                pass
+        while not self.gameStarted:
+            print('sending')
+            so.sendto(str.encode(data), addr)
+            x = time.clock() +.01
+            while x > time.clock():
+                try:
+                    print('trying')
+                    data, sender_addr = s.recvfrom(buf_size)
+                    self.playerIPNum.append(sender_addr)
+                    self.numPlayers = len(self.playerIPNum)
+                    print('got one!')
+                except socket.error:
+                    pass
+        sys.exit()
         for i in range(len(self.playerIPNum)):
             self.rcvdBools.append(False)
             self.rcvdInts.append(-1)
@@ -169,5 +166,3 @@ class Server():
     def endGame(self):
         for i in range(len(self.playerIPNum)):
             self.sendStrToPlayer('quit', i)
-    def broadcastThread(self):
-        self.broadcast()

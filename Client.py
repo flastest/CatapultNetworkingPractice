@@ -22,6 +22,7 @@ class Client():
     sIp = 50001
     sendStr = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sSp = 50002
+    shouldAnswer = False
     isConnected = False
     shouldSendB = False
     shouldSendI = False
@@ -44,18 +45,21 @@ class Client():
         s.settimeout(.1)
         s.bind(('', port))
         while not self.isConnected:
+            print('sending data...')
             y = time.clock()+.001
             while y < time.clock():
-                try:
-                    data, sender_addr = s.recvfrom(buf_size)
+                if self.shouldAnswer:
+                    so = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+                    so.sendto(str.encode('a'),(self.serverIP, self.generalCSPort))
                     self.isConnected = True
-                except socket.error:
-                    pass
-        self.serverIP = sender_addr
-        so = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        while self.rcvdInt == -1:
-            print('sending data...')
-            so.sendto(str.encode('a'),(self.serverIP, self.generalCSPort))
+                else:
+                    try:
+                        data, sender_addr = s.recvfrom(buf_size)
+                        self.serverIP = sender_addr
+                        self.shouldAnswer = True
+                    except socket.error:
+                        pass
+        
 
     def waitForStart(self):
         if self.rcvdStr == 'start':
