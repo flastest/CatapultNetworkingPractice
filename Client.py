@@ -62,12 +62,12 @@ class Client():
         self.recvInt.setblocking(0)
         self.recvStr.settimeout(.1)
         self.recvStr.setblocking(0)
-        recvThread.append(threading.Thread(target = recieving, args = ('b', self.recvBoo, self.boolPack), daemon = True))
-        recvThread.append(threading.Thread(target = recieving, args = ('i', self.recvInt, self.intPack), daemon = True))
-        recvThread.append(threading.Thread(target = recieving, args = ('s', self.recvStr, ''), daemon = True))
-        recvThread[0].start()
-        recvThread[1].start()
-        recvThread[2].start()
+        self.recvThread.append(threading.Thread(target = self.recieving, args = ('b', self.recvBoo, self.boolPack), daemon = True))
+        self.recvThread.append(threading.Thread(target = self.recieving, args = ('i', self.recvInt, self.intPack), daemon = True))
+        self.recvThread.append(threading.Thread(target = self.recieving, args = ('s', self.recvStr, ''), daemon = True))
+        self.recvThread[0].start()
+        self.recvThread[1].start()
+        self.recvThread[2].start()
     
     def recieving(self, dataType, sock, pack, buf_size = 1024):
         while self.isRecieving:

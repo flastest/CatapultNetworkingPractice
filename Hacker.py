@@ -14,6 +14,7 @@ class Hacker(Character.Character):
     gamePoints = 0
     playerNumber = -1
     timeLimit = 50 # time limit for the minigame, feel free to change as needed.
+    image = 'Hacker.png'
     
     def display(self,window,coordinates):
         window.blit(pygame.image.load(self.image),(coordinates[0],coordinates[1]))

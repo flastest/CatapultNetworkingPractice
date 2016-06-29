@@ -7,6 +7,7 @@ from pygame.locals import *
 from TitleScreen import *
 from Server import *
 from Client import *
+from CharacterScreen import *
 from Board import *
 
 from AntivirusProgrammer import*
@@ -106,41 +107,6 @@ class Main:
     isConnecting = True
     minPlayerCount = 1
 
-    def loadingScreen(window):
-        isLoading = True
-        rUp = True
-        gUp = True
-        bUp = True
-        x = time.clock()+.01
-        while isLoading:
-            while x < time.clock():
-                x = time.clock()+.01
-                if rUp:
-                    r += random.randint(0,1)
-                    if r > 255:
-                        rUp = False
-                else:
-                    r -= random.randint(0,1)
-                    if r < 0:
-                        rUp = True
-                if gUp:
-                    g += random.randint(0,1)
-                    if g > 255:
-                        gUp = False
-                else:
-                    g -= random.randint(0,1)
-                    if g < 0:
-                        gUp = True
-                if bUp:
-                    b += random.randint(0,1)
-                    if b > 255:
-                        bUp = False
-                else:
-                    b -= random.randint(0,1)
-                    if b < 0:
-                        bUp = True
-                window.fill(r,g,b)
-
     while isConnecting:  # Host/Client connecting screen event loop here
         events = pygame.event.get()
         for event in events:
@@ -172,8 +138,6 @@ class Main:
                     pygame.draw.rect(game_screen,green,(64,131+50*i,319,34))
         pygame.display.update()
     #done
-    loading = threading.Thread(target = loadingScreen, args = (game_screen), daemon = True)
-    loading.start()
     if isHost: #Notifys players to start game and adds variable for the total number of players
         connectionType.startGame()
         numPlayers = connectionType.getPlayerCount()
