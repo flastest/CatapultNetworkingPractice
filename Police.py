@@ -236,6 +236,10 @@ class Police(Character.Character):
 
         pygame.display.update()
         
+        # a boolean to determine whether it's okay for a click 
+        # anywhere to proceed to next screen
+        pojito = False
+
         # takes user input and does the actual game
         while True:
             
