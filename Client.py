@@ -52,6 +52,7 @@ class Client():
                 except socket.error:
                     pass
         self.serverIP = sender_addr
+        s.bind(('',self.generalCSPort))
         while self.rcvdInt == -1:
             s.sendto(str.encode(''),(self.serverIP, self.generalCSPort))
         s.close()

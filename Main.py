@@ -19,7 +19,7 @@ from Librarian import *
 from Villain import *
 
 class Main:
-    numberOfClasses = 7    # CHANGE THIS AND classPicker() AS WE ADD MORE CHARACHTER CLASSES
+    numberOfClasses = 7    # CHANGE THIS AND classPicker() AS WE ADD MORE CHARACTER CLASSES
     TIME_THAT_WE_SHOULD_HAVE_THEM_READ_THEIR_CHARACTER_INFO_FOR = 10
     atTitleScreen = True
     isLoading = False
@@ -100,7 +100,8 @@ class Main:
                     atStartPage = False
                 if isWithin(click,904,337,744,337,240):#Join Game
                     connectionType = Client()
-                    atStartPage = False
+                    if connectionType.isConnected:
+                        atStartPage = False
                 if isWithin(click,821,668,371,668,484):#Exit
                     quit(game_screen)
 
