@@ -14,6 +14,7 @@ class AntivirusProgrammer(Character.Character):
     gamePoints = 0
     playerNumber = -1
     timeLimit = 100 # time limit for the minigame, feel free to change as needed.
+    image = "Programmer.png"
     
     def display(self,window,coordinates):
         window.blit(pygame.image.load(self.image),(coordinates[0],coordinates[1]))
