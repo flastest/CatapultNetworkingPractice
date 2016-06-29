@@ -67,12 +67,12 @@ class Server:
         s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)   #broadcast
 
-        data = -1
+        data = self.myIP
 
         #s.bind(('', port))
         while not self.gameStarted:
             x = time.clock() + .0001
-            while x > time.clock()
+            while x > time.clock():
                 s.sendto(str.encode(data), addr)
         s.close()
 

@@ -36,11 +36,13 @@ class Client():
         s.bind(('', port))
         x = True
         while x:
-            try:
-                data, sender_addr = s.recvfrom(buf_size)
-                x = False
-            except socket.error:
-                pass
+            y = time.clock()+.001
+            while y < time.clock():
+                try:
+                    data, sender_addr = s.recvfrom(buf_size)
+                    x = False
+                except socket.error:
+                    pass
         self.serverIP = sender_addr
         s.close()
 
