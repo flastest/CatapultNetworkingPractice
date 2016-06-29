@@ -260,29 +260,51 @@ class Police(Character.Character):
                     title = font.render(str(event.pos), 1, (255,255,255))
                     screen.blit(title, [0,20])
                 
+                # end cases for winning game
+                if listidx > 5:
+                    if victim.getTrust() > 4:
+                        print(self.abilSuccess) # <<<   <<<
+                        return                  # end cases
+                    else:                       # <<<   <<<
+                        print(self.abilLoss)
+                        return 
+                
+                # single case for the narrator, anywhere can be clicked to continue
+                if event.type == MOUSEBUTTONDOWN and turn_counter == 0:
+                    
+                    
+                    turn_counter += 1
+
+                # trying new approach...this means it's the officer's turn to select a question
+                if event.type == MOUSEBUTTONDOWN and turn_counter % 2 != 0:
+                    clear()
+                    clearTitle()
+                    drawName("Officer")
+                    displayQuestions()
+                    mouse = event.pos
+                    clickedQ = get_question(mouse)  # returns 1 for soft question, 0 for hard Q
+                                                    # or 2 for neither
+
+
+                
+                
+                
                 if event.type == MOUSEBUTTONDOWN:
                     clear()
                     clearTitle()
                     mouse = event.pos
                     clickedQ = get_question(mouse)  # returns 1 for soft question, 0 for hard Q
                                                     # or 2 for neither
-                    if listidx > 5:
-                        if victim.getTrust() > 4:
-                            print(self.abilSuccess) # <<<   <<<
-                            return                  # end cases
-                        else:                       # <<<   <<<
-                            print(self.abilLoss)
-                            return
-                    # single case for the narrator, anywhere can be clicked to continue
-                    if turn_counter == 0:
-                        displayQuestions()
-                        turn_counter += 1
+                   
+                    
+                    
                         
 
                     # police only gets to ask question once per 2 clicks
                     if turn_counter % 2 == 0:
                         clear()
                         clearTitle()
+                        drawName("Police")
                         displayQuestions()
                         print("question")
                         listidx += 1
@@ -290,10 +312,10 @@ class Police(Character.Character):
 
                         # only does things if an option is pressed
                         if clickedQ != 2:
-                            
                             # now victim responds and click anywhere to continue
                             clear()
                             clearTitle()
+                            drawName("Victim")
                             print("answer")
                             ask_question(clickedQ)
                         else:
