@@ -69,18 +69,20 @@ class Client():
     
     def recieving(self, dataType, sock, pack, buf_size = 1024):
         while self.isRecieving:
-            try:
-                data, sender_addr = sock.recvfrom(buf_size)
-                if dataType == 'b':
-                    self.rcvdBool = struct.unpack(pack, data)[0]
-                elif dataType == 'i':
-                    self.rcvdInt = struct.unpack(pack,data)[0]
-                else:
-                    self.rcvdStr = data.decode()
-            except socket.error:
-                pass
-            if self.rcvdStr == 'quit':
-                sys.exit
+            x = time.clock() + .0001
+            while x > time.clock():
+                try:
+                    data, sender_addr = sock.recvfrom(buf_size)
+                    if dataType == 'b':
+                        self.rcvdBool = struct.unpack(pack, data)[0]
+                    elif dataType == 'i':
+                        self.rcvdInt = struct.unpack(pack,data)[0]
+                    else:
+                        self.rcvdStr = data.decode()
+                except socket.error:
+                    pass
+                if self.rcvdStr == 'quit':
+                    sys.exit
     
     def getInt(self):
         return self.rcvdInt

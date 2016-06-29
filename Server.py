@@ -36,7 +36,8 @@ class Server:
     
     def startGame(self): # Begins the game and informs all other players
         self.gameStarted = True
-        if len(self.playerIPNum) > 0:
+        print(str(len(self.playerIPNum)))
+        if len(self.playerIPNum) >= 0:
             for i in range(len(self.playerIPNum)):
                 self.sendStrToPlayer('start', i)
 
@@ -66,11 +67,13 @@ class Server:
         s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)   #broadcast
 
-        data=self.myIP
+        data = -1
 
         #s.bind(('', port))
         while not self.gameStarted:
-            s.sendto(str.encode(data), addr)
+            x = time.clock() + .0001
+            while x > time.clock()
+                s.sendto(str.encode(data), addr)
         s.close()
 
     def gatherPlayers(self, port = generalCSPort, buf_size = 1024):
@@ -118,26 +121,28 @@ class Server:
 
     def recieving(self, dataType, sock, pack, buf_size = 1024):
         while self.isRecieving:
+            x = time.clock() + .0001
             playerNum = -1
-            try:
-                data, sender_addr = sock.recvfrom(buf_size)
-                for i in range(len(self.playerIPNum)):
-                    if sender_addr == self.playerIPNum[i]:
-                        playerNum = i
-                if dataType == 'b':
-                    self.rcvdBools[playerNum] = struct.unpack(pack, data)[0]
-                elif dataType == 'i':
-                    self.rcvdInts[playerNum] = struct.unpack(pack,data)[0]
-                else:
-                    self.rcvdStrs[playerNum] = data.decode()
-                    if self.rcvdStrs[playerNum] == 'quit':
-                        del self.playerIPNum[playerNum]
-                        del self.rcvdBools[playerNum]
-                        del self.rcvdInts[playerNum]
-                        del self.rcvdStrs[playerNum]
-                        break
-            except socket.error:
-                pass
+            while x > time.clock():
+                try:
+                    data, sender_addr = sock.recvfrom(buf_size)
+                    for i in range(len(self.playerIPNum)):
+                        if sender_addr == self.playerIPNum[i]:
+                            playerNum = i
+                    if dataType == 'b':
+                        self.rcvdBools[playerNum] = struct.unpack(pack, data)[0]
+                    elif dataType == 'i':
+                        self.rcvdInts[playerNum] = struct.unpack(pack,data)[0]
+                    else:
+                        self.rcvdStrs[playerNum] = data.decode()
+                        if self.rcvdStrs[playerNum] == 'quit':
+                            del self.playerIPNum[playerNum]
+                            del self.rcvdBools[playerNum]
+                            del self.rcvdInts[playerNum]
+                            del self.rcvdStrs[playerNum]
+                            break
+                except socket.error:
+                    pass
     def endGame(self):
         for i in range(len(self.playerIPNum)):
             self.sendStrToPlayer('quit', i)
