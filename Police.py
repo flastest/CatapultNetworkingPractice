@@ -246,7 +246,8 @@ class Police(Character.Character):
             currentTime = font.render(str(remainingTime),1,(255,255,255))
             screen.blit(currentTime,[1165,8])
 
-
+            if remainingTime < 0:
+                
             
             events = pygame.event.get()
             
