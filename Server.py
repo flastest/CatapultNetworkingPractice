@@ -1,6 +1,6 @@
 import socket, time, struct, threading
 
-class Server:
+class Server():
     
     intPack = '!I' # port+3playernum+1, strings are port+3playernum+2
     boolPack = '!?' # port+3playernum
@@ -66,9 +66,9 @@ class Server:
     def getPlayerCount(self):
         return self.numPlayers
 
-    def broadcast(self, port = generalSCPort):
+    def broadcast(self,):
         broadcastaddr = socket.inet_ntoa(socket.inet_aton(self.myIP)[:3] + b'\xff' )
-        addr=(broadcastaddr, port)
+        addr=(broadcastaddr, self.generalSCPort)
 
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -76,11 +76,11 @@ class Server:
 
         data = self.myIP
 
-        s.bind(('', port))
         while not self.gameStarted:
             x = time.clock() + .0001
             while x > time.clock():
                 s.sendto(str.encode(data), addr)
+        print('sent values, game started!!!!')
 
     def gatherPlayers(self, port = generalCSPort, buf_size = 1024):
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)

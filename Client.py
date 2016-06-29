@@ -34,15 +34,15 @@ class Client():
     rcvdStr = ''
 
     def __init__(self):
-        t = threading.Thread(target = self.connectWithServer(), daemon = True)
+        t = threading.Thread(target = self.connectWithServer, daemon = True)
         t.start()
 
     def connectWithServer(self, port = generalSCPort, buf_size = 1024):
         # Receive the data
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.bind(('', port))
         s.setblocking(0)
         s.settimeout(.1)
+        s.bind(('', port))
         while not self.isConnected:
             y = time.clock()+.001
             while y < time.clock():
@@ -50,10 +50,11 @@ class Client():
                     data, sender_addr = s.recvfrom(buf_size)
                     self.isConnected = True
                 except socket.error:
-                    print(socket.error)
+                    pass
         self.serverIP = sender_addr
         so = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         while self.rcvdInt == -1:
+            print('sending data...')
             so.sendto(str.encode('a'),(self.serverIP, self.generalCSPort))
 
     def waitForStart(self):
