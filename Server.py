@@ -24,6 +24,13 @@ class Server:
     sIp = 40001
     sendStr = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sSp = 40002
+    shouldSendB = False
+    shouldSendI = False
+    shouldSendS = False
+    sendB = False
+    sendI = -1
+    sendS = ''
+    target = -1
     rcvdBools = []
     rcvdInts = []
     rcvdStrs = []
@@ -111,18 +118,33 @@ class Server:
         self.recvThread[2].start()
 
     def sendBoolToPlayer(self, data, playerNum):
-        self.sendBoo.sendto(struct.pack(self.boolPack, data), (self.playerIPNum[playerNum], self.sBp))
+        self.shouldSendB = True
+        self.target = playerNum
+        self.sendB = data
     
     def sendIntToPlayer(self, data, playerNum):
-        self.sendInt.sendto(struct.pack(self.intPack, data), (self.playerIPNum[playerNum], self.sIp))
+        self.shouldSendB = True
+        self.target = playerNum
+        self.sendB = data
 
     def sendStrToPlayer(self, data, playerNum):
-        self.sendStr.sendto(str.encode(data), (self.playerIPNum[playerNum], self.sSp))
+        self.shouldSendB = True
+        self.target = playerNum
+        self.sendB = data
 
     def recieving(self, dataType, sock, pack, buf_size = 1024):
         while self.isRecieving:
             x = time.clock() + .0001
             playerNum = -1
+            if self.shouldSendB and dataType = 'b':
+                self.sendBoo.sendto(struct.pack(self.boolPack, self.sendB), (self.playerIPNum[self.target], self.sBp))
+                self.shouldSendB = False
+            if self.shouldSendI and dataType = 'i':
+                self.sendInt.sendto(struct.pack(self.intPack, self.sendI), (self.playerIPNum[self.target], self.sIp))
+                self.shouldSendI = False
+            if self.shouldSendS and dataType = 's':
+                self.sendStr.sendto(str.encode(self.sendS), (self.playerIPNum[self.target], self.sSp))
+                self.shouldSendS=False
             while x > time.clock():
                 try:
                     data, sender_addr = sock.recvfrom(buf_size)

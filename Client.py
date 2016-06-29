@@ -22,6 +22,12 @@ class Client():
     sIp = 50001
     sendStr = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sSp = 50002
+    shouldSendB = False
+    shouldSendI = False
+    shouldSendS = False
+    sendB = False
+    sendI = -1
+    sendS = ''
     rcvdBool = False
     rcvdInt = -1
     rcvdStr = ''
@@ -49,10 +55,8 @@ class Client():
         s.close()
 
     def waitForStart(self):
-        self.initThreads()
-        while not self.gameStarted:
-            if self.rcvdStr == 'start':
-                self.gameStarted = True
+        if self.rcvdStr == 'start':
+            self.gameStarted = True
 
     def initThreads(self):
         self.recvBoo.bind(('', self.rBp))
@@ -74,6 +78,15 @@ class Client():
     def recieving(self, dataType, sock, pack, buf_size = 1024):
         while self.isRecieving:
             x = time.clock() + .0001
+            if self.shouldSendB and dataType = 'b':
+                self.sendBoo.sendto(struct.pack(self.boolPack, self.sendB), (self.serverIP, self.sBp))
+                self.shouldSendB = False
+            if self.shouldSendI and dataType = 'i':
+                self.sendInt.sendto(struct.pack(self.intPack, self.sendI), (self.serverIP, self.sIp))
+                self.shouldSendI = False
+            if self.shouldSendS and dataType = 's':
+                self.sendStr.sendto(str.encode(self.sendS), (self.serverIP, self.sSp))
+                self.shouldSendS=False
             while x > time.clock():
                 try:
                     data, sender_addr = sock.recvfrom(buf_size)
@@ -98,10 +111,13 @@ class Client():
         return self.rcvdStr
     
     def sendBoolToServer(self, data):
-        self.sendBoo.sendto(struct.pack(self.boolPack, data), (self.serverIP, self.sBp))
+        self.shouldSendB = True
+        self.sendB = data
     
     def sendIntToServer(self, data):
-        self.sendInt.sendto(struct.pack(self.intPack, data), (self.serverIP, self.sIp))
+        self.shouldSendI = True
+        self.sendI = data
 
     def sendStrToServer(self, data):
-        self.sendStr.sendto(str.encode(data), (self.serverIP, self.sSp))
+        self.shouldSendS = True
+        self.sendS = data
