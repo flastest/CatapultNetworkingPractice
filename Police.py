@@ -224,7 +224,7 @@ class Police(Character.Character):
         instructions = "You have captured a victim! Now is your chance to interrogate them."
         instructions2 = "The victim will only respond to certain questions. Assess the nature "
         instructions3 = "of the victim and ask questions they will answer."
-        inst3 = "Click to Play!!!!2!!"
+        inst3 = "Click Anywhere to Play!!!"
         
         first_instructions = font.render(instructions,1,(255,255,255))
         second_instructions = font.render(instructions2,1,(255,255,255))
@@ -239,7 +239,7 @@ class Police(Character.Character):
         
         # a boolean to determine whether it's the police's turn
         # to not click anywhere to continue
-        pojito = 0 # 0 means click anywhere, 2 means click in box is needed
+        pojito = 0 # 0 means click anywhere, 1 means click in box is needed, 2 means something else
 
         # takes user input and does the actual game
         while True:
