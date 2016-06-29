@@ -118,17 +118,18 @@ class Main:
                 if isWithin(click,950,633,686,633,320):#Exit
                     leave(game_screen)
                 if isHost:
-                    if connectionType.getPlayerCount() >= minPlayerCount and isWithin(click,950,167,686,167,320):#Start Game
+                    if connectionType.numPlayers > minPlayerCount and isWithin(click,950,167,686,167,320):#Start Game
                         isConnecting = False
                     if isWithin(click,950,400,686,400,320): #Alternate Broadcasting type
                         connectionType.backupBroadcast()
         mainScreens.displayConnectionPage(game_screen)
         if not isHost: #draw screen
+            isConnecting = not connectionType.gameStarted
             connectionType.waitForStart()
             if connectionType.rcvdStr == 'start':  # All client programs start game
-                isConnecting = False
+                print('start game!!!')
             pygame.draw.rect(game_screen, blue, (630,60,370,450))
-            if connectionType.rcvdInt > 1:
+            if connectionType.rcvdInt > 0:
                 for i in range(connectionType.rcvdInt):
                     pygame.draw.rect(game_screen,green,(64,131+50*i,319,34))
         if isHost: #draw screen
@@ -140,10 +141,10 @@ class Main:
                     pygame.draw.rect(game_screen,green,(64,131+50*i,319,34))
         pygame.display.update()
     #done
-    time.sleep(1)
     if isHost: #Notifys players to start game and adds variable for the total number of players
         connectionType.startGame()
         numPlayers = connectionType.numPlayers
+        time.sleep(1)
     else:
         numPlayers = connectionType.rcvdInt
     time.sleep(1)

@@ -101,15 +101,6 @@ class Client():
                 if self.rcvdStr == 'quit':
                     sys.exit
     
-    def getInt(self):
-        return self.rcvdInt
-
-    def getBool(self):
-        return self.rcvdBool
-
-    def getStr(self):
-        return self.rcvdStr
-    
     def sendBoolToServer(self, data):
         self.shouldSendB = True
         self.sendB = data

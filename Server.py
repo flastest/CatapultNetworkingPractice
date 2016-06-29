@@ -84,14 +84,16 @@ class Server:
         #s.close()
 
     def gatherPlayers(self, port = generalCSPort, buf_size = 1024):
-        count = 0
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.setblocking(0)
+        s.settimeout(.1)
         s.bind(('', port))
-        while not self.gameStarted and self.numPlayers < 15:
+        while self.numPlayers < 15 and not self.gameStarted:
             try:
                 data, sender_addr = s.recvfrom(buf_size)
-                self.playerIPNum.append(sender_addr[0])
+                self.playerIPNum.append(sender_addr)
                 self.numPlayers+=1
+                print('got one!')
             except socket.error:
                 pass
         for i in range(len(self.playerIPNum)):
