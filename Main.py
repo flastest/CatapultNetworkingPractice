@@ -182,13 +182,18 @@ class Main:
                     myClass.showRules(game_screen)
             else:
                 tog = True
-                for i in range(numPlayers-1):
+                for i in range(connectionType.numPlayers-1):
                     if connectionType.rcvdStrs[i] != 'ready':
                         tog = False
                 if tog:
+                    connectionType.sendStrToAll('ok')
                     myClass.showRules(game_screen)
                 else:
                     connectionType.sendStrToAll('wait')
+            b.setBoard()
+            b.showCharacter(myPic,b.initPos)
+            b.displayGoal()
+            pygame.display.update()
         if myClass.won:
             b.turnStart(6)
         while b.isTurn:
