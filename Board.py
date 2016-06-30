@@ -38,7 +38,7 @@ class Board:
             pygame.draw.line(self.win, self.LIGHTBROWN, (0,self.yCoord[1] +75 * y), (900, self.yCoord2[1] +75 *y), 3)
     
     def showCharacter(self, img, mapCoordinates = myPos):
-        self.win.blit(pygame.image.load(img), (mapCoordinates[0]*75,mapCoordinates[1]*75))
+        self.win.blit(img, (mapCoordinates[0]*75,mapCoordinates[1]*75))
 
     def goThere(self,img):
         if self.moveCount < self.initSpaces:

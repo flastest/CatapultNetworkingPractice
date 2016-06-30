@@ -94,7 +94,7 @@ class Server():
     def sendStrToPlayer(self, data, playerNum):
         self.shouldSend = True
         self.target = playerNum
-        self.sendB = data
+        self.sendS = data
 
     def recieving(self, dataType, sock, pack, buf_size = 1024):
         while self.isRecieving:
