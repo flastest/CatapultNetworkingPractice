@@ -251,13 +251,13 @@ class Main:
         if not isHost:
             connectionType.sendStrToServer('won')
             if not b.hasNotWon:
-                pygame.image.load('You Win.png', (20,20))
+                pygame.image.load('You Win.png')
                 notYet = False
             else:
                 font = pygame.font.Font('times.ttf', 80)
                 text = font.render('You Lose',1,(0,0,0))
                 textW,textH = font.size('You Lose')
-                self.win.blit(text, (600-textW/2,400-textH/2))
+                self.game_screen.blit(text, (600-textW/2,400-textH/2))
                 notYet = False
         if isHost:
             connectionType.sendStrToAll('lose')
@@ -270,9 +270,9 @@ class Main:
                     font = pygame.font.Font('times.ttf', 80)
                     text = font.render('You Lose',1,(0,0,0))
                     textW,textH = font.size('You Lose')
-                    self.win.blit(text, (600-textW/2,400-textH/2))
+                    self.game_screen.blit(text, (600-textW/2,400-textH/2))
                     notYet = False
                 else:
-                    pygame.image.load('You Win.png', (20,20))
+                    pygame.image.load('You Win.png')
                     notYet = False
         pygame.display.update()
