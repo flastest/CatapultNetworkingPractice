@@ -189,6 +189,8 @@ class Main:
                     connectionType.stopThread()
                     myClass.showRules(game_screen)
                     connectionType.resumeThread()
+                    if myClass.won == False:
+                        b.turnStart(0)
             else:
                 tog = True
                 for i in range(connectionType.numPlayers-1):
@@ -199,6 +201,8 @@ class Main:
                     connectionType.stopThread()
                     myClass.showRules(game_screen)
                     connectionType.resumeThread()
+                    if myClass.won == False:
+                        b.turnStart(0)
                 else:
                     connectionType.sendStrToAll('wait')
             b.setBoard()
@@ -207,7 +211,7 @@ class Main:
             b.displayWaiting()
             pygame.display.update()
         if myClass.won:
-            b.turnStart(6)
+            b.turnStart(myClass.speed)
             myClass.won = False
         while b.isTurn:
             events = pygame.event.get()

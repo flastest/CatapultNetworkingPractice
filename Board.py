@@ -39,6 +39,8 @@ class Board:
     
     def showCharacter(self, img, mapCoordinates = myPos):
         self.win.blit(img, (mapCoordinates[0]*75,mapCoordinates[1]*75))
+        if self.initSpaces == 0:
+            self.isTurn = False
 
     def goThere(self,img):
         if self.moveCount < self.initSpaces:

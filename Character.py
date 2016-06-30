@@ -11,6 +11,7 @@ class Character:
     abilLoss = 'what is said when the ability minigame is won'
     gamePoints = 0
     won = True
+    speed = 6
     playerNumber = -1
 
     def __init__(self, playerNum):
