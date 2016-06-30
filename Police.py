@@ -277,12 +277,13 @@ class Police(Character.Character):
                 # single case for the narrator, anywhere can be clicked to continue
                 if event.type == MOUSEBUTTONDOWN and turn_counter == 0:
                     turn_counter += 1
+                    pojito = 1
                     #pojito = True # now police's turn to click in certain area
 
                 
                 
                 
-                if event.type == MOUSEBUTTONDOWN and not pojito: # this should be the victim's turn
+                if event.type == MOUSEBUTTONDOWN and pojito == 0: # this should be the victim's turn
                     print(turn_counter)
 
                     
@@ -303,9 +304,12 @@ class Police(Character.Character):
                     turn_counter += 1
                     pygame.display.update() 
                     
+                    pojito = 1 
+                
+                
 
                 # trying new approach...this means it's the officer's turn to select a question
-                if event.type == MOUSEBUTTONDOWN and pojito and event.pos[1] > 550 and event.pos[1] < 750: #and turn_counter % 2 != 0:
+                if event.type == MOUSEBUTTONDOWN and pojito == 2: #and event.pos[1] > 550 and event.pos[1] < 750: #and turn_counter % 2 != 0:
                     clear()
                     clearTitle()
                     drawName("Officer")
@@ -316,9 +320,11 @@ class Police(Character.Character):
                     print("ask")
                     pygame.display.update() 
                     
+                    pojito = 0
                         
                                        
-                    
+                if pojito == 1:
+                    pojito = 2
                         
                 if event.type == QUIT:
                     return 
