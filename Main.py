@@ -51,11 +51,6 @@ class Main:
         elif i==7:
             return Librarian(num)
 
-    def quit(window):
-        window.close()
-        pygame.display.quit()
-        sys.exit
-
     def isWithin(point,foX1,foY1,foX2,foY2,aa): #For ovals
         pX1 = (point[0]-foX1)**2
         pX2 = (point[0]-foX2)**2
@@ -67,25 +62,28 @@ class Main:
         events = pygame.event.get()
         for event in events:
             if event.type == QUIT:
-                quit(game_screen)
+                pygame.display.quit()
+                sys.exit()
             if event.type == MOUSEBUTTONDOWN:
                 click = event.pos
                 if isWithin(click,482,199,680,199,240):#Foci coordinates and 2a value of Start button
                     atTitleScreen = False
                 if isWithin(click,350,660,800,660,485):#Foci xy's and 2a of Exit button
-                    quit(game_screen)
+                    pygame.display.quit()
+                    sys.exit()
     atStartPage = True
 
     mainScreens.displayStartPage(game_screen)
     pygame.display.update()
     isHost = False
     
-    def leave(window):
+    def leave(isHost,connectionType):
         if not isHost:
             connectionType.sendStrToServer('quit')
         else:
             connectionType.endGame()
-        quit(window)
+        pygame.display.quit()
+        sys.exit()
     
     while atStartPage:   # Host/Join Game screen event Loop here
         events = pygame.event.get()
@@ -106,17 +104,18 @@ class Main:
 
     isConnecting = True
     minPlayerCount = 1
+    print('made it here!!!')
     if not isHost:
         connectionType.initThreads()
     while isConnecting:  # Host/Client connecting screen event loop here
         events = pygame.event.get()
         for event in events:
             if event.type == QUIT:
-                leave(game_screen)
+                leave(isHost,connectionType)
             if event.type == MOUSEBUTTONDOWN:
                 click = event.pos
                 if isWithin(click,950,633,686,633,320):#Exit
-                    leave(game_screen)
+                    leave(isHost,connectionType)
                 if isHost:
                     if connectionType.numPlayers > minPlayerCount and isWithin(click,950,167,686,167,320):#Start Game
                         isConnecting = False
@@ -129,15 +128,15 @@ class Main:
             if connectionType.rcvdStr == 'start':  # All client programs start game
                 print('start game!!!')
             pygame.draw.rect(game_screen, blue, (630,60,370,450))
-            if connectionType.rcvdInt > 0:
-                for i in range(connectionType.rcvdInt):
+            if int(connectionType.rcvdStr) > 0:
+                for i in range(int(connectionType.rcvdStr)):
                     pygame.draw.rect(game_screen,green,(64,131+50*i,319,34))
         if isHost: #draw screen
             if connectionType.numPlayers < minPlayerCount:
                 pygame.draw.rect(game_screen,blue,(630,60,370,210))
-            if connectionType.numPlayers > 1:
+            if connectionType.numPlayers >= minPlayerCount:
                 for i in range(connectionType.numPlayers-1):
-                    connectionType.sendIntToPlayer(connectionType.numPlayers,i)
+                    connectionType.sendStrToPlayer(str(connectionType.numPlayers),i)
                     pygame.draw.rect(game_screen,green,(64,131+50*i,319,34))
         pygame.display.update()
     #done
@@ -146,7 +145,7 @@ class Main:
         numPlayers = connectionType.numPlayers
         time.sleep(1)
     else:
-        numPlayers = connectionType.rcvdInt
+        numPlayers = int(connectionType.rcvdStr)
     time.sleep(1)
     if isHost: # provides playerNumbers to every player, self included
         classList = [1]
@@ -155,16 +154,16 @@ class Main:
             classList.append(random.randint(2, numberOfClasses))
         random.shuffle(classList)
         for i in range(numPlayers-1):
-            connectionType.sendIntToPlayer(i+2, i)
+            connectionType.sendStrToPlayer(str(i+2), i)
     else:
-        myNum = connectionType.rcvdInt
+        myNum = int(connectionType.rcvdStr)
     time.sleep(1)
     if isHost: # provides character class roles to every player
         myClassNum = classList[0]
         for i in range(numPlayers-1):
-            connectionType.sendIntToPlayer(classList[i+1],i)
+            connectionType.sendStrToPlayer(str(classList[i+1]),i)
     else:
-        myClassNum = connectionType.rcvdInt
+        myClassNum = int(connectionType.rcvdStr)
     isLoading = False
     myClass = classPicker(myClassNum, myNum)
     
@@ -182,7 +181,7 @@ class Main:
             events = pygame.event.get()
             for event in events:
                 if event.type == QUIT:
-                    leave()
+                    leave(isHost,connectionType)
                 if event.type == KEYDOWN:
                     if event.key == K_LEFT:
                         b.left()

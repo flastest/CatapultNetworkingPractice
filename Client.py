@@ -9,29 +9,14 @@ class Client():
     generalCSPort = 50967
     gameStarted = False
     isRecieving = True # while true, all threads will try to recieve from all players
-    recvThread = []
     recvBoo = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    rBp = 40000
-    recvInt = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    rIp = 40001
-    recvStr = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    rSp = 40002
+    rSp = 40000
     sendBoo = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    sBp = 50000
-    sendInt = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    sIp = 50001
-    sendStr = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    sSp = 50002
+    sSp = 50000
     shouldAnswer = False
     isConnected = False
-    shouldSendB = False
-    shouldSendI = False
-    shouldSendS = False
-    sendB = False
-    sendI = -1
+    shouldSend = False
     sendS = ''
-    rcvdBool = False
-    rcvdInt = -1
     rcvdStr = ''
 
     def __init__(self):
@@ -44,21 +29,27 @@ class Client():
         s.setblocking(0)
         s.settimeout(.1)
         s.bind(('', port))
+        so = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        y = time.clock()+.01
         while not self.isConnected:
-            print('sending data...')
-            y = time.clock()+.001
             while y < time.clock():
+                y = time.clock()+.001
                 if self.shouldAnswer:
-                    so = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-                    so.sendto(str.encode('a'),(self.serverIP, self.generalCSPort))
-                    self.isConnected = True
+                    try:
+                        so.sendto(data, (self.serverIP, self.generalCSPort))
+                        self.isConnected = True
+                    except socket.error:
+                        pass
                 else:
                     try:
                         data, sender_addr = s.recvfrom(buf_size)
-                        self.serverIP = sender_addr
-                        self.shouldAnswer = True
+                        if data != None:
+                            self.serverIP = sender_addr[0]
+                            self.shouldAnswer = True
                     except socket.error:
                         pass
+        print('Connected!!!')
+        self.initThreads()
         
 
     def waitForStart(self):
@@ -66,56 +57,26 @@ class Client():
             self.gameStarted = True
 
     def initThreads(self):
-        self.recvBoo.bind(('', self.rBp))
-        self.recvInt.bind(('', self.rIp))
         self.recvStr.bind(('', self.rSp))
-        self.recvBoo.settimeout(.1)
-        self.recvBoo.setblocking(0)
-        self.recvInt.settimeout(.1)
-        self.recvInt.setblocking(0)
         self.recvStr.settimeout(.1)
         self.recvStr.setblocking(0)
-        self.recvThread.append(threading.Thread(target = self.recieving, args = ('b', self.recvBoo, self.boolPack), daemon = True))
-        self.recvThread.append(threading.Thread(target = self.recieving, args = ('i', self.recvInt, self.intPack), daemon = True))
-        self.recvThread.append(threading.Thread(target = self.recieving, args = ('s', self.recvStr, ''), daemon = True))
-        self.recvThread[0].start()
-        self.recvThread[1].start()
-        self.recvThread[2].start()
+        recvThread = (threading.Thread(target = self.recieving, args = (self.recvStr), daemon = True))
+        recvThread.start()
     
-    def recieving(self, dataType, sock, pack, buf_size = 1024):
+    def recieving(self, sock, buf_size = 1024):
         while self.isRecieving:
             x = time.clock() + .0001
-            if self.shouldSendB and dataType == 'b':
-                self.sendBoo.sendto(struct.pack(self.boolPack, self.sendB), (self.serverIP, self.sBp))
-                self.shouldSendB = False
-            if self.shouldSendI and dataType == 'i':
-                self.sendInt.sendto(struct.pack(self.intPack, self.sendI), (self.serverIP, self.sIp))
-                self.shouldSendI = False
-            if self.shouldSendS and dataType == 's':
+            if self.shouldSend:
                 self.sendStr.sendto(str.encode(self.sendS), (self.serverIP, self.sSp))
-                self.shouldSendS=False
+                self.shouldSend=False
             while x > time.clock():
                 try:
-                    data, sender_addr = sock.recvfrom(buf_size)
-                    if dataType == 'b':
-                        self.rcvdBool = struct.unpack(pack, data)[0]
-                    elif dataType == 'i':
-                        self.rcvdInt = struct.unpack(pack,data)[0]
-                    else:
-                        self.rcvdStr = data.decode()
+                    self.rcvdStr = data.decode()
                 except socket.error:
                     pass
                 if self.rcvdStr == 'quit':
                     sys.exit
-    
-    def sendBoolToServer(self, data):
-        self.shouldSendB = True
-        self.sendB = data
-    
-    def sendIntToServer(self, data):
-        self.shouldSendI = True
-        self.sendI = data
 
     def sendStrToServer(self, data):
-        self.shouldSendS = True
+        self.shouldSend = True
         self.sendS = data
