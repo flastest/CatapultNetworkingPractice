@@ -18,7 +18,7 @@ class Police(Character.Character):
     times_played = 0 
 
     # the minigame involves interrogating different classes...this will involve sprites #killme
-    def minigame(self,window,thisVariable):
+    def minigame(self,screen,thisVariable):
         # this is the poor person the police interrogates for the minigame
         # equipped with many responses, the police needs to approach with 
         # an open mind and open heart to win the trust of the victim
@@ -30,12 +30,12 @@ class Police(Character.Character):
         
         # oh crap english is so cool victim + image = victimage 
         victimage = pygame.image.load(self.victimImg)
-        window.blit(victimage,(320,40))
+        screen.blit(victimage,(320,40))
         pygame.display.flip()
 
         # sets up text box
         white_border = Rect(((0,500),(1200,800)))
-        pygame.draw.rect(window,[255,255,255],white_border,0)
+        pygame.draw.rect(screen,[255,255,255],white_border,0)
         pygame.display.update()
 
         # initializes timer
@@ -146,12 +146,12 @@ class Police(Character.Character):
         def drawTitle():
             title_white = Rect((0,420),(300,80))
             title_black = Rect((10,430),(280,70))
-            pygame.draw.rect(window,[255,255,255],title_white,0)
-            pygame.draw.rect(window,[0,0,0],title_black,0)
+            pygame.draw.rect(screen,[255,255,255],title_white,0)
+            pygame.draw.rect(screen,[0,0,0],title_black,0)
 
         def clearTitle():
             title_black = Rect((10,430),(280,70))
-            pygame.draw.rect(window,[0,0,0],title_black,0)
+            pygame.draw.rect(screen,[0,0,0],title_black,0)
 
 
         # displays questions, takes no input but uses:
@@ -168,12 +168,12 @@ class Police(Character.Character):
         # clears bottom half of screen (aka the text box)
         def clear():
             black = Rect((10,510),(1180,780))
-            pygame.draw.rect(window,[0,0,0],black,0)
+            pygame.draw.rect(screen,[0,0,0],black,0)
 
         # clears top left corner of screen (actually entire top)
         def clearCoords():
             corner_black = Rect((0,0),(1200,100))
-            pygame.draw.rect(window,[0,0,0],corner_black,0)
+            pygame.draw.rect(screen,[0,0,0],corner_black,0)
 
 
         # chooses whether to have open or reserved victim
@@ -268,10 +268,10 @@ class Police(Character.Character):
                 # end cases for winning game
                 if listidx > 5:
                     if victim.getTrust() > 4:
-                        self.showEndScreen(window,True,thisVariable) # <<<   <<<
+                        self.showEndScreen(screen,True,thisVariable) # <<<   <<<
                         return                  # end cases
                     else:                       # <<<   <<<
-                        self.showEndScreen(window,False,thisVariable)
+                        self.showEndScreen(screen,False,thisVariable)
                         return 
                 
                 # single case for the narrator, anywhere can be clicked to continue
