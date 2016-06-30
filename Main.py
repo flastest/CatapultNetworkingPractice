@@ -15,7 +15,7 @@ from Burglar import *
 from Hacker import *
 from Doctor import *
 from Librarian import *
-#from Police import *
+from Police import *
 from Villain import *
 
 class Main:

@@ -5,8 +5,8 @@ pygame.font.init()
 class Police(Character.Character):
     
     className = 'Police Officer'
-    goal = 'Discover and arrest all criminals in the area'
-    abilityDefinition = 'Interrogate other players to find out which are criminals'
+    goal = 'discover and arrest all criminals in the area'
+    abilityDefinition = 'interrogate other players to find out which are criminals'
     minigameName = 'Interrogation Station'
     abilSuccess = 'You successfully gain information about the target'
     abilLoss = 'You fail to gain any relevant information'
@@ -18,7 +18,7 @@ class Police(Character.Character):
     times_played = 0 
 
     # the minigame involves interrogating different classes...this will involve sprites #killme
-    def minigame(self,window):
+    def minigame(self,window,thisVariable):
         # this is the poor person the police interrogates for the minigame
         # equipped with many responses, the police needs to approach with 
         # an open mind and open heart to win the trust of the victim
@@ -268,10 +268,10 @@ class Police(Character.Character):
                 # end cases for winning game
                 if listidx > 5:
                     if victim.getTrust() > 4:
-                        print(self.abilSuccess) # <<<   <<<
+                        self.showEndScreen(window,True,thisVariable) # <<<   <<<
                         return                  # end cases
                     else:                       # <<<   <<<
-                        print(self.abilLoss)
+                        self.showEndScreen(window,False,thisVariable)
                         return 
                 
                 # single case for the narrator, anywhere can be clicked to continue
@@ -329,9 +329,43 @@ class Police(Character.Character):
                 if event.type == QUIT:
                     return 
             
-                pygame.display.update() 
-            
+                pygame.display.update()
+
+    def showRules(self, window, t = 5):
+        pygame.init()
+        for i in range(t):
+            window = pygame.display.set_mode([1200,800])
+            pygame.display.set_caption("")
+            window.fill([255,255,255])
+            font = pygame.font.Font(None, 36)
+            goal = 'Your objective is to ' + self.getAbilityDefinition()
+            text1 = font.render(goal, 1, (0,0,0))
+            countdown = font.render('Minigame starting in:     ' + str(t-i) , 1, (0,0,0))
+            window.blit(text1, (10,10))
+            window.blit(countdown, (10, 100))
+            pygame.display.update()
+            time.sleep(1)
+            pygame.display.set_caption(self.minigameName)
+        self.minigame(window, t)
+
+    def showEndScreen(self, window, hasWon, t):
+        self.won = hasWon
+        if hasWon:
+            words = self.getMinigameWinText()
+        else:
+            words = self.getMinigameLossText()
+        for i in range(t):
+            window = pygame.display.set_mode([1200,800])
+            pygame.display.set_caption("")
+            window.fill((255,255,255))
+            font = pygame.font.Font(None, 36)
+            text = font.render(words, 1, (0,0,0))
+            countdown = font.render('Returning to the main game in:     ' + str(t-i) , 1, (0,0,0))
+            window.blit(text, (10,10))
+            window.blit(countdown, (10, 100))
+            pygame.display.update()
+            time.sleep(1)
 
 screen = pygame.display.set_mode([1200,800])
 test = Police(966)
-test.minigame(screen)
+test.showRules(screen)
