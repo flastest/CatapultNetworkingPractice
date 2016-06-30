@@ -20,6 +20,7 @@ class Server():
     target = -1
     rcvdStrs = []
     rcvdInts = []
+    recvThread = (threading.Thread(target = recieving, args = ('s', recvStr, ''), daemon = True))
 
     def __init__(self): # Begins normal broadcast of ip address to other possible players upon initialization
         collectionThread = threading.Thread(target = self.gatherPlayers,daemon = True)
@@ -83,8 +84,7 @@ class Server():
         self.recvStr.bind(('', self.rSp))
         self.recvStr.settimeout(.01)
         self.recvStr.setblocking(False)
-        recvThread = (threading.Thread(target = self.recieving, args = ('s', self.recvStr, ''), daemon = True))
-        recvThread.start()
+        self.recvThread.start()
 
     def sendStrToPlayer(self, data, playerNum):
         self.shouldSend = True
@@ -104,7 +104,7 @@ class Server():
             playerNum = -1
             if self.shouldSend:
                 self.sendStr.sendto(str.encode(self.sendS), (self.playerIPNum[self.target], self.sSp))
-                print('sent'+self.sendS)
+                print('sent '+self.sendS)
                 self.shouldSend=False
             while x > time.clock():
                 try:
@@ -129,3 +129,10 @@ class Server():
     def endGame(self):
         for i in range(len(self.playerIPNum)):
             self.sendStrToPlayer('quit', i)
+    
+    def stopThread(self):
+        self.recvThread.exit()
+
+    def resumeThread(self):
+        self.recvThread = (threading.Thread(target = self.recieving, args = ('s', self.recvStr, ''), daemon = True))
+        self.recvThread.start()

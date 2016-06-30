@@ -103,3 +103,15 @@ class Board:
             self.goalCoordinates[:] = [-5,-5]
             self.isTurn = False
             self.hasNotWon = False
+    
+    def displayWaiting(self):
+        font = pygame.font.Font(None, 36)
+        text2 = font.render('Please wait for the other players to finish before taking your turn.',1,(0,0,0))
+        self.win.blit(text, (10,675))
+
+    def displayRules(self):
+        font = pygame.font.Font(None, 36)
+        text1 = font.render('Press the arrowkeys to decide what path you wish to take this turn,', 1, (0,0,0))
+        text2 = font.render('press escape to undo your selection, and enter to confirm it.',1,(0,0,0))
+        self.win.blit(text, (10,650))
+        self.win.blit(text2, (10,700))

@@ -179,7 +179,9 @@ class Main:
         if not b.isTurn:
             if not isHost:
                 if connectionType.rcvdStr != 'wait':
+                    connectionType.stopThread()
                     myClass.showRules(game_screen)
+                    connectionType.resumeThread()
             else:
                 tog = True
                 for i in range(connectionType.numPlayers-1):
@@ -187,15 +189,19 @@ class Main:
                         tog = False
                 if tog:
                     connectionType.sendStrToAll('ok')
+                    connectionType.stopThread()
                     myClass.showRules(game_screen)
+                    connectionType.resumeThread()
                 else:
                     connectionType.sendStrToAll('wait')
             b.setBoard()
             b.showCharacter(myPic,b.initPos)
             b.displayGoal()
+            b.displayWaiting()
             pygame.display.update()
         if myClass.won:
             b.turnStart(6)
+            myClass.won = False
         while b.isTurn:
             events = pygame.event.get()
             for event in events:
@@ -222,4 +228,5 @@ class Main:
             if (b.goalCoordinates[0],b.goalCoordinates[1]) == (b.initPos[0],b.initPos[1]):
                 b.moveGoal()
             b.displayGoal()
+            b.displayRules()
             pygame.display.update()
