@@ -119,7 +119,6 @@ class Main:
                 if isHost:
                     if connectionType.numPlayers >= minPlayerCount and isWithin(click,950,167,686,167,320):#Start Game
                         isConnecting = False
-                        break
                     if isWithin(click,950,400,686,400,320): #Alternate Broadcasting type
                         connectionType.backupBroadcast()
         mainScreens.displayConnectionPage(game_screen)
@@ -127,15 +126,15 @@ class Main:
             isConnecting = not connectionType.gameStarted
             connectionType.waitForStart()
             pygame.draw.rect(game_screen, blue, (630,60,370,450))
-            if connectionType.rcvdInt >= 1:
-                for i in range(connectionType.rcvdInt):
+            if connectionType.rcvdInt >= 2:
+                for i in range(connectionType.rcvdInt-1):
                     pygame.draw.rect(game_screen,green,(64,81+50*i,320,35))
         if isHost: #draw screen
             if connectionType.numPlayers < minPlayerCount:
                 pygame.draw.rect(game_screen,blue,(630,60,370,210))
             if connectionType.numPlayers >= 2:
                 for i in range(connectionType.numPlayers-1):
-                    connectionType.sendStrToPlayer(str(connectionType.numPlayers-1),i)
+                    connectionType.sendStrToPlayer(str(connectionType.numPlayers),i)
                     pygame.draw.rect(game_screen,green,(64,81+50*i,320,35))
                 time.sleep(.01)
         pygame.display.update()
@@ -146,7 +145,7 @@ class Main:
         time.sleep(.01)
     else:
         numPlayers = connectionType.rcvdInt
-        print('numPlayers = '+numPlayers)
+        print('numPlayers = ', numPlayers)
     time.sleep(.5)
     if isHost: # provides playerNumbers to every player, self included
         classList = [1]
@@ -159,7 +158,7 @@ class Main:
             print('sent myNum')
     else:
         myNum = connectionType.rcvdInt
-        print('myNum = ' + myNum)
+        print('myNum = ', myNum)
     time.sleep(.5)
     if isHost: # provides character class roles to every player
         myClassNum = classList[0]
@@ -168,7 +167,7 @@ class Main:
             print('sent classNum')
     else:
         myClassNum = connectionType.rcvdInt
-        print('classNum = '+myClassNum)
+        print('classNum = ', myClassNum)
     isLoading = False
     myClass = classPicker(myClassNum, myNum)
     
