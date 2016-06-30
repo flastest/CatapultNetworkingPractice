@@ -20,7 +20,7 @@ from Villain import *
 
 class Main:
     numberOfClasses = 7    # CHANGE THIS AND classPicker() AS WE ADD MORE CHARACTER CLASSES
-    TIME_THAT_WE_SHOULD_HAVE_THEM_READ_THEIR_CHARACTER_INFO_FOR = 10
+    TIME_THAT_WE_SHOULD_HAVE_THEM_READ_THEIR_CHARACTER_INFO_FOR = 5
     atTitleScreen = True
     isLoading = False
     closed = False
@@ -115,7 +115,7 @@ class Main:
                 if isWithin(click,950,633,686,633,320):#Exit
                     leave(isHost,connectionType)
                 if isHost:
-                    if connectionType.numPlayers > minPlayerCount and isWithin(click,950,167,686,167,320):#Start Game
+                    if connectionType.numPlayers >= minPlayerCount and isWithin(click,950,167,686,167,320):#Start Game
                         isConnecting = False
                     if isWithin(click,950,400,686,400,320): #Alternate Broadcasting type
                         connectionType.backupBroadcast()
@@ -124,16 +124,16 @@ class Main:
             isConnecting = not connectionType.gameStarted
             connectionType.waitForStart()
             pygame.draw.rect(game_screen, blue, (630,60,370,450))
-            if connectionType.rcvdInt > 1:
-                for i in range(connectionType.rcvdInt-1):
-                    pygame.draw.rect(game_screen,green,(65,82+50*i,319,34))
+            if connectionType.rcvdInt >= 1:
+                for i in range(connectionType.rcvdInt):
+                    pygame.draw.rect(game_screen,green,(64,81+50*i,320,35))
         if isHost: #draw screen
             if connectionType.numPlayers < minPlayerCount:
                 pygame.draw.rect(game_screen,blue,(630,60,370,210))
-            if connectionType.numPlayers > 1:
+            if connectionType.numPlayers >= minPlayerCount:
                 for i in range(connectionType.numPlayers-1):
                     connectionType.sendStrToPlayer(str(connectionType.numPlayers),i)
-                    pygame.draw.rect(game_screen,green,(65,82+50*i,319,34))
+                    pygame.draw.rect(game_screen,green,(64,81+50*i,320,35))
         pygame.display.update()
     #done
     if isHost: #Notifys players to start game and adds variable for the total number of players

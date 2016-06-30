@@ -94,10 +94,10 @@ class Server():
         self.sendS = data
     
     def sendStrToAll(self, data):
+        self.sendS = data
         for i in range(numPlayers-1):
             self.shouldSend = True
             self.target = i
-            self.sendS = data
             time.sleep(.01)
 
     def recieving(self, dataType, sock, pack, buf_size = 1024):
@@ -106,6 +106,7 @@ class Server():
             playerNum = -1
             if self.shouldSend:
                 self.sendStr.sendto(str.encode(self.sendS), (self.playerIPNum[self.target], self.sSp))
+                print('sent ' + self.sendS)
                 self.shouldSend=False
             while x > time.clock():
                 try:
