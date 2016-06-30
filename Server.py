@@ -27,10 +27,9 @@ class Server():
     
     def startGame(self): # Begins the game and informs all other players
         self.gameStarted = True
-        time.sleep(.5)
         if len(self.playerIPNum) > 0:
             for i in range(len(self.playerIPNum)):
-                time.sleep(.1)
+                time.sleep(.01)
                 self.sendStrToPlayer('start', i)
 
     def backupBroadcast(self, port = generalSCPort):
@@ -77,7 +76,6 @@ class Server():
                     pass
         s.close()
         so.close()
-        self.initThreads()
 
     def initThreads(self):
         self.sendStr.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -101,7 +99,7 @@ class Server():
             time.sleep(.01)
 
     def recieving(self, dataType, sock, pack, buf_size = 1024):
-        while self.isRecieving:
+        while True:
             x = time.clock() + .0001
             playerNum = -1
             if self.shouldSend:

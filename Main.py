@@ -105,6 +105,8 @@ class Main:
 
     isConnecting = True
     minPlayerCount = 2
+    if isHost:
+        connectionType.initThreads()
     while isConnecting:  # Host/Client connecting screen event loop here
         events = pygame.event.get()
         for event in events:
@@ -117,6 +119,7 @@ class Main:
                 if isHost:
                     if connectionType.numPlayers >= minPlayerCount and isWithin(click,950,167,686,167,320):#Start Game
                         isConnecting = False
+                        break
                     if isWithin(click,950,400,686,400,320): #Alternate Broadcasting type
                         connectionType.backupBroadcast()
         mainScreens.displayConnectionPage(game_screen)
@@ -130,18 +133,20 @@ class Main:
         if isHost: #draw screen
             if connectionType.numPlayers < minPlayerCount:
                 pygame.draw.rect(game_screen,blue,(630,60,370,210))
-            if connectionType.numPlayers >= minPlayerCount:
+            if connectionType.numPlayers >= 2:
                 for i in range(connectionType.numPlayers-1):
-                    connectionType.sendStrToPlayer(str(connectionType.numPlayers),i)
+                    connectionType.sendStrToPlayer(str(connectionType.numPlayers-1),i)
                     pygame.draw.rect(game_screen,green,(64,81+50*i,320,35))
+                time.sleep(.01)
         pygame.display.update()
     #done
     if isHost: #Notifys players to start game and adds variable for the total number of players
         connectionType.startGame()
         numPlayers = connectionType.numPlayers
-        time.sleep(.5)
+        time.sleep(.01)
     else:
         numPlayers = connectionType.rcvdInt
+        print('numPlayers = '+numPlayers)
     time.sleep(.5)
     if isHost: # provides playerNumbers to every player, self included
         classList = [1]
@@ -151,15 +156,19 @@ class Main:
         random.shuffle(classList)
         for i in range(numPlayers-1):
             connectionType.sendStrToPlayer(str(i+2), i)
+            print('sent myNum')
     else:
         myNum = connectionType.rcvdInt
+        print('myNum = ' + myNum)
     time.sleep(.5)
     if isHost: # provides character class roles to every player
         myClassNum = classList[0]
         for i in range(numPlayers-1):
             connectionType.sendStrToPlayer(str(classList[i+1]),i)
+            print('sent classNum')
     else:
         myClassNum = connectionType.rcvdInt
+        print('classNum = '+myClassNum)
     isLoading = False
     myClass = classPicker(myClassNum, myNum)
     
