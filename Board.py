@@ -106,7 +106,7 @@ class Board:
     
     def displayWaiting(self):
         font = pygame.font.Font(None, 36)
-        text2 = font.render('Please wait for the other players to finish before taking your turn.',1,(0,0,0))
+        text = font.render('Please wait for the other players to finish before taking your turn.',1,(0,0,0))
         self.win.blit(text, (10,675))
 
     def displayRules(self):
