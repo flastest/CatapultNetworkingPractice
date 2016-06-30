@@ -11,10 +11,7 @@ class Burglar(Character.Character):
     abilSuccess = 'You successfully pick the lock.'
     abilLoss = 'You fail to pick the lock.'
     image = 'Robber.png'
-    timeLimit = 100 # minigame time limit, feel free to change as needed
-
-    def display(self,window,coordinates):
-        window.blit(pygame.image.load(self.image),(coordinates[0],coordinates[1]))
+    timeLimit = 60 # minigame time limit, feel free to change as needed
 
     def minigame(self, window, t):
         minigameWon = False
@@ -171,7 +168,7 @@ class Burglar(Character.Character):
         if minigameWon or minigameLost:
             self.showEndScreen(window, minigameWon, t)
 
-    def showRules(self, t = 5):
+    def showRules(self, window, t = 5):
         pygame.init()
         for i in range(t):
             window = pygame.display.set_mode([1200,800])
@@ -204,5 +201,6 @@ class Burglar(Character.Character):
             window.blit(countdown, (8, 100))
             pygame.display.update()
             time.sleep(1)
+#b = pygame.display.set_mode([1,1])
 #a = Burglar(1)
-#a.showRules(5)
+#a.showRules(b)

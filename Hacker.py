@@ -15,9 +15,6 @@ class Hacker(Character.Character):
     playerNumber = -1
     timeLimit = 50 # time limit for the minigame, feel free to change as needed.
     image = 'Hacker.png'
-    
-    def display(self,window,coordinates):
-        window.blit(pygame.image.load(self.image),(coordinates[0],coordinates[1]))
         
     def minigame(self, window, t):
         minigameWon = False
@@ -214,7 +211,7 @@ class Hacker(Character.Character):
         if minigameWon or minigameLost:
             self.showEndScreen(window, minigameWon, t)
 
-    def showRules(self, t = 5):
+    def showRules(self, window, t = 5):
         pygame.init()
         for i in range(t):
             window = pygame.display.set_mode([1200,800])
@@ -247,5 +244,6 @@ class Hacker(Character.Character):
             window.blit(countdown, (8, 100))
             pygame.display.update()
             time.sleep(1)
+#b = pygame.display.set_mode([1,1])
 #a = Hacker(1)
-#a.showRules()
+#a.showRules(b)

@@ -134,7 +134,7 @@ class Main:
         if isHost: #draw screen
             if connectionType.numPlayers < minPlayerCount:
                 pygame.draw.rect(game_screen,blue,(630,60,370,210))
-            if connectionType.numPlayers >= minPlayerCount:
+            if connectionType.numPlayers > 1:
                 for i in range(connectionType.numPlayers-1):
                     connectionType.sendStrToPlayer(str(connectionType.numPlayers),i)
                     pygame.draw.rect(game_screen,green,(64,131+50*i,319,34))
@@ -174,7 +174,7 @@ class Main:
 
     b = Board(game_screen)
     b.setBoard()
-    pic = myClass.getAvatar()
+    pic = pygame.transform.scale(myClass.getAvatar(),(75,75))
     while b.hasNotWon:
         b.turnStart(6)
         while b.isTurn:

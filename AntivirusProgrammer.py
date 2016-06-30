@@ -153,13 +153,13 @@ class AntivirusProgrammer(Character.Character):
         if minigameWon or minigameLost:
             self.showEndScreen(window, minigameWon, t)
 
-    def showRules(self, t = 5):
+    def showRules(self, window, t = 5):
         pygame.init()
         for i in range(t):
             window = pygame.display.set_mode([400,200])
             pygame.display.set_caption("")
             window.fill((0,0,0))
-            font = pygame.font.Font(pathName, 20)
+            font = pygame.font.Font('times.ttf', 20)
             goal = 'Your objective is to ' + self.getAbilityDefinition()
             text1 = font.render(goal[:int((len(goal)+1)/2)-2], 1, (255,255,255))
             text2 = font.render(goal[int((len(goal)+1)/2)-1:], 1, (255,255,255))
@@ -184,7 +184,7 @@ class AntivirusProgrammer(Character.Character):
             window = pygame.display.set_mode([400,200])
             pygame.display.set_caption("")
             window.fill((0,0,0))
-            font = pygame.font.Font(pathName, 20)
+            font = pygame.font.Font('times.ttf', 20)
             text1 = font.render(words[:c], 1, (255,255,255))
             text2 = font.render(words[c+1:], 1, (255,255,255))
             countdown = font.render('Returning to the main game in:     ' + str(t-i) , 1, (255,255,255))
@@ -194,5 +194,6 @@ class AntivirusProgrammer(Character.Character):
             pygame.display.update()
             time.sleep(1)
 
+#b = pygame.display.set_mode([1,1])
 #a = AntivirusProgrammer(1)   #Un-comment these to try out the minigame, complete with rules and ending screen.
-#a.showRules()
+#a.showRules(b)

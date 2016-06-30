@@ -8,7 +8,7 @@ pygame.font.init()
 class Librarian(Character.Character):
 
     className = 'Librarian'
-    goal = 'Seek and organize books while seeking a quiet place to read'
+    goal = ' seek and organize books while searching for a quiet place to read.'
     abilityDefinition = 'Sort the books in this room by color from red to pink'
     minigameName = 'Sort Books'
     abilSuccess = 'You successfully sort the books'
@@ -17,10 +17,8 @@ class Librarian(Character.Character):
 
     minigameCount = 0
 
-    def display(self,window,coordinates):
-        window.blit(pygame.image.load(self.image),(coordinates[0],coordinates[1]))
-
-    def minigame(self,window):
+    def minigame(self,window,t):
+        window = pygame.display.set_mode([1200,800])
         pygame.display.set_caption(self.minigameName)
 
         # draws shelf from left end of screen to right end of screen
@@ -92,8 +90,8 @@ class Librarian(Character.Character):
         numBooks = 16
 
         # list of shitty titles to use
-        titleList = ["The Horrors of Github","A Brief History of Fanfiction", "Comprehensive Guide to Windows 95", "Why Steve Jobs Really Died", "Illuminati Confirmed","Bridge for Beginners, Abridged","The Middle-Age Testament","How to Clean Your Bathroom",
-                "Starbucks and the Making of an Empire","Porch Monkey","Using the Internet for the Elderly","History of Sarah Palin","Breyer Horse Figurine Catalog","How to Meme","Celebrating 75 Years","The Significance of 966"]
+        titleList = ["The ""Wonders"" of Github","A Brief History of Fanfiction", "Comprehensive Guide to Windows 9.5", "Why Steve Jobs Really Died", "Illuminati Confirmed","Bridge for Beginners, Abridged","The Middle-Age Testament","How to Clean Your Bathroom",
+                "Starbucks and the Making of an Empire","Porch Monkey","Using the Internet for the Elderly","History of Sarah Palin","Breyer Horse Figurine Catalog","How to Meme, for Dummies","Celebrating 75 Years","The Significance of 966"]
         titleList2 = ["DSM IV-TR","Deleting System32","Cosmopolitan","A Comprehensive Guide to the Rorschach","Error 404, Book not found","Julius Caesar Salad","Pokemon Emerald","Lord of the Fries","To Kill a Meme-ing Bird","Of Mice and Memes","Catch-42","Anon in an Anonymous Land",                         "Bae-o-wulf","Alice's Adventures in Reddit","Prunes and Prejudice","The Mediocre Gatsby"]
         titleList3 = ["Another Young Adult Vampire Romance Novel","War and Pepe","The Fault in our Apple Devices","The Adventures of Blackberry Phone","A Complete History of the Catapult","The Lion King","1983.5","Gone with the Meme","Pomegranates of Wrath","The CATAPULTry Tales",
                 "Billy Joel's Greatest Hits'","The Merchant of Chinatown","Much Ado about Cookies","Less Miserables","Old Man and The Book that Dragged on Forever","Hoarder of the Things"]
@@ -208,10 +206,10 @@ class Librarian(Character.Character):
         # user input stuff goes here
         numClicks = 0
         unordered = True
+        # initializes font and other reusable text things
+        clear = Rect((0,0),(1200,150))
+        font = pygame.font.Font(None, 26)
         while unordered:
-            # initializes font and other reusable text things
-            clear = Rect((0,0),(1200,150))
-            font = pygame.font.Font(None, 26)
             # draws the timer
             remainingTime = round(40 - (time.clock()-startTime)) # Starting time for timer goes here (30 or something)
             pygame.draw.rect(window,[0,0,0],clear,0)
@@ -220,16 +218,15 @@ class Librarian(Character.Character):
 
             # checks if time hasn't yet run out
             if remainingTime <= 0:
-                return
-
+                break
 
             # takes all inputted events and figures out what to do with them
             events = pygame.event.get()
             for event in events:
                 
                 # displays coord of mouse
-                if event.type == MOUSEMOTION:
-                    pass
+                #if event.type == MOUSEMOTION:
+                    #pass
                    # title = font.render(str(event.pos), 1, (255,255,255))
                    # screen.blit(title, [0,20])
                 
@@ -266,19 +263,49 @@ class Librarian(Character.Character):
                 # ends game if user quits
                 if event.type == QUIT:
                     return 
-                pygame.display.update()    
-
+            pygame.display.update()    
+        self.showEndScreen(window, not unordered, t)
                 
+    def showRules(self, window, t = 5):
+        pygame.init()
+        for i in range(t):
+            window = pygame.display.set_mode([1200,800])
+            pygame.display.set_caption("")
+            window.fill([255,255,255])
+            font = pygame.font.Font(None, 36)
+            goal = 'Your objective is to sort all of these wondrous books.'
+            text1 = font.render(goal, 1, (0,0,0))
+            countdown = font.render('Minigame starting in:     ' + str(t-i) , 1, (0,0,0))
+            window.blit(text1, (10,10))
+            window.blit(countdown, (10, 100))
+            pygame.display.update()
+            time.sleep(1)
+            pygame.display.set_caption(self.minigameName)
+        self.minigame(window, t)
+
+    def showEndScreen(self, window, hasWon, t):
+        if hasWon:
+            words = self.getMinigameWinText()
+            self.getPoints(1)
+        else:
+            words = self.getMinigameLossText()
+        pygame.init()
+        for i in range(t):
+            window = pygame.display.set_mode([1200,800])
+            pygame.display.set_caption("")
+            window.fill((255,255,255))
+            font = pygame.font.Font(None, 36)
+            text = font.render(words, 1, (0,0,0))
+            countdown = font.render('Returning to the main game in:     ' + str(t-i) , 1, (0,0,0))
+            window.blit(text, (10,10))
+            window.blit(countdown, (10, 100))
+            pygame.display.update()
+            time.sleep(1)
 
        
 
         
 
-#screen = pygame.display.set_mode([1200,800])
-
-#kek = Librarian(966)
-#kek.minigame(screen)
-# time.sleep(1)
-# kek.minigame(screen)
-
-
+screen = pygame.display.set_mode([1,1])
+kek = Librarian(966)
+kek.showRules(screen)
