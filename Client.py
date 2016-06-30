@@ -66,6 +66,7 @@ class Client():
         self.recvStr.settimeout(.1)
         self.recvStr.setblocking(0)
         recvThread = (threading.Thread(target = self.recieving, args = (self.recvStr,'s'), daemon = True))
+        print('init recieving thread')
         recvThread.start()
     
     def recieving(self, sock, dataType, buf_size = 1024):
@@ -78,15 +79,16 @@ class Client():
                 try:
                     data, sender_addr = sock.recvfrom(buf_size)
                     self.rcvdStr = data.decode()
+                    print(self.rcvdStr)
+                    try:
+                        int(self.rcvdStr)
+                        self.rcvdInt = int(self.rcvdStr)
+                    except ValueError:
+                        pass
                 except socket.error:
                     pass
                 if self.rcvdStr == 'quit':
                     sys.exit()
-                try:
-                    int(self.rcvdStr)
-                    self.rcvdInt = int(self.rcvdStr)
-                except ValueError:
-                    pass
 
     def sendStrToServer(self, data):
         self.shouldSend = True

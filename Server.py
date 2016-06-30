@@ -27,9 +27,12 @@ class Server():
     
     def startGame(self): # Begins the game and informs all other players
         self.gameStarted = True
-        if len(self.playerIPNum) >= 0:
+        time.sleep(.5)
+        if len(self.playerIPNum) > 0:
             for i in range(len(self.playerIPNum)):
+                time.sleep(.1)
                 self.sendStrToPlayer('start', i)
+                print('sending')
 
     def backupBroadcast(self, port = generalSCPort):
         count = 0
@@ -69,17 +72,17 @@ class Server():
                     if data != None:
                         self.playerIPNum.append(sender_addr[0])
                         self.numPlayers += 1
-                        print('got one!')
+                        print('got one! '+self.playerIPNum[self.numPlayers-2])
                         self.rcvdStrs.append('')
                         self.rcvdInts.append(-1)
                 except socket.error:
                     pass
-        print('STARTING GAME!!!')
         s.close()
         so.close()
         self.initThreads()
 
     def initThreads(self):
+        print('init')
         self.sendStr.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.recvStr.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.recvStr.bind(('', self.rSp))
