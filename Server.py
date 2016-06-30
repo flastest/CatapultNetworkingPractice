@@ -93,7 +93,7 @@ class Server():
     
     def sendStrToAll(self, data):
         self.sendS = data
-        for i in range(numPlayers-1):
+        for i in range(self.numPlayers-1):
             self.shouldSend = True
             self.target = i
             time.sleep(.01)
@@ -104,6 +104,7 @@ class Server():
             playerNum = -1
             if self.shouldSend:
                 self.sendStr.sendto(str.encode(self.sendS), (self.playerIPNum[self.target], self.sSp))
+                print('sent'+self.sendS)
                 self.shouldSend=False
             while x > time.clock():
                 try:
@@ -112,6 +113,7 @@ class Server():
                         if sender_addr == self.playerIPNum[i]:
                             playerNum = i
                     self.rcvdStrs[playerNum] = data.decode()
+                    print(self.rcvdStrs[playerNum])
                     try:
                         int(self.rcvdStrs[playerNum])
                         self.rcvdInts[playerNum] = int(self.rcvdStrs[playerNum])
