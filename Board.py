@@ -113,5 +113,5 @@ class Board:
         font = pygame.font.Font(None, 36)
         text1 = font.render('Press the arrowkeys to decide what path you wish to take this turn,', 1, (0,0,0))
         text2 = font.render('press escape to undo your selection, and enter to confirm it.',1,(0,0,0))
-        self.win.blit(text, (10,650))
+        self.win.blit(text1, (10,650))
         self.win.blit(text2, (10,700))

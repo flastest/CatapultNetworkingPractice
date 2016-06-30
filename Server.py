@@ -20,6 +20,7 @@ class Server():
     target = -1
     rcvdStrs = []
     rcvdInts = []
+    recvThread = None
 
     def __init__(self): # Begins normal broadcast of ip address to other possible players upon initialization
         collectionThread = threading.Thread(target = self.gatherPlayers,daemon = True)
@@ -126,7 +127,7 @@ class Server():
                         break
                 except socket.error:
                     pass
-    recvThread = (threading.Thread(target = recieving, args = ('s', recvStr), daemon = True))
+
     def endGame(self):
         for i in range(len(self.playerIPNum)):
             self.sendStrToPlayer('quit', i)

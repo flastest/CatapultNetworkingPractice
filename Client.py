@@ -19,6 +19,7 @@ class Client():
     sendS = ''
     rcvdStr = ''
     rcvdInt = -1
+    recvThread = None
 
     def __init__(self):
         t = threading.Thread(target = self.connectWithServer, daemon = True)
@@ -64,7 +65,7 @@ class Client():
         self.recvStr.bind(('', self.rSp))
         self.recvStr.settimeout(.1)
         self.recvStr.setblocking(0)
-        self.recvThread = (threading.Thread(target = self.recieving, args = ('s', self.recvStr), daemon = True))
+        self.recvThread = (threading.Thread(target = self.recieving, args = (self.recvStr,'s'), daemon = True))
         self.recvThread.start()
     
     def recieving(self, sock, dataType, buf_size = 1024):
@@ -86,7 +87,7 @@ class Client():
                     pass
                 if self.rcvdStr == 'quit':
                     sys.exit()
-    recvThread = (threading.Thread(target = recieving, args = (recvStr,'s'), daemon = True))
+                    
     def sendStrToServer(self, data):
         self.shouldSend = True
         self.sendS = data
@@ -95,5 +96,5 @@ class Client():
         self.recvThread.exit()
 
     def resumeThread(self):
-        self.recvThread = (threading.Thread(target = self.recieving, args = ('s', self.recvStr), daemon = True))
+        self.recvThread = (threading.Thread(target = self.recieving, args = (self.recvStr,'s'), daemon = True))
         self.recvThread.start()
