@@ -9,9 +9,9 @@ class Client():
     generalCSPort = 50967
     gameStarted = False
     isRecieving = True # while true, all threads will try to recieve from all players
-    recvBoo = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    recvStr = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     rSp = 40000
-    sendBoo = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sendStr = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sSp = 50000
     shouldAnswer = False
     isConnected = False
