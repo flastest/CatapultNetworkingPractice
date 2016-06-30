@@ -32,7 +32,6 @@ class Server():
             for i in range(len(self.playerIPNum)):
                 time.sleep(.1)
                 self.sendStrToPlayer('start', i)
-                print('sending')
 
     def backupBroadcast(self, port = generalSCPort):
         count = 0

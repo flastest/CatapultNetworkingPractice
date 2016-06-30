@@ -124,16 +124,16 @@ class Main:
             isConnecting = not connectionType.gameStarted
             connectionType.waitForStart()
             pygame.draw.rect(game_screen, blue, (630,60,370,450))
-            if connectionType.rcvdInt > 0:
-                for i in range(connectionType.rcvdInt):
-                    pygame.draw.rect(game_screen,green,(64,81+50*i,319,34))
+            if connectionType.rcvdInt > 1:
+                for i in range(connectionType.rcvdInt-1):
+                    pygame.draw.rect(game_screen,green,(65,82+50*i,319,34))
         if isHost: #draw screen
             if connectionType.numPlayers < minPlayerCount:
                 pygame.draw.rect(game_screen,blue,(630,60,370,210))
             if connectionType.numPlayers > 1:
                 for i in range(connectionType.numPlayers-1):
                     connectionType.sendStrToPlayer(str(connectionType.numPlayers),i)
-                    pygame.draw.rect(game_screen,green,(64,81+50*i,319,34))
+                    pygame.draw.rect(game_screen,green,(65,82+50*i,319,34))
         pygame.display.update()
     #done
     if isHost: #Notifys players to start game and adds variable for the total number of players

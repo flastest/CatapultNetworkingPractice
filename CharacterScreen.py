@@ -16,7 +16,7 @@ class CharacterScreen:
 
         font = pygame.font.Font(None, 40)
         nameFont = pygame.font.Font('times.ttf', 72)
-        goalFont = pygame.font.Font(None, 28)
+        goalFont = pygame.font.Font(None, 24)
 
         text = font.render('Your Role is:', 1, gray)
         textW,textH = font.size('Your Role is:')

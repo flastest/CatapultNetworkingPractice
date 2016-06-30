@@ -1,4 +1,4 @@
-import socket, time, struct, threading
+import socket, time, struct, threading, sys
 
 class Client():
     
@@ -49,7 +49,6 @@ class Client():
                             self.shouldAnswer = True
                     except socket.error:
                         pass
-        print('Connected!!!')
         s.close()
         so.close()
         self.initThreads()
