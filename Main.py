@@ -179,14 +179,14 @@ class Main:
         if not b.isTurn:
             if not isHost:
                 if connectionType.rcvdStr != 'wait':
-                    myClass.minigame()
+                    myClass.showRules(game_screen)
             else:
                 tog = True
                 for i in range(numPlayers-1):
                     if connectionType.rcvdStrs[i] != 'ready':
                         tog = False
                 if tog:
-                    myClass.minigame()
+                    myClass.showRules(game_screen)
                 else:
                     connectionType.sendStrToAll('wait')
         if myClass.won:
