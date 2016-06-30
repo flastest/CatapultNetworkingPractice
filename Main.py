@@ -127,16 +127,16 @@ class Main:
             if connectionType.rcvdStr == 'start':  # All client programs start game
                 print('start game!!!')
             pygame.draw.rect(game_screen, blue, (630,60,370,450))
-            if connectionType.rcvdStr > '0':
-                for i in range(int(connectionType.rcvdStr)):
-                    pygame.draw.rect(game_screen,green,(64,131+50*i,319,34))
+            if connectionType.rcvdInt > 0:
+                for i in range(connectionType.rcvdInt):
+                    pygame.draw.rect(game_screen,green,(64,81+50*i,319,34))
         if isHost: #draw screen
             if connectionType.numPlayers < minPlayerCount:
                 pygame.draw.rect(game_screen,blue,(630,60,370,210))
             if connectionType.numPlayers > 1:
                 for i in range(connectionType.numPlayers-1):
                     connectionType.sendStrToPlayer(str(connectionType.numPlayers),i)
-                    pygame.draw.rect(game_screen,green,(64,131+50*i,319,34))
+                    pygame.draw.rect(game_screen,green,(64,81+50*i,319,34))
         pygame.display.update()
     #done
     if isHost: #Notifys players to start game and adds variable for the total number of players
@@ -144,7 +144,7 @@ class Main:
         numPlayers = connectionType.numPlayers
         time.sleep(1)
     else:
-        numPlayers = int(connectionType.rcvdStr)
+        numPlayers = connectionType.rcvdInt
     time.sleep(1)
     if isHost: # provides playerNumbers to every player, self included
         classList = [1]
@@ -155,14 +155,14 @@ class Main:
         for i in range(numPlayers-1):
             connectionType.sendStrToPlayer(str(i+2), i)
     else:
-        myNum = int(connectionType.rcvdStr)
+        myNum = connectionType.rcvdInt
     time.sleep(1)
     if isHost: # provides character class roles to every player
         myClassNum = classList[0]
         for i in range(numPlayers-1):
             connectionType.sendStrToPlayer(str(classList[i+1]),i)
     else:
-        myClassNum = int(connectionType.rcvdStr)
+        myClassNum = connectionType.rcvdInt
     isLoading = False
     myClass = classPicker(myClassNum, myNum)
     

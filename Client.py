@@ -18,6 +18,7 @@ class Client():
     shouldSend = False
     sendS = ''
     rcvdStr = ''
+    rcvdInt = -1
 
     def __init__(self):
         t = threading.Thread(target = self.connectWithServer, daemon = True)
@@ -81,8 +82,11 @@ class Client():
                     pass
                 if self.rcvdStr == 'quit':
                     sys.exit()
-                if int(self.rcvdStr) != None:
+                try:
+                    int(self.rcvdStr)
                     self.rcvdInt = int(self.rcvdStr)
+                except ValueError:
+                    pass
 
     def sendStrToServer(self, data):
         self.shouldSend = True
