@@ -125,6 +125,5 @@ class OperationMinigame():
                 time.sleep(2)
                 running  = False
             pygame.display.update()
-        pygame.quit()
 #s = pygame.display.set_mode([1,1])
 #a = OperationMinigame(s)
