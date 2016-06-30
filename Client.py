@@ -64,6 +64,7 @@ class Client():
         self.recvStr.bind(('', self.rSp))
         self.recvStr.settimeout(.1)
         self.recvStr.setblocking(0)
+        self.recvThread = (threading.Thread(target = self.recieving, args = ('s', self.recvStr), daemon = True))
         self.recvThread.start()
     
     def recieving(self, sock, dataType, buf_size = 1024):
@@ -94,5 +95,5 @@ class Client():
         self.recvThread.exit()
 
     def resumeThread(self):
-        self.recvThread = (threading.Thread(target = self.recieving, args = ('s', self.recvStr, ''), daemon = True))
+        self.recvThread = (threading.Thread(target = self.recieving, args = ('s', self.recvStr), daemon = True))
         self.recvThread.start()
