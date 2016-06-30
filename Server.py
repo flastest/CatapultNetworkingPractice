@@ -104,7 +104,6 @@ class Server():
             playerNum = -1
             if self.shouldSend:
                 self.sendStr.sendto(str.encode(self.sendS), (self.playerIPNum[self.target], self.sSp))
-                print('sent ' + self.sendS)
                 self.shouldSend=False
             while x > time.clock():
                 try:

@@ -145,7 +145,6 @@ class Main:
         time.sleep(.01)
     else:
         numPlayers = connectionType.rcvdInt
-        print('numPlayers = ', numPlayers)
     time.sleep(.5)
     if isHost: # provides playerNumbers to every player, self included
         classList = [1]
@@ -155,19 +154,15 @@ class Main:
         random.shuffle(classList)
         for i in range(numPlayers-1):
             connectionType.sendStrToPlayer(str(i+2), i)
-            print('sent myNum')
     else:
         myNum = connectionType.rcvdInt
-        print('myNum = ', myNum)
     time.sleep(.5)
     if isHost: # provides character class roles to every player
         myClassNum = classList[0]
         for i in range(numPlayers-1):
             connectionType.sendStrToPlayer(str(classList[i+1]),i)
-            print('sent classNum')
     else:
         myClassNum = connectionType.rcvdInt
-        print('classNum = ', myClassNum)
     isLoading = False
     myClass = classPicker(myClassNum, myNum)
     
