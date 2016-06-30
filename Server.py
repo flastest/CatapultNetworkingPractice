@@ -100,7 +100,7 @@ class Server():
             time.sleep(.01)
 
     def recieving(self, dataType, sock, buf_size = 1024):
-        while True:
+        while self.isRecieving:
             x = time.clock() + .0001
             playerNum = -1
             if self.shouldSend:
@@ -133,8 +133,9 @@ class Server():
             self.sendStrToPlayer('quit', i)
     
     def stopThread(self):
-        self.recvThread.exit()
+        self.isRecieving = False
 
     def resumeThread(self):
+        self.isRecieving = True
         self.recvThread = (threading.Thread(target = self.recieving, args = ('s',self.recvStr), daemon = True))
         self.recvThread.start()

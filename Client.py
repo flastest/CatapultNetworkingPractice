@@ -93,8 +93,9 @@ class Client():
         self.sendS = data
 
     def stopThread(self):
-        self.recvThread.exit()
+        self.isRecieving = False
 
     def resumeThread(self):
+        self.isRecieving = True
         self.recvThread = (threading.Thread(target = self.recieving, args = (self.recvStr,'s'), daemon = True))
         self.recvThread.start()
