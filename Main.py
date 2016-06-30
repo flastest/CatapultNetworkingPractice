@@ -175,7 +175,7 @@ class Main:
 
     b = Board(game_screen)
     b.setBoard()
-    pic = pygame.transform.scale(myClass.getAvatar(),(75,75))
+    pic = pygame.transform.scale(pygame.image.load(myClass.getAvatar()),(75,75))
     while b.hasNotWon:
         b.turnStart(6)
         while b.isTurn:

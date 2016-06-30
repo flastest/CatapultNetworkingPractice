@@ -48,21 +48,21 @@ class Server():
 
     def gatherPlayers(self, port = generalCSPort, buf_size = 1024):
         broadcastaddr = socket.inet_ntoa(socket.inet_aton(self.myIP)[:3] + b'\xff' )
-        addr=(broadcastaddr, self.generalSCPort)
+        addr=('132.112.104.246', self.generalSCPort)
 
         so = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         so.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         so.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)   #broadcast
 
-        data = self.myIP
+        data = str.encode(self.myIP)
 
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.setblocking(0)
         s.settimeout(.1)
         s.bind(('', port))
         while not self.gameStarted:
-            so.sendto(str.encode(data), addr)
-            x = time.clock() +.001
+            so.sendto(data, addr)
+            x = time.clock() + 1
             while x > time.clock():
                 try:
                     data, sender_addr = s.recvfrom(buf_size)
