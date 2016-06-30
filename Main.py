@@ -106,8 +106,6 @@ class Main:
     isConnecting = True
     minPlayerCount = 1
     print('made it here!!!')
-    if not isHost:
-        connectionType.initThreads()
     while isConnecting:  # Host/Client connecting screen event loop here
         events = pygame.event.get()
         for event in events:

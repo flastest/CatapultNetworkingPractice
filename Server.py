@@ -26,7 +26,6 @@ class Server():
     
     def startGame(self): # Begins the game and informs all other players
         self.gameStarted = True
-        print(str(len(self.playerIPNum)))
         if len(self.playerIPNum) >= 0:
             for i in range(len(self.playerIPNum)):
                 self.sendStrToPlayer('start', i)
@@ -48,7 +47,7 @@ class Server():
 
     def gatherPlayers(self, port = generalCSPort, buf_size = 1024):
         broadcastaddr = socket.inet_ntoa(socket.inet_aton(self.myIP)[:3] + b'\xff' )
-        addr=('132.112.104.246', self.generalSCPort)
+        addr = ('137.112.104.246', self.generalSCPort)
 
         so = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         so.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -74,13 +73,17 @@ class Server():
                 except socket.error:
                     pass
         print('STARTING GAME!!!')
+        s.close()
+        so.close()
         self.initThreads()
 
     def initThreads(self):
+        self.sendStr.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        self.recvStr.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.recvStr.bind(('', self.rSp))
         self.recvStr.settimeout(.01)
         self.recvStr.setblocking(False)
-        self.recvThread.append(threading.Thread(target = self.recieving, args = ('s', self.recvStr, ''), daemon = True))
+        recvThread = (threading.Thread(target = self.recieving, args = ('s', self.recvStr, ''), daemon = True))
         recvThread.start()
 
     def sendStrToPlayer(self, data, playerNum):

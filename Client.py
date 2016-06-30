@@ -49,6 +49,8 @@ class Client():
                     except socket.error:
                         pass
         print('Connected!!!')
+        s.close()
+        so.close()
         self.initThreads()
         
 
@@ -57,13 +59,15 @@ class Client():
             self.gameStarted = True
 
     def initThreads(self):
+        self.sendStr.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        self.recvStr.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.recvStr.bind(('', self.rSp))
         self.recvStr.settimeout(.1)
         self.recvStr.setblocking(0)
-        recvThread = (threading.Thread(target = self.recieving, args = (self.recvStr), daemon = True))
+        recvThread = (threading.Thread(target = self.recieving, args = (self.recvStr,'s'), daemon = True))
         recvThread.start()
     
-    def recieving(self, sock, buf_size = 1024):
+    def recieving(self, sock, dataType, buf_size = 1024):
         while self.isRecieving:
             x = time.clock() + .0001
             if self.shouldSend:
@@ -71,11 +75,14 @@ class Client():
                 self.shouldSend=False
             while x > time.clock():
                 try:
+                    data, sender_addr = sock.recvfrom(buf_size)
                     self.rcvdStr = data.decode()
                 except socket.error:
                     pass
                 if self.rcvdStr == 'quit':
-                    sys.exit
+                    sys.exit()
+                if int(self.rcvdStr) != None:
+                    self.rcvdInt = int(self.rcvdStr)
 
     def sendStrToServer(self, data):
         self.shouldSend = True
