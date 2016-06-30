@@ -14,7 +14,7 @@ class Server():
     recvStr = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     rSp = 50000
     sendStr = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    sSp = 40000
+    sSp = 50001
     shouldSend = False
     sendS = ''
     target = -1
@@ -70,8 +70,6 @@ class Server():
                         self.playerIPNum.append(sender_addr[0])
                         self.numPlayers += 1
                         print('got one!')
-                        self.rcvdBools.append(False)
-                        self.rcvdInts.append(-1)
                         self.rcvdStrs.append('')
                 except socket.error:
                     pass

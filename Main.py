@@ -100,7 +100,8 @@ class Main:
                     connectionType = Client()
                     atStartPage = False
                 if isWithin(click,821,668,371,668,484):#Exit
-                    quit(game_screen)
+                    pygame.display.quit()
+                    sys.exit()
 
     isConnecting = True
     minPlayerCount = 1
@@ -128,7 +129,7 @@ class Main:
             if connectionType.rcvdStr == 'start':  # All client programs start game
                 print('start game!!!')
             pygame.draw.rect(game_screen, blue, (630,60,370,450))
-            if int(connectionType.rcvdStr) > 0:
+            if connectionType.rcvdStr > '0':
                 for i in range(int(connectionType.rcvdStr)):
                     pygame.draw.rect(game_screen,green,(64,131+50*i,319,34))
         if isHost: #draw screen

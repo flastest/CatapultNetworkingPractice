@@ -15,7 +15,7 @@ class CharacterScreen:
         window.fill(lBrown)
 
         font = pygame.font.Font(None, 40)
-        nameFont = pygame.font.Font('CatapultNetworkingPractice\\times.ttf', 72)
+        nameFont = pygame.font.Font('times.ttf', 72)
         goalFont = pygame.font.Font(None, 28)
 
         text = font.render('Your Role is:', 1, gray)

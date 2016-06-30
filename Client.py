@@ -10,7 +10,7 @@ class Client():
     gameStarted = False
     isRecieving = True # while true, all threads will try to recieve from all players
     recvStr = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    rSp = 40000
+    rSp = 50001
     sendStr = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sSp = 50000
     shouldAnswer = False
