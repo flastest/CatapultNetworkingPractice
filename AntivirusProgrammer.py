@@ -11,9 +11,7 @@ class AntivirusProgrammer(Character.Character):
     minigameName = '"Hello, World?"'
     abilSuccess = 'You successfully provided minimal assistance to your helpless customer.'
     abilLoss = 'You fail to defeat the notorious hacker.'
-    gamePoints = 0
-    playerNumber = -1
-    timeLimit = 100 # time limit for the minigame, feel free to change as needed.
+    timeLimit = 80 # time limit for the minigame, feel free to change as needed.
     image = "Programmer.png"
     
     def display(self,window,coordinates):
@@ -172,6 +170,7 @@ class AntivirusProgrammer(Character.Character):
         self.minigame(window, t)
 
     def showEndScreen(self, window, hasWon, t):
+        self.won = hasWon
         if hasWon:
             words = self.getMinigameWinText()
             c = int((len(words)+1)/2)+8

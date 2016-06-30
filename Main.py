@@ -104,7 +104,7 @@ class Main:
                     sys.exit()
 
     isConnecting = True
-    minPlayerCount = 1
+    minPlayerCount = 2
     while isConnecting:  # Host/Client connecting screen event loop here
         events = pygame.event.get()
         for event in events:
@@ -139,21 +139,21 @@ class Main:
     if isHost: #Notifys players to start game and adds variable for the total number of players
         connectionType.startGame()
         numPlayers = connectionType.numPlayers
-        time.sleep(1)
+        time.sleep(.5)
     else:
         numPlayers = connectionType.rcvdInt
-    time.sleep(1)
+    time.sleep(.5)
     if isHost: # provides playerNumbers to every player, self included
         classList = [1]
         myNum = 1
-        for i in range(numPlayers):
+        for i in range(numPlayers-1):
             classList.append(random.randint(2, numberOfClasses))
         random.shuffle(classList)
         for i in range(numPlayers-1):
             connectionType.sendStrToPlayer(str(i+2), i)
     else:
         myNum = connectionType.rcvdInt
-    time.sleep(1)
+    time.sleep(.5)
     if isHost: # provides character class roles to every player
         myClassNum = classList[0]
         for i in range(numPlayers-1):
@@ -166,13 +166,28 @@ class Main:
     a = CharacterScreen(game_screen,myClass) # Shows character role and info regarding it
     time.sleep(TIME_THAT_WE_SHOULD_HAVE_THEM_READ_THEIR_CHARACTER_INFO_FOR)
 
-    #What next, board? gameplay?  --Board, decided :)
+    #gameplay!!!!!!
+
 
     b = Board(game_screen)
     b.setBoard()
-    pic = pygame.transform.scale(pygame.image.load(myClass.getAvatar()),(75,75))
+    myPic = pygame.transform.scale(pygame.image.load(myClass.getAvatar()),(75,75))
     while b.hasNotWon:
-        b.turnStart(6)
+        if not b.isTurn:
+            if not isHost:
+                if connectionType.rcvdStr != 'wait':
+                    myClass.minigame()
+            else:
+                tog = True
+                for i in range(numPlayers-1):
+                    if connectionType.rcvdStrs[i] != 'ready':
+                        tog = False
+                if tog:
+                    myClass.minigame()
+                else:
+                    connectionType.sendStrToAll('wait')
+        if myClass.won:
+            b.turnStart(6)
         while b.isTurn:
             events = pygame.event.get()
             for event in events:
@@ -190,9 +205,11 @@ class Main:
                     if event.key == K_ESCAPE:
                         b.restartPath()
                     if event.key == K_RETURN:
-                        b.goThere(pic)
+                        if not isHost:
+                            connectionType.sendStrToServer('ready')
+                        b.goThere(myPic)
             b.setBoard()
-            b.showCharacter(pic,b.initPos)
+            b.showCharacter(myPic,b.initPos)
             b.displayUnconfirmedPath()
             if (b.goalCoordinates[0],b.goalCoordinates[1]) == (b.initPos[0],b.initPos[1]):
                 b.moveGoal()

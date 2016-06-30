@@ -10,6 +10,7 @@ class Character:
     abilSuccess = 'what is said when the ability minigame is won'
     abilLoss = 'what is said when the ability minigame is won'
     gamePoints = 0
+    won = False
     playerNumber = -1
 
     def __init__(self, playerNum):

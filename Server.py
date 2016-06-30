@@ -92,6 +92,13 @@ class Server():
         self.shouldSend = True
         self.target = playerNum
         self.sendS = data
+    
+    def sendStrToAll(self, data):
+        for i in range(numPlayers-1):
+            self.shouldSend = True
+            self.target = i
+            self.sendS = data
+            time.sleep(.01)
 
     def recieving(self, dataType, sock, pack, buf_size = 1024):
         while self.isRecieving:

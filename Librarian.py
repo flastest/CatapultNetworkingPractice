@@ -284,12 +284,11 @@ class Librarian(Character.Character):
         self.minigame(window, t)
 
     def showEndScreen(self, window, hasWon, t):
+        self.won = hasWon
         if hasWon:
             words = self.getMinigameWinText()
-            self.getPoints(1)
         else:
             words = self.getMinigameLossText()
-        pygame.init()
         for i in range(t):
             window = pygame.display.set_mode([1200,800])
             pygame.display.set_caption("")

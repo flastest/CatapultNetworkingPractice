@@ -228,9 +228,9 @@ class Hacker(Character.Character):
         self.minigame(window, t)
 
     def showEndScreen(self, window, hasWon, t):
+        self.won = hasWon
         if hasWon:
             words = self.getMinigameWinText()
-            self.getPoints(1)
         else:
             words = self.getMinigameLossText()
         for i in range(t):
