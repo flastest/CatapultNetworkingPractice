@@ -189,8 +189,13 @@ class Main:
                     connectionType.stopThread()
                     myClass.showRules(game_screen)
                     connectionType.resumeThread()
-                    if myClass.won == False:
-                        b.turnStart(0)
+                    if not myClass.won:
+                        b.setBoard()
+                        b.showCharacter(myPic,b.initPos)
+                        b.displayGoal()
+                        b.displayWaiting()
+                        pygame.display.update()
+                        time.sleep(3)
                 else:
                     connectionType.sendStrToServer('ready')
             else:
@@ -205,8 +210,13 @@ class Main:
                     connectionType.stopThread()
                     myClass.showRules(game_screen)
                     connectionType.resumeThread()
-                    if myClass.won == False:
-                        b.turnStart(0)
+                    if not myClass.won:
+                        b.setBoard()
+                        b.showCharacter(myPic,b.initPos)
+                        b.displayGoal()
+                        b.displayWaiting()
+                        pygame.display.update()
+                        time.sleep(3)
                 else:
                     connectionType.sendStrToAll('wait')
             b.setBoard()

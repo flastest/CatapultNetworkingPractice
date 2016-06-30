@@ -84,7 +84,6 @@ class OperationMinigame():
                     if P[0] <= 400+150 and P[0] >= 400 and P[1] <= 0+150 and P[1] >= 0:
                         if largeIntestine_remove == True:
                             brain_remove = True
-                            print('You Win')
                             self.You_Win = True
 
                         else:
