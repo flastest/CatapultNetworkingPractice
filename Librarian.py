@@ -306,6 +306,6 @@ class Librarian(Character.Character):
 
         
 
-screen = pygame.display.set_mode([1,1])
-kek = Librarian(966)
-kek.showRules(screen)
+#screen = pygame.display.set_mode([1,1])
+#kek = Librarian(966)
+#kek.showRules(screen)
