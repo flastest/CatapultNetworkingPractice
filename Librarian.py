@@ -17,8 +17,8 @@ class Librarian(Character.Character):
 
     minigameCount = 0
 
-    def minigame(self,window,t):
-        window = pygame.display.set_mode([1200,800])
+    def minigame(self,screen,t):
+        screen = pygame.display.set_mode([1200,800])
         pygame.display.set_caption(self.minigameName)
 
         # draws shelf from left end of screen to right end of screen
@@ -264,7 +264,7 @@ class Librarian(Character.Character):
                 if event.type == QUIT:
                     return 
             pygame.display.update()    
-        self.showEndScreen(window, not unordered, t)
+        self.showEndScreen(screen, not unordered, t)
                 
     def showRules(self, window, t = 5):
         pygame.init()

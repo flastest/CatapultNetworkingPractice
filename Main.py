@@ -176,6 +176,13 @@ class Main:
     b.setBoard()
     myPic = pygame.transform.scale(pygame.image.load(myClass.getAvatar()),(75,75))
     while b.hasNotWon:
+        if not isHost:
+            if connectionType.rcvdStr == 'lose':
+                break
+        else:
+            for i in range(connectionType.numPlayers-1):
+                if connectionType.rcvdStrs[i] == 'won':
+                    break
         if not b.isTurn:
             if not isHost:
                 if connectionType.rcvdStr != 'wait':
@@ -230,3 +237,34 @@ class Main:
             b.displayGoal()
             b.displayRules()
             pygame.display.update()
+    notYet = True
+    while notYet:
+        game_screen.fill((255,255,255))
+        if not isHost:
+            connectionType.sendStrToServer('won')
+            if not b.hasNotWon:
+                pygame.image.load('You Win.png', (20,20))
+                notYet = False
+            else:
+                font = pygame.font.Font('times.ttf', 80)
+                text = font.render('You Lose',1,(0,0,0))
+                textW,textH = font.size('You Lose')
+                self.win.blit(text, (600-textW/2,400-textH/2))
+                notYet = False
+        if isHost:
+            connectionType.sendStrToAll('lose')
+            x = True
+            for i in range(connectionType.numPlayers-1):
+                if connectionType.rcvdStrs[i] != 'won':
+                    x = False
+            if x:
+                if b.hasNotWon:
+                    font = pygame.font.Font('times.ttf', 80)
+                    text = font.render('You Lose',1,(0,0,0))
+                    textW,textH = font.size('You Lose')
+                    self.win.blit(text, (600-textW/2,400-textH/2))
+                    notYet = False
+                else:
+                    pygame.image.load('You Win.png', (20,20))
+                    notYet = False
+        pygame.display.update()
