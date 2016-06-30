@@ -105,7 +105,6 @@ class Main:
 
     isConnecting = True
     minPlayerCount = 1
-    print('made it here!!!')
     while isConnecting:  # Host/Client connecting screen event loop here
         events = pygame.event.get()
         for event in events:
@@ -124,8 +123,6 @@ class Main:
         if not isHost: #draw screen
             isConnecting = not connectionType.gameStarted
             connectionType.waitForStart()
-            if connectionType.rcvdStr == 'start':  # All client programs start game
-                print('start game!!!')
             pygame.draw.rect(game_screen, blue, (630,60,370,450))
             if connectionType.rcvdInt > 0:
                 for i in range(connectionType.rcvdInt):

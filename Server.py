@@ -72,7 +72,6 @@ class Server():
                     if data != None:
                         self.playerIPNum.append(sender_addr[0])
                         self.numPlayers += 1
-                        print('got one! '+self.playerIPNum[self.numPlayers-2])
                         self.rcvdStrs.append('')
                         self.rcvdInts.append(-1)
                 except socket.error:
@@ -82,7 +81,6 @@ class Server():
         self.initThreads()
 
     def initThreads(self):
-        print('init')
         self.sendStr.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.recvStr.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.recvStr.bind(('', self.rSp))
