@@ -185,18 +185,22 @@ class Main:
                     break
         if not b.isTurn:
             if not isHost:
-                if connectionType.rcvdStr != 'wait':
+                if connectionType.rcvdStr == 'ok':
                     connectionType.stopThread()
                     myClass.showRules(game_screen)
                     connectionType.resumeThread()
                     if myClass.won == False:
                         b.turnStart(0)
+                else:
+                    connectionType.sendStrToServer('ready')
             else:
                 tog = True
                 for i in range(connectionType.numPlayers-1):
                     if connectionType.rcvdStrs[i] != 'ready':
                         tog = False
                 if tog:
+                    for i in range(connectionType.numPlayers-1):
+                        connectionType.rcvdStrs[i] = 'not ready'
                     connectionType.sendStrToAll('ok')
                     connectionType.stopThread()
                     myClass.showRules(game_screen)
