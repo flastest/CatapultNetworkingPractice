@@ -366,6 +366,6 @@ class Police(Character.Character):
             pygame.display.update()
             time.sleep(1)
 
-screen = pygame.display.set_mode([1200,800])
-test = Police(966)
-test.showRules(screen)
+#screen = pygame.display.set_mode([1200,800])
+#test = Police(966)
+#test.showRules(screen)
