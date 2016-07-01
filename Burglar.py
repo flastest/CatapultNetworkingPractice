@@ -11,7 +11,7 @@ class Burglar(Character.Character):
     abilSuccess = 'You successfully pick the lock.'
     abilLoss = 'You fail to pick the lock.'
     image = 'Robber.png'
-    timeLimit = 50 # minigame time limit, feel free to change as needed
+    timeLimit = 60 # minigame time limit, feel free to change as needed
 
     def minigame(self, window, t):
         minigameWon = False

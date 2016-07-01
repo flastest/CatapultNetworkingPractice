@@ -9,7 +9,7 @@ class Villain(Character.Character):
     minigameName = 'Sabotage'
     abilSuccess = 'You successfully sabotage the player.'
     abilLoss = 'You fail to sabotage the player.'
-    timeLimit = 36 # minigame time limit, feel free to change as needed
+    timeLimit = 40 # minigame time limit, feel free to change as needed
     image = 'Villain.png'
 
     def minigame(self, window, t):
