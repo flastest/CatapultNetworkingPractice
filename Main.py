@@ -239,8 +239,7 @@ class Main:
                     for i in range(numPlayers-1):
                         try:
                             tuple(connectionType.rcvdStr)
-                            if i+1 != myNumber:
-                                coords[i+1] = tuple(connectionType.rcvdStr)
+                            coords[i+1] = tuple(connectionType.rcvdStr)
                         except ValueError:
                             pass
                         time.sleep(.01)
