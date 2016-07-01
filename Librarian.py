@@ -14,6 +14,7 @@ class Librarian(Character.Character):
     abilSuccess = 'You successfully sort the books'
     abilLoss = 'You fail to sort the books'
     image = 'Librarian.png'
+    speed = 4
 
     minigameCount = 0
 
