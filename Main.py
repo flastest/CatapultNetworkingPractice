@@ -147,10 +147,10 @@ class Main:
         numPlayers = connectionType.rcvdInt
     time.sleep(.5)
     if isHost: # provides playerNumbers to every player, self included
-        classList = [1]
+        classList = []
         myNum = 1
-        for i in range(numPlayers-1):
-            classList.append(random.randint(2, numberOfClasses))
+        for i in range(numPlayers):
+            classList.append(random.randint(1, numberOfClasses))
         random.shuffle(classList)
         for i in range(numPlayers-1):
             connectionType.sendStrToPlayer(str(i+2), i)
