@@ -50,7 +50,7 @@ class Server():
 
     def gatherPlayers(self, port = generalCSPort, buf_size = 1024):
         broadcastaddr = socket.inet_ntoa(socket.inet_aton(self.myIP)[:3] + b'\xff' )
-        addr = ('137.112.104.246', self.generalSCPort)
+        addr = (broadcastaddr, self.generalSCPort)
 
         so = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         so.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
