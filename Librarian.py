@@ -24,7 +24,7 @@ class Librarian(Character.Character):
 
         # draws shelf from left end of screen to right end of screen
         shelf = Rect((0,600),(1200,20))
-        pygame.draw.rect(window, [100,60,40], shelf,0)
+        pygame.draw.rect(screen, [100,60,40], shelf,0)
 
         # draws instructions
         font = pygame.font.Font(None, 26)
@@ -52,7 +52,7 @@ class Librarian(Character.Character):
             # draws book 
             def draw(self):
                 self.book = Rect((self.x, 200),(self.width, 400))
-                pygame.draw.rect(window, [self.red,self.green,self.blue], self.book, 0)
+                pygame.draw.rect(screen, [self.red,self.green,self.blue], self.book, 0)
                 
                 # the dog shit known as pygame.font
                 font = pygame.font.Font(None, 26)
