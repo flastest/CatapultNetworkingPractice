@@ -13,6 +13,7 @@ class Police(Character.Character):
 
     image = "Officer.png"
     victimImg = "victim.png"
+    speed = 4
 
     # number of times minigame has been played
     times_played = 0 

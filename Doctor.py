@@ -9,6 +9,7 @@ class Doctor(Character.Character):
     abilSuccess = 'You successfully perform the operation.' # or 'You successfully culture the bacteria'
     abilLoss = 'The operation fails.' # 'You fail to learn anything new.'
     image = 'doctor.png'
+    speed = 4
 
     def minigame(self, window, t):
         game = OperationMinigame(window)
