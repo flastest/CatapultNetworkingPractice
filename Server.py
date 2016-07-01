@@ -20,6 +20,7 @@ class Server():
     target = -1
     rcvdStrs = []
     rcvdInts = []
+    rcvdTuple = []
     recvThread = None
 
     def __init__(self): # Begins normal broadcast of ip address to other possible players upon initialization
@@ -73,6 +74,7 @@ class Server():
                         self.numPlayers += 1
                         self.rcvdStrs.append('')
                         self.rcvdInts.append(-1)
+                        self.rcvdTuple.append((0,0))
                 except socket.error:
                     pass
         s.close()
@@ -118,6 +120,11 @@ class Server():
                     try:
                         int(self.rcvdStrs[playerNum])
                         self.rcvdInts[playerNum] = int(self.rcvdStrs[playerNum])
+                    except ValueError:
+                        pass
+                    try:
+                        tuple(self.rcvdStrs[playerNum])
+                        self.rcvdTuple[playerNum] = tuple(self.rcvdStrs[playerNum])
                     except ValueError:
                         pass
                     if self.rcvdStrs[playerNum] == 'quit':

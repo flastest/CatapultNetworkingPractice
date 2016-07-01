@@ -50,6 +50,22 @@ class Main:
             return Police(num)
         elif i==7:
             return Librarian(num)
+    
+    def classImgs(i):
+        if i == 1:
+            return 'Villain.png'
+        if i == 2:
+            return 'Robber.png'
+        if i == 3:
+            return 'Programmer.png'
+        if i == 4:
+            return 'doctor.png'
+        if i == 5:
+            return 'Hacker.png'
+        if i == 6:
+            return 'Officer.png'
+        if i == 7:
+            return 'Librarian.png'
 
     def isWithin(point,foX1,foY1,foX2,foY2,aa): #For ovals
         pX1 = (point[0]-foX1)**2
@@ -167,7 +183,15 @@ class Main:
     myClass = classPicker(myClassNum, myNum)
     
     a = CharacterScreen(game_screen,myClass) # Shows character role and info regarding it
-    time.sleep(TIME_THAT_WE_SHOULD_HAVE_THEM_READ_THEIR_CHARACTER_INFO_FOR)
+    time.sleep(TIME_THAT_WE_SHOULD_HAVE_THEM_READ_THEIR_CHARACTER_INFO_FOR-1)
+    if not isHost:
+        classList = []
+    for i in range(numPlayers):
+        if isHost:
+            connectionType.sendStrToAll(str(classList[i]))
+        else:
+            classList.append(connectionType.rcvdInt)
+        time.sleep(.1)
 
     #gameplay!!!!!!
 
@@ -175,6 +199,29 @@ class Main:
     b = Board(game_screen)
     b.setBoard()
     myPic = pygame.transform.scale(pygame.image.load(myClass.getAvatar()),(75,75))
+    picList = [myPic]
+    coords = [b.initPos]
+    beforeMyNum = True
+    def showImgs(b,pics,xys):
+        count = 0
+        for i in range(len(pics)):
+            show = True
+            if count > 0:
+                for j in range(count):
+                    if xys[i] == xys[j]:
+                        show = False
+            if show:
+                b.showCharacter(pics[i],xys[i])
+            count += 1
+
+    for i in range(numPlayers-1):
+        if i+1 == myNum:
+            beforeMyNum = False
+        if beforeMyNum:
+            picList.append(pygame.transform.scale(pygame.image.load(classImgs(i)),(75,75)))
+        else:
+            picList.append(pygame.transform.scale(pygame.image.load(classImgs(i+1)),(75,75)))
+        coords.append((0,0))
     while b.hasNotWon:
         if not isHost:
             if connectionType.rcvdStr == 'lose':
@@ -186,12 +233,22 @@ class Main:
         if not b.isTurn:
             if not isHost:
                 if connectionType.rcvdStr == 'ok':
+                    coords[0]=b.initPos
+                    connectionType.sendStrToServer(str(b.initPos))
+                    time.sleep(.01)
+                    for i in range(numPlayers-1):
+                        try:
+                            tuple(connectionType.rcvdStr)
+                            coords[i+1] = tuple(connectionType.rcvdStr)
+                        except ValueError:
+                            pass
+                        time.sleep(.01)
                     connectionType.stopThread()
                     myClass.showRules(game_screen)
                     connectionType.resumeThread()
                     if not myClass.won:
                         b.setBoard()
-                        b.showCharacter(myPic,b.initPos)
+                        showImgs(b,picList,coords)
                         b.displayGoal()
                         b.displayWaiting()
                         pygame.display.update()
@@ -199,20 +256,28 @@ class Main:
                 else:
                     connectionType.sendStrToServer('ready')
             else:
+                coords[0]=b.initPos
                 tog = True
-                for i in range(connectionType.numPlayers-1):
+                for i in range(numPlayers-1):
                     if connectionType.rcvdStrs[i] != 'ready':
                         tog = False
                 if tog:
-                    for i in range(connectionType.numPlayers-1):
+                    for i in range(numPlayers-1):
                         connectionType.rcvdStrs[i] = 'not ready'
                     connectionType.sendStrToAll('ok')
+                    time.sleep(.01)
+                    for i in range(numPlayers-1):
+                        coords[i+1] = connectionType.rcvdTuple[i]
+                    time.sleep(.01)
+                    for i in range(numPlayers):
+                        connectionType.sendStrToAll(str(coords[i]))
+                        time.sleep(.01)
                     connectionType.stopThread()
                     myClass.showRules(game_screen)
                     connectionType.resumeThread()
                     if not myClass.won:
                         b.setBoard()
-                        b.showCharacter(myPic,b.initPos)
+                        showImgs(b,picList,coords)
                         b.displayGoal()
                         b.displayWaiting()
                         pygame.display.update()
@@ -220,7 +285,7 @@ class Main:
                 else:
                     connectionType.sendStrToAll('wait')
             b.setBoard()
-            b.showCharacter(myPic,b.initPos)
+            showImgs(b,picList,coords)
             b.displayGoal()
             b.displayWaiting()
             pygame.display.update()
@@ -248,7 +313,7 @@ class Main:
                             connectionType.sendStrToServer('ready')
                         b.goThere(myPic)
             b.setBoard()
-            b.showCharacter(myPic,b.initPos)
+            showImgs(b,picList,coords)
             b.displayUnconfirmedPath()
             if (b.goalCoordinates[0],b.goalCoordinates[1]) == (b.initPos[0],b.initPos[1]):
                 b.moveGoal()
@@ -272,7 +337,7 @@ class Main:
         if isHost:
             connectionType.sendStrToAll('lose')
             x = True
-            for i in range(connectionType.numPlayers-1):
+            for i in range(numPlayers-1):
                 if connectionType.rcvdStrs[i] != 'won':
                     x = False
             if x:
